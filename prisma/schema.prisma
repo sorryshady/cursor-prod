@@ -1,0 +1,199 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+    provider = "prisma-client-js"
+}
+
+datasource db {
+    provider = "postgresql"
+    url      = env("DATABASE_URL")
+}
+
+enum District {
+    KASARAGOD
+    KANNUR
+    WAYANAD
+    KOZHIKODE
+    MALAPPURAM
+    PALAKKAD
+    THRISSUR
+    ERNAKULAM
+    IDUKKI
+    KOTTAYAM
+    ALAPPUZHA
+    PATHANAMTHITTA
+    KOLLAM
+    THIRUVANANTHAPURAM
+}
+
+enum Gender {
+    MALE
+    FEMALE
+    OTHER
+}
+
+enum BloodGroup {
+    A_POS
+    A_NEG
+    B_POS
+    B_NEG
+    AB_POS
+    AB_NEG
+    O_POS
+    O_NEG
+}
+
+enum UserStatus {
+    WORKING
+    RETIRED
+    EXPIRED
+}
+
+enum Department {
+    LSGD
+    PWD
+    IRRIGATION
+}
+
+enum Designation {
+    ASSISTANT_ENGINEER
+    ASSISTANT_EXECUTIVE_ENGINEER
+    EXECUTIVE_ENGINEER
+    SUPERINTENDING_ENGINEER
+    CHIEF_ENGINEER
+}
+
+enum CommitteeType {
+    NONE
+    STATE
+    DISTRICT
+}
+
+enum UserRole {
+    ADMIN
+    REGULAR
+}
+
+enum VerificationStatus {
+    VERIFIED
+    PENDING
+    REJECTED
+}
+
+enum StatePositionTitle {
+    PRESIDENT
+    VICE_PRESIDENT
+    GENERAL_SECRETARY
+    JOINT_SECRETARY
+    TREASURER
+    EDITOR
+    EXECUTIVE_COMMITTEE_MEMBER
+    IMMEDIATE_PAST_PRESIDENT
+    IMMEDIATE_PAST_SECRETARY
+}
+
+enum DistrictPositionTitle {
+    DISTRICT_PRESIDENT
+    DISTRICT_SECRETARY
+}
+
+model User {
+    id                       String                     @id @default(cuid())
+    // Personal Info
+    name                     String
+    dob                      DateTime
+    gender                   Gender
+    bloodGroup               BloodGroup
+    // Current employed Status and professional address
+    userStatus               UserStatus                 @default(RETIRED)
+    department               Department?
+    designation              Designation?
+    officeAddress            String?
+    workDistrict             District?
+    // Personal Contact Address
+    personalAddress          String
+    homeDistrict             District
+    // Contact Information
+    email                    String                     @unique
+    phoneNumber              String?
+    mobileNumber             String
+    // User photo
+    photoUrl                 String?
+    // Additional fields specific to User
+    committeeType            CommitteeType              @default(NONE)
+    userRole                 UserRole                   @default(REGULAR)
+    verificationStatus       VerificationStatus         @default(PENDING)
+    razorpayId               String?                    @unique
+    password                 String?
+    membershipId             Int?                       @unique
+    positionState            StatePositionTitle? // Optional: Only used if committeeType is STATE
+    positionDistrict         DistrictPositionTitle? // Optional: Only used if committeeType is DISTRICT
+    // MISC
+    createdAt                DateTime                   @default(now())
+    updatedAt                DateTime                   @updatedAt
+    photoId                  String?                    @unique
+    // Security Question
+    securityQuestion         SecurityQuestion[]
+    PromotionTransferRequest PromotionTransferRequest[]
+    Obituary                 Obituary[]
+}
+
+// Security Questions for Reset Password
+enum SecurityQuestionType {
+    MOTHERS_MAIDEN_NAME
+    FIRST_PET
+    FIRST_SCHOOL
+    FAVOURITE_BOOK
+    FAVOURITE_CAR
+}
+
+model SecurityQuestion {
+    id           Int                  @id @default(autoincrement())
+    question     SecurityQuestionType // The selected question from the enum
+    answer       String // Hashed answer to the security question
+    user         User?                @relation(fields: [membershipId], references: [membershipId], onDelete: Cascade)
+    membershipId Int?                 @unique // Ensures one-to-one relationship
+
+    createdAt DateTime @default(now())
+    updatedAt DateTime @updatedAt
+}
+
+enum RequestType {
+    PROMOTION
+    TRANSFER
+    RETIREMENT
+}
+
+model PromotionTransferRequest {
+    id               String             @id @default(cuid())
+    user             User               @relation(fields: [membershipId], references: [membershipId])
+    membershipId     Int
+    requestType      RequestType
+    oldPosition      Designation? // Using Designation enum
+    newPosition      Designation? // Using Designation enum
+    oldWorkDistrict  District? // Added old work district
+    newWorkDistrict  District? // Added new work district
+    oldOfficeAddress String? // Added old office address
+    newOfficeAddress String? // Added new office address
+    retirementDate   DateTime? // Added date for retirement
+    status           VerificationStatus @default(PENDING)
+    requestedAt      DateTime           @default(now())
+    approvedAt       DateTime?
+    expiryDate       DateTime?
+    adminComments    String?
+    showAgain        Boolean            @default(true)
+}
+
+model Obituary {
+    id             String   @id @default(cuid())
+    user           User     @relation(fields: [membershipId], references: [membershipId])
+    membershipId   Int
+    dateOfDeath    DateTime
+    dateRecorded   DateTime @default(now())
+    expiryDate     DateTime
+    additionalNote String?
+}
