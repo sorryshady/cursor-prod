@@ -1,7 +1,8 @@
 import { Metadata } from "next";
 import Link from "next/link";
-import { getStateCommitteeMembers } from "@/lib/db/queries";
+import { getStateCommitteeMembers, getDistrictCommitteeMembers } from "@/lib/db/queries";
 import { CommitteeCarousel } from "@/components/committee/committee-carousel";
+import { DistrictSelector } from "@/components/committee/district-selector";
 import { Button } from "@/components/ui/button";
 import { Wrapper } from "@/components/layout/wrapper";
 import { PageBackground } from "@/components/layout/page-background";
@@ -13,8 +14,9 @@ export const metadata: Metadata = {
 };
 
 export default async function CommitteePage() {
-  // Fetch state committee members (excluding executive committee)
+  // Fetch both state and district committee members
   const stateMembers = await getStateCommitteeMembers(true);
+  const districtMembers = await getDistrictCommitteeMembers();
 
   return (
     <div className="relative min-h-screen">
@@ -55,7 +57,7 @@ export default async function CommitteePage() {
             <h2 className="text-2xl font-semibold text-center text-black mb-8">
               District Committee
             </h2>
-            {/* We'll add district committee content later */}
+            <DistrictSelector members={districtMembers} />
           </section>
         </Wrapper>
       </main>

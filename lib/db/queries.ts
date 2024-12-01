@@ -68,3 +68,31 @@ export async function getStateCommitteeMembers(excludeExecutive: boolean = false
     return getPositionOrder(a.positionState) - getPositionOrder(b.positionState);
   });
 }
+
+export async function getDistrictCommitteeMembers() {
+  const members = await prisma.user.findMany({
+    where: {
+      committeeType: "DISTRICT",
+      verificationStatus: "VERIFIED",
+    },
+    select: {
+      id: true,
+      name: true,
+      photoUrl: true,
+      positionDistrict: true,
+      designation: true,
+      department: true,
+      workDistrict: true,
+      bloodGroup: true,
+      mobileNumber: true,
+      membershipId: true,
+      personalAddress: true,
+      email: true,
+    },
+    orderBy: {
+      positionDistrict: 'asc',
+    },
+  });
+
+  return members;
+}
