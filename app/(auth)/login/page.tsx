@@ -308,6 +308,14 @@ export default function LoginPage() {
                             </FormItem>
                           )}
                         />
+                        <div className="text-right">
+                          <Link
+                            href={`/forgot-password?userId=${userDetails?.id}`}
+                            className="text-sm text-primary hover:underline"
+                          >
+                            Forgot Password?
+                          </Link>
+                        </div>
                         {formError && (
                           <CustomFormMessage type="error" message={formError} />
                         )}
@@ -326,15 +334,6 @@ export default function LoginPage() {
                             "Login"
                           )}
                         </Button>
-
-                        <div className="text-center text-sm">
-                          <Link
-                            href="/forgot-password"
-                            className="text-primary underline"
-                          >
-                            Forgot password?
-                          </Link>
-                        </div>
                       </form>
                     </Form>
                   ) : (
