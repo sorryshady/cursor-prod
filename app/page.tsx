@@ -39,14 +39,14 @@ export default function HomePage() {
                 <Button
                   asChild
                   variant="destructive"
-                  className="text-base md:text-lg font-bold py-4 md:py-5 px-6 md:px-8 rounded-xl shadow-xl"
+                  className="text-base md:text-lg  py-4 md:py-5 px-6 md:px-8 rounded-xl shadow-xl"
                 >
                   <Link href="/contact">Contact Us</Link>
                 </Button>
                 <Button
                   asChild
                   variant="default"
-                  className="text-base md:text-lg font-bold py-4 md:py-5 px-6 md:px-8 rounded-xl shadow-xl bg-[#35718E] hover:bg-[#5386A4]"
+                  className="text-base md:text-lg  py-4 md:py-5 px-6 md:px-8 rounded-xl shadow-xl bg-[#35718E] hover:bg-[#5386A4]"
                 >
                   <Link href="/about">About Us</Link>
                 </Button>

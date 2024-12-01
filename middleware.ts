@@ -1,8 +1,8 @@
 import { NextResponse } from "next/server";
 import type { NextRequest } from "next/server";
 import { verifyJWT } from "@/lib/auth/jwt";
-import { prisma } from "@/lib/db";
 import { LRUCache } from "lru-cache";
+import { prisma } from './lib/db'
 
 // Define protected routes
 const protectedRoutes = [
@@ -12,13 +12,13 @@ const protectedRoutes = [
   "/admin",
 ];
 
-// In-memory cache for user roles
+// In-memory cache for user roles - using Edge compatible options
 const userRoleCache = new LRUCache<string, string>({
-  max: 500, // Maximum number of items
+  max: 500,
   ttl: 1000 * 60 * 5, // 5 minutes
 });
 
-// Rate limiter options
+// Rate limiter - using Edge compatible options
 const ratelimit = new LRUCache<string, number>({
   max: 500,
   ttl: 1000 * 60, // 1 minute
@@ -27,7 +27,7 @@ const ratelimit = new LRUCache<string, number>({
 // Rate limit function
 function getRateLimit(ip: string): boolean {
   const tokenCount = ratelimit.get(ip) || 0;
-  if (tokenCount > 10) return false; // More than 10 requests per minute
+  if (tokenCount > 10) return false;
   ratelimit.set(ip, tokenCount + 1);
   return true;
 }
@@ -50,22 +50,7 @@ export async function middleware(request: NextRequest) {
       );
     }
 
-    const response = NextResponse.next();
-
-    // CORS headers
-    response.headers.set("Access-Control-Allow-Origin",
-      process.env.NODE_ENV === "production"
-        ? "your-mobile-app-domain"
-        : "*"
-    );
-    response.headers.set("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS");
-    response.headers.set("Access-Control-Allow-Headers", "Content-Type, Authorization, x-client-type");
-
-    if (request.method === "OPTIONS") {
-      return response;
-    }
-
-    return response;
+    // Create
   }
 
   // Check if it's a protected route

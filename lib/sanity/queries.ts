@@ -102,3 +102,47 @@ export function separateEvents(events: UpcomingEvent[]): {
     ),
   };
 }
+
+export async function getNewsPaginated(page: number = 1, limit: number = 9) {
+  const start = (page - 1) * limit;
+  const end = start + limit;
+
+  // Get total count for pagination
+  const total = await client.fetch(
+    `count(*[_type == "news"])`
+  );
+
+  // Get paginated news
+  const news = await client.fetch(
+    `*[_type == "news"] | order(date desc) [$start...$end] {
+      _id,
+      title,
+      slug,
+      date,
+      description,
+      image
+    }`,
+    { start, end }
+  );
+
+  return {
+    news,
+    total,
+    totalPages: Math.ceil(total / limit)
+  };
+}
+
+export async function getNewsBySlug(slug: string) {
+  return client.fetch(
+    `*[_type == "news" && slug.current == $slug][0] {
+      _id,
+      title,
+      slug,
+      date,
+      description,
+      content,
+      image
+    }`,
+    { slug }
+  );
+}

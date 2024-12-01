@@ -23,6 +23,7 @@
     "@radix-ui/react-slot": "^1.1.0",
     "@sanity/image-url": "^1.1.0",
     "@sanity/vision": "^3.65.1",
+    "@tanstack/react-query": "^5.62.0",
     "@uploadthing/react": "^7.1.1",
     "bcryptjs": "^2.4.3",
     "class-variance-authority": "^0.7.1",
@@ -47,6 +48,7 @@
   "devDependencies": {
     "@sanity/types": "^3.65.1",
     "@shadcn/ui": "^0.0.4",
+    "@tailwindcss/typography": "^0.5.15",
     "@types/bcryptjs": "^2.4.6",
     "@types/lru-cache": "^7.10.10",
     "@types/node": "^20.17.9",
