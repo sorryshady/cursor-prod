@@ -44,7 +44,7 @@ export function UserDropdown({ user, align = "end" }: UserDropdownProps) {
           <Button
             variant="ghost"
             onClick={() => {
-              router.push("/account");
+              router.push("/dashboard");
               setOpen(false);
             }}
             className="flex items-center gap-2"

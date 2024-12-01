@@ -14,7 +14,6 @@ import {
   SheetHeader,
 } from "@/components/ui/sheet";
 import { MenuIcon } from "lucide-react";
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Separator } from "../ui/separator";
 import { UserDropdown } from "../auth/user-dropdown";
 

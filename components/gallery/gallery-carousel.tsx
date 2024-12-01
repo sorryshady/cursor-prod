@@ -36,71 +36,71 @@ export function GalleryCarousel({ categories }: GalleryCarouselProps) {
     enter: (direction: number) => ({
       x: direction > 0 ? 1000 : -1000,
       scale: 0.8,
-      opacity: 0
+      opacity: 0,
     }),
     center: {
       zIndex: 1,
       x: 0,
-      scale: 1,
-      opacity: 1
+      scale: 2,
+      opacity: 1,
     },
     exit: (direction: number) => ({
       zIndex: 0,
       x: direction < 0 ? 1000 : -1000,
       scale: 0.8,
-      opacity: 0
-    })
+      opacity: 0,
+    }),
   };
 
   return (
-    <div className="relative h-[600px] w-full overflow-hidden">
-      <div className="absolute inset-0 flex items-center justify-center">
-        <button
-          onClick={() => paginate(-1)}
-          className="absolute left-4 z-10 p-2 bg-white/20 rounded-full backdrop-blur-sm"
-        >
-          <ChevronLeft className="h-6 w-6 text-white" />
-        </button>
-
-        <AnimatePresence initial={false} custom={direction}>
-          <motion.div
-            key={page}
-            custom={direction}
-            variants={slideVariants}
-            initial="enter"
-            animate="center"
-            exit="exit"
-            transition={{
-              x: { type: "spring", stiffness: 300, damping: 30 },
-              opacity: { duration: 0.2 }
-            }}
-            className="absolute w-[500px] h-[400px]"
+    <div className="flex flex-col items-center gap-5">
+      <div className="relative h-[600px] w-full overflow-hidden">
+        <div className="absolute inset-0 flex items-center justify-center">
+          <button
+            onClick={() => paginate(-1)}
+            className="absolute left-4 z-10 p-2 bg-white/20 rounded-full backdrop-blur-sm"
           >
-            <Link href={`/gallery/${categories[categoryIndex].slug.current}`}>
-              <div className="relative w-full h-full">
-                <Image
-                  src={categories[categoryIndex].firstImage.asset.url}
-                  alt={categories[categoryIndex].title}
-                  fill
-                  className="object-cover rounded-lg"
-                />
-                <div className="absolute bottom-0 inset-x-0 bg-gradient-to-t from-black/60 to-transparent p-6">
-                  <h3 className="text-white text-xl font-semibold text-center">
-                    {categories[categoryIndex].title}
-                  </h3>
-                </div>
-              </div>
-            </Link>
-          </motion.div>
-        </AnimatePresence>
+            <ChevronLeft className="h-6 w-6 text-white" />
+          </button>
 
-        <button
-          onClick={() => paginate(1)}
-          className="absolute right-4 z-10 p-2 bg-white/20 rounded-full backdrop-blur-sm"
-        >
-          <ChevronRight className="h-6 w-6 text-white" />
-        </button>
+          <AnimatePresence initial={false} custom={direction}>
+            <motion.div
+              key={page}
+              custom={direction}
+              variants={slideVariants}
+              initial="enter"
+              animate="center"
+              exit="exit"
+              transition={{
+                x: { type: "spring", stiffness: 300, damping: 30 },
+                opacity: { duration: 0.2 },
+              }}
+              className="absolute w-[500px] h-[400px]"
+            >
+              <Link href={`/gallery/${categories[categoryIndex].slug.current}`}>
+                <div className="relative w-full h-full">
+                  <Image
+                    src={categories[categoryIndex].firstImage.asset.url}
+                    alt={categories[categoryIndex].title}
+                    fill
+                    className="object-cover rounded-lg"
+                  />
+                </div>
+              </Link>
+            </motion.div>
+          </AnimatePresence>
+
+          <button
+            onClick={() => paginate(1)}
+            className="absolute right-4 z-10 p-2 bg-white/20 rounded-full backdrop-blur-sm"
+          >
+            <ChevronRight className="h-6 w-6 text-white" />
+          </button>
+        </div>
       </div>
+      <h3 className="text-white text-xl font-semibold text-center z-50">
+        {categories[categoryIndex].title}
+      </h3>
     </div>
   );
-} 
+}
