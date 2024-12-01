@@ -66,7 +66,7 @@ export function PersonalInfoForm({
           <FormField
             control={form.control}
             name="dob"
-            render={({ field }) => (
+            render={() => (
               <FormItem>
                 <FormLabel>Date of Birth</FormLabel>
                 <FormControl>

@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
-import { Home, ArrowLeft, Mail } from "lucide-react";
+import { Home, Mail } from "lucide-react";
+import Image from "next/image";
 
 export default function NotFound() {
   return (
@@ -15,7 +16,8 @@ export default function NotFound() {
             Oops! Page not found
           </h2>
           <p className="text-gray-300 max-w-md mx-auto">
-            The page you're looking for doesn't exist or has been moved.
+            The page you&apos;re looking for doesn&apos;t exist or has been
+            moved.
           </p>
         </div>
 
@@ -47,10 +49,12 @@ export default function NotFound() {
         {/* AOEK Logo */}
         <div className="mt-12">
           <Link href="/" className="inline-block">
-            <img
+            <Image
               src="/aoek-logo.webp"
               alt="AOEK Logo"
               className="h-16 w-auto mx-auto opacity-50 hover:opacity-100 transition-opacity"
+              width={100}
+              height={100}
             />
           </Link>
         </div>

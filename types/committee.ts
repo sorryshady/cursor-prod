@@ -7,7 +7,7 @@ export interface DistrictMemberType {
   positionDistrict: DistrictPositionTitle | null;
   designation: Designation | null;
   department: Department | null;
-  workDistrict: District;
+  workDistrict: District | null;
   bloodGroup: BloodGroup;
   email: string;
   mobileNumber: string;

@@ -65,9 +65,15 @@ export async function middleware(request: NextRequest) {
       if (authHeader && authHeader.startsWith("Bearer ")) {
         const token = authHeader.substring(7);
         try {
-          const decoded = (await verifyJWT(token)) as JWTPayload;
-          userId = decoded.userId;
-          isAuthenticated = true;
+          const decoded = await verifyJWT(token);
+          if (!decoded || typeof decoded !== 'object' || !('userId' in decoded)) {
+            // Handle invalid token
+            isAuthenticated = false;
+          } else {
+            const payload = decoded as unknown as JWTPayload;
+            userId = payload.userId;
+            isAuthenticated = true;
+          }
         } catch {
           isAuthenticated = false;
         }
@@ -76,9 +82,15 @@ export async function middleware(request: NextRequest) {
       const token = request.cookies.get("auth-token");
       if (token) {
         try {
-          const decoded = (await verifyJWT(token.value)) as JWTPayload;
-          userId = decoded.userId;
-          isAuthenticated = true;
+          const decoded = await verifyJWT(token.value);
+          if (!decoded || typeof decoded !== 'object' || !('userId' in decoded)) {
+            // Handle invalid token
+            isAuthenticated = false;
+          } else {
+            const payload = decoded as unknown as JWTPayload;
+            userId = payload.userId;
+            isAuthenticated = true;
+          }
         } catch {
           isAuthenticated = false;
         }

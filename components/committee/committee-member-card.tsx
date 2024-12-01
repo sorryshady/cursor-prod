@@ -9,7 +9,7 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
-import { Info, Phone, Mail, MapPin, Droplet, Badge, Hash } from "lucide-react";
+import { Info, Phone, Mail, MapPin, Badge, Hash } from "lucide-react";
 import {
   StatePositionTitle,
   DistrictPositionTitle,

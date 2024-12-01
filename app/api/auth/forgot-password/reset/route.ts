@@ -2,7 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { prisma } from "@/lib/db";
 import { hashPassword, verifyPassword } from "@/lib/auth/password";
 import { signJWT } from "@/lib/auth/jwt";
-import { cookies } from "next/headers";
+
 
 export async function POST(req: NextRequest) {
   try {

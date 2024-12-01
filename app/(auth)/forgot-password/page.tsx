@@ -21,13 +21,10 @@ export default function ForgotPasswordPage() {
   // Fetch user details and security question on mount
   useEffect(() => {
     const fetchUserDetails = async () => {
-      if (!userId) {
-        router.push("/login");
-        return;
-      }
-
       try {
-        const response = await fetch(`/api/auth/security-question/${userId}`);
+        const response = await fetch(
+          `/api/auth/security-question?userId=${userId}`,
+        );
         const data = await response.json();
 
         if (!response.ok) {
@@ -36,7 +33,8 @@ export default function ForgotPasswordPage() {
 
         setUserDetails(data.user);
       } catch (error) {
-        router.push("/login");
+        console.error(error);
+        // router.push("/login");
       }
     };
 

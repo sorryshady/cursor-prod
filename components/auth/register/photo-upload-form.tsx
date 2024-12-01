@@ -3,7 +3,13 @@
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { photoSchema, type PhotoInput } from "@/lib/validations/auth";
+import {
+  ContactInfoInput,
+  ProfessionalInfoInput,
+  PersonalInfoInput,
+  photoSchema,
+  type PhotoInput,
+} from "@/lib/validations/auth";
 import { Button } from "@/components/ui/button";
 import {
   Form,
@@ -14,21 +20,26 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import Image from "next/image";
-import { Loader2, Upload } from "lucide-react";
+import { Loader2 } from "lucide-react";
 import { toast } from "sonner";
 import { useUploadThing } from "@/lib/uploadthing";
 import { Input } from "@/components/ui/input";
 import { useRouter } from "next/navigation";
 
+interface AllFormData {
+  personalInfo: PersonalInfoInput | null;
+  professionalInfo: ProfessionalInfoInput | null;
+  contactInfo: ContactInfoInput | null;
+}
+
 interface PhotoUploadFormProps {
   onSubmit: (data: PhotoInput) => void;
   onBack: () => void;
   initialData?: PhotoInput | null;
-  allFormData: any;
+  allFormData: AllFormData;
 }
 
 export function PhotoUploadForm({
-  onSubmit,
   onBack,
   initialData,
   allFormData,
@@ -45,7 +56,7 @@ export function PhotoUploadForm({
     },
   });
 
-  const { startUpload } = useUploadThing("profileImage", {
+  const { startUpload } = useUploadThing("imageUploader", {
     onClientUploadComplete: (res) => {
       if (res?.[0]) {
         form.setValue("photoUrl", res[0].url);
@@ -70,29 +81,29 @@ export function PhotoUploadForm({
     }
 
     setIsUploading(true);
-    await startUpload([file]);
+    await startUpload([file], {});
   };
 
   const handleSubmit = async (data: PhotoInput) => {
     setIsSubmitting(true);
     try {
       const completeFormData = {
-        name: allFormData.personalInfo.name,
-        dob: allFormData.personalInfo.dob,
-        gender: allFormData.personalInfo.gender,
-        bloodGroup: allFormData.personalInfo.bloodGroup,
+        name: allFormData?.personalInfo?.name,
+        dob: allFormData?.personalInfo?.dob,
+        gender: allFormData?.personalInfo?.gender,
+        bloodGroup: allFormData?.personalInfo?.bloodGroup,
 
-        userStatus: allFormData.professionalInfo.userStatus,
-        department: allFormData.professionalInfo.department,
-        designation: allFormData.professionalInfo.designation,
-        officeAddress: allFormData.professionalInfo.officeAddress,
-        workDistrict: allFormData.professionalInfo.workDistrict,
+        userStatus: allFormData?.professionalInfo?.userStatus,
+        department: allFormData?.professionalInfo?.department,
+        designation: allFormData?.professionalInfo?.designation,
+        officeAddress: allFormData?.professionalInfo?.officeAddress,
+        workDistrict: allFormData?.professionalInfo?.workDistrict,
 
-        personalAddress: allFormData.contactInfo.personalAddress,
-        homeDistrict: allFormData.contactInfo.homeDistrict,
-        email: allFormData.contactInfo.email,
-        phoneNumber: allFormData.contactInfo.phoneNumber,
-        mobileNumber: allFormData.contactInfo.mobileNumber,
+        personalAddress: allFormData?.contactInfo?.personalAddress,
+        homeDistrict: allFormData?.contactInfo?.homeDistrict,
+        email: allFormData?.contactInfo?.email,
+        phoneNumber: allFormData?.contactInfo?.phoneNumber,
+        mobileNumber: allFormData?.contactInfo?.mobileNumber,
 
         photoUrl: data.photoUrl,
         photoId: data.photoId,

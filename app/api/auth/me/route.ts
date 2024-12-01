@@ -23,7 +23,7 @@ export async function GET(req: NextRequest) {
       }
 
       const token = authHeader.split(' ')[1]
-      const payload = await verifyJWT<JWTPayload>(token)
+      const payload = await verifyJWT(token) as JWTPayload;
       user = await prisma.user.findUnique({
         where: {
           id: payload.userId,

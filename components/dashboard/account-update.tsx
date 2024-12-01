@@ -116,6 +116,7 @@ export function AccountUpdate({ user }: AccountUpdateProps) {
       setError("");
       router.refresh();
     } catch (error) {
+      console.error(error);
       setError("An error occurred while submitting the form");
       form.reset(initialData);
     } finally {
@@ -139,7 +140,10 @@ export function AccountUpdate({ user }: AccountUpdateProps) {
                   render={({ field }) => (
                     <FormItem>
                       <FormControl>
-                        <Input placeholder="Enter permanent address" {...field} />
+                        <Input
+                          placeholder="Enter permanent address"
+                          {...field}
+                        />
                       </FormControl>
                       <FormMessage />
                     </FormItem>
@@ -227,7 +231,7 @@ export function AccountUpdate({ user }: AccountUpdateProps) {
                 <div>Committee Position</div>
                 <div>
                   {changeTypeToText(
-                    user.positionState || user.positionDistrict || "-"
+                    user.positionState || user.positionDistrict || "-",
                   )}
                 </div>
               </div>
@@ -236,12 +240,10 @@ export function AccountUpdate({ user }: AccountUpdateProps) {
             {error && <FormMessage>{error}</FormMessage>}
 
             <div className="flex w-full gap-5 mt-10">
-              <Button
-                type="submit"
-                className="flex-1"
-                disabled={isSubmitting}
-              >
-                {isSubmitting && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
+              <Button type="submit" className="flex-1" disabled={isSubmitting}>
+                {isSubmitting && (
+                  <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                )}
                 Update details
               </Button>
               <Button
@@ -297,7 +299,7 @@ export function AccountUpdate({ user }: AccountUpdateProps) {
               <div>Committee Position</div>
               <div>
                 {changeTypeToText(
-                  user.positionState || user.positionDistrict || "-"
+                  user.positionState || user.positionDistrict || "-",
                 )}
               </div>
             </div>

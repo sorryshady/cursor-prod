@@ -1,10 +1,12 @@
 import React from "react";
 import { useController } from "react-hook-form";
 import { Input } from "../ui/input";
+import { Control } from "react-hook-form";
 
 type CustomDateProps = {
   name: string;
-  control: any; // Type from react-hook-form
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  control: Control<any>;
   placeholder?: string;
 };
 
@@ -47,4 +49,4 @@ const CustomDate: React.FC<CustomDateProps> = ({
   );
 };
 
-export default CustomDate; 
+export default CustomDate;

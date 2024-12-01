@@ -1,6 +1,5 @@
 import { Wrapper } from "@/components/layout/wrapper";
 import { PageBackground } from "@/components/layout/page-background";
-import { PageHeader } from "@/components/layout/page-header";
 import { Skeleton } from "@/components/ui/skeleton";
 
 export default function GalleryLoading() {
@@ -17,10 +16,7 @@ export default function GalleryLoading() {
 
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             {[1, 2, 3, 4, 5, 6].map((index) => (
-              <Skeleton
-                key={index}
-                className="aspect-square rounded-lg"
-              />
+              <Skeleton key={index} className="aspect-square rounded-lg" />
             ))}
           </div>
         </Wrapper>

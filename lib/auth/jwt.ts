@@ -2,7 +2,7 @@ import * as jose from 'jose'
 
 const secret = new TextEncoder().encode(process.env.JWT_SECRET_KEY)
 
-export async function signJWT(payload: any) {
+export async function signJWT(payload: Record<string, unknown>) {
   const jwt = await new jose.SignJWT(payload)
     .setProtectedHeader({ alg: 'HS256' })
     .setIssuedAt()
@@ -12,11 +12,11 @@ export async function signJWT(payload: any) {
   return jwt
 }
 
-export async function verifyJWT<T>(token: string): Promise<T> {
+export const verifyJWT = async (token: string): Promise<Record<string, unknown> | null> => {
   try {
     const { payload } = await jose.jwtVerify(token, secret)
-    return payload as T
-  } catch (error) {
-    throw new Error('Invalid token')
+    return payload as Record<string, unknown>
+  } catch {
+    return null
   }
-} 
+}

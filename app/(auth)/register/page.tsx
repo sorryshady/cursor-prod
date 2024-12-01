@@ -17,8 +17,6 @@ import type {
   PhotoInput,
 } from "@/lib/validations/auth";
 import Link from "next/link";
-import { Button } from "@/components/ui/button";
-import { Loader2 } from "lucide-react";
 
 type RegistrationStep = 1 | 2 | 3 | 4;
 
