@@ -8,7 +8,11 @@ export default function HomePage() {
   return (
     <main className="w-full relative">
       {/* Full page background */}
-      <PageBackground imageType="hero" withGradient />
+      <PageBackground
+        imageType="hero"
+        withGradient
+        gradientClassName="h-screen"
+      />
       <section className=" min-h-screen">
         {/* Hero Content */}
         <Wrapper className="relative z-10 pt-20 md:pt-28 lg:pt-32 space-y-16 md:space-y-24 lg:space-y-32">

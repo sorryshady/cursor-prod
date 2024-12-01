@@ -73,7 +73,7 @@ export default async function NewsPage({ searchParams }: NewsPageProps) {
               href={currentPage === 1 ? "#" : `/news?page=${currentPage - 1}`}
               className={cn(
                 "w-24",
-                currentPage === 1 ? "pointer-events-none opacity-50" : ""
+                currentPage === 1 ? "pointer-events-none opacity-50" : "",
               )}
             >
               <Button
@@ -88,10 +88,16 @@ export default async function NewsPage({ searchParams }: NewsPageProps) {
               Page {currentPage} of {totalPages}
             </span>
             <Link
-              href={currentPage === totalPages ? "#" : `/news?page=${currentPage + 1}`}
+              href={
+                currentPage === totalPages
+                  ? "#"
+                  : `/news?page=${currentPage + 1}`
+              }
               className={cn(
                 "w-24",
-                currentPage === totalPages ? "pointer-events-none opacity-50" : ""
+                currentPage === totalPages
+                  ? "pointer-events-none opacity-50"
+                  : "",
               )}
             >
               <Button

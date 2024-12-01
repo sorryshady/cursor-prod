@@ -12,3 +12,11 @@ export function formatDate(date: string) {
     year: 'numeric'
   });
 }
+
+export function formatDepartment(department: string) {
+  return department.replace(/_/g, " ").toLowerCase().replace(/\b\w/g, l => l.toUpperCase());
+}
+
+export function formatDesignation(designation: string) {
+  return designation.replace(/_/g, " ").toLowerCase().replace(/\b\w/g, l => l.toUpperCase());
+}
