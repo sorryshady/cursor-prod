@@ -31,23 +31,10 @@ export default function NotFound() {
               Back to Home
             </Link>
           </Button>
-
           <Button
             asChild
-            variant="outline"
-            className="border-white text-black hover:bg-white/10 w-full sm:w-auto"
-            size="lg"
-          >
-            <Link href="javascript:history.back()">
-              <ArrowLeft className="mr-2 h-4 w-4" />
-              Go Back
-            </Link>
-          </Button>
-
-          <Button
-            asChild
-            variant="outline"
-            className="border-white text-black hover:bg-white/10 w-full sm:w-auto"
+            variant="default"
+            className="border-white bg-white text-black hover:bg-white/70 w-full sm:w-auto"
             size="lg"
           >
             <Link href="/contact">
