@@ -1,10 +1,13 @@
-'use client'
+"use client";
 
-import { useForm } from "react-hook-form"
-import { zodResolver } from "@hookform/resolvers/zod"
-import { personalInfoSchema, type PersonalInfoInput } from "@/lib/validations/auth"
-import { Gender, BloodGroup } from "@prisma/client"
-import { Button } from "@/components/ui/button"
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import {
+  personalInfoSchema,
+  type PersonalInfoInput,
+} from "@/lib/validations/auth";
+import { Gender, BloodGroup } from "@prisma/client";
+import { Button } from "@/components/ui/button";
 import {
   Form,
   FormControl,
@@ -12,23 +15,26 @@ import {
   FormItem,
   FormLabel,
   FormMessage,
-} from "@/components/ui/form"
+} from "@/components/ui/form";
 import {
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from "@/components/ui/select"
-import { Input } from "@/components/ui/input"
-import CustomDate from "@/components/form/custom-date"
+} from "@/components/ui/select";
+import { Input } from "@/components/ui/input";
+import CustomDate from "@/components/form/custom-date";
 
 interface PersonalInfoFormProps {
-  onSubmit: (data: PersonalInfoInput) => void
-  initialData?: PersonalInfoInput | null
+  onSubmit: (data: PersonalInfoInput) => void;
+  initialData?: PersonalInfoInput | null;
 }
 
-export function PersonalInfoForm({ onSubmit, initialData }: PersonalInfoFormProps) {
+export function PersonalInfoForm({
+  onSubmit,
+  initialData,
+}: PersonalInfoFormProps) {
   const form = useForm<PersonalInfoInput>({
     resolver: zodResolver(personalInfoSchema),
     defaultValues: initialData || {
@@ -37,7 +43,7 @@ export function PersonalInfoForm({ onSubmit, initialData }: PersonalInfoFormProp
       gender: undefined,
       bloodGroup: undefined,
     },
-  })
+  });
 
   return (
     <Form {...form}>
@@ -81,7 +87,10 @@ export function PersonalInfoForm({ onSubmit, initialData }: PersonalInfoFormProp
             render={({ field }) => (
               <FormItem>
                 <FormLabel>Gender</FormLabel>
-                <Select onValueChange={field.onChange} defaultValue={field.value}>
+                <Select
+                  onValueChange={field.onChange}
+                  defaultValue={field.value}
+                >
                   <FormControl>
                     <SelectTrigger>
                       <SelectValue placeholder="Select your gender" />
@@ -89,8 +98,12 @@ export function PersonalInfoForm({ onSubmit, initialData }: PersonalInfoFormProp
                   </FormControl>
                   <SelectContent>
                     {Object.entries(Gender).map(([key, value]) => (
-                      <SelectItem key={key} value={value}>
-                        {key.replace(/_/g, ' ')}
+                      <SelectItem
+                        key={key}
+                        value={value}
+                        className="capitalize"
+                      >
+                        {key.replace(/_/g, " ").toLowerCase()}
                       </SelectItem>
                     ))}
                   </SelectContent>
@@ -106,7 +119,10 @@ export function PersonalInfoForm({ onSubmit, initialData }: PersonalInfoFormProp
             render={({ field }) => (
               <FormItem>
                 <FormLabel>Blood Group</FormLabel>
-                <Select onValueChange={field.onChange} defaultValue={field.value}>
+                <Select
+                  onValueChange={field.onChange}
+                  defaultValue={field.value}
+                >
                   <FormControl>
                     <SelectTrigger>
                       <SelectValue placeholder="Select your blood group" />
@@ -115,7 +131,7 @@ export function PersonalInfoForm({ onSubmit, initialData }: PersonalInfoFormProp
                   <SelectContent>
                     {Object.entries(BloodGroup).map(([key, value]) => (
                       <SelectItem key={key} value={value}>
-                        {key.replace(/_/g, ' ')}
+                        {key.replace(/_/g, " ")}
                       </SelectItem>
                     ))}
                   </SelectContent>
@@ -127,11 +143,11 @@ export function PersonalInfoForm({ onSubmit, initialData }: PersonalInfoFormProp
         </div>
 
         <div className="flex justify-end">
-          <Button type="submit">
+          <Button type="submit" className="bg-[#20333C] hover:bg-[#20333C]/90">
             Next Step
           </Button>
         </div>
       </form>
     </Form>
-  )
-} 
+  );
+}

@@ -1,10 +1,13 @@
-'use client'
+"use client";
 
-import { useForm } from "react-hook-form"
-import { zodResolver } from "@hookform/resolvers/zod"
-import { contactInfoSchema, type ContactInfoInput } from "@/lib/validations/auth"
-import { District } from "@prisma/client"
-import { Button } from "@/components/ui/button"
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import {
+  contactInfoSchema,
+  type ContactInfoInput,
+} from "@/lib/validations/auth";
+import { District } from "@prisma/client";
+import { Button } from "@/components/ui/button";
 import {
   Form,
   FormControl,
@@ -12,27 +15,27 @@ import {
   FormItem,
   FormLabel,
   FormMessage,
-} from "@/components/ui/form"
+} from "@/components/ui/form";
 import {
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from "@/components/ui/select"
-import { Input } from "@/components/ui/input"
-import { Textarea } from "@/components/ui/textarea"
+} from "@/components/ui/select";
+import { Input } from "@/components/ui/input";
+import { Textarea } from "@/components/ui/textarea";
 
 interface ContactInfoFormProps {
-  onSubmit: (data: ContactInfoInput) => void
-  onBack: () => void
-  initialData?: ContactInfoInput | null
+  onSubmit: (data: ContactInfoInput) => void;
+  onBack: () => void;
+  initialData?: ContactInfoInput | null;
 }
 
 export function ContactInfoForm({
   onSubmit,
   onBack,
-  initialData
+  initialData,
 }: ContactInfoFormProps) {
   const form = useForm<ContactInfoInput>({
     resolver: zodResolver(contactInfoSchema),
@@ -43,7 +46,7 @@ export function ContactInfoForm({
       phoneNumber: "",
       mobileNumber: "",
     },
-  })
+  });
 
   return (
     <Form {...form}>
@@ -73,7 +76,10 @@ export function ContactInfoForm({
             render={({ field }) => (
               <FormItem>
                 <FormLabel>Home District</FormLabel>
-                <Select onValueChange={field.onChange} defaultValue={field.value}>
+                <Select
+                  onValueChange={field.onChange}
+                  defaultValue={field.value}
+                >
                   <FormControl>
                     <SelectTrigger>
                       <SelectValue placeholder="Select your home district" />
@@ -82,7 +88,7 @@ export function ContactInfoForm({
                   <SelectContent>
                     {Object.entries(District).map(([key, value]) => (
                       <SelectItem key={key} value={value}>
-                        {key.replace(/_/g, ' ')}
+                        {key.replace(/_/g, " ")}
                       </SelectItem>
                     ))}
                   </SelectContent>
@@ -151,11 +157,11 @@ export function ContactInfoForm({
           <Button type="button" variant="outline" onClick={onBack}>
             Previous Step
           </Button>
-          <Button type="submit">
+          <Button type="submit" className="bg-[#20333C] hover:bg-[#20333C]/90">
             Next Step
           </Button>
         </div>
       </form>
     </Form>
-  )
-} 
+  );
+}

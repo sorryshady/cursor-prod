@@ -6,7 +6,8 @@ import {
   UserStatus,
   Department,
   Designation,
-  District
+  District,
+  SecurityQuestionType
 } from "@prisma/client"
 
 export const personalInfoSchema = z.object({
@@ -53,8 +54,40 @@ export const registrationSchema = z.object({
   ...photoSchema.shape,
 })
 
+export const loginSchema = z.object({
+  identifier: z.string().min(1, "Email or Membership ID is required"),
+  password: z.string().min(1, "Password is required"),
+})
+
+export const identifierSchema = z.object({
+  identifier: z.string().min(1, "Email or Membership ID is required"),
+})
+
+export const passwordSchema = z.object({
+  password: z.string().min(1, "Password is required"),
+})
+
+export const setPasswordSchema = z.object({
+  securityQuestion: z.nativeEnum(SecurityQuestionType),
+  securityAnswer: z.string().min(1, "Security answer is required"),
+  password: z.string()
+    .min(8, "Password must be at least 8 characters")
+    .regex(/[A-Z]/, "Password must contain at least one uppercase letter")
+    .regex(/[a-z]/, "Password must contain at least one lowercase letter")
+    .regex(/[0-9]/, "Password must contain at least one number")
+    .regex(/[^A-Za-z0-9]/, "Password must contain at least one special character"),
+  confirmPassword: z.string(),
+}).refine((data) => data.password === data.confirmPassword, {
+  message: "Passwords don't match",
+  path: ["confirmPassword"],
+})
+
 export type PersonalInfoInput = z.infer<typeof personalInfoSchema>
 export type ProfessionalInfoInput = z.infer<typeof professionalInfoSchema>
 export type ContactInfoInput = z.infer<typeof contactInfoSchema>
 export type PhotoInput = z.infer<typeof photoSchema>
 export type RegistrationInput = z.infer<typeof registrationSchema>
+export type LoginInput = z.infer<typeof loginSchema>
+export type IdentifierInput = z.infer<typeof identifierSchema>
+export type PasswordInput = z.infer<typeof passwordSchema>
+export type SetPasswordInput = z.infer<typeof setPasswordSchema>

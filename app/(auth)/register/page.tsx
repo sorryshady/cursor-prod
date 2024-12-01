@@ -16,6 +16,9 @@ import type {
   ContactInfoInput,
   PhotoInput,
 } from "@/lib/validations/auth";
+import Link from "next/link";
+import { Button } from "@/components/ui/button";
+import { Loader2 } from "lucide-react";
 
 type RegistrationStep = 1 | 2 | 3 | 4;
 
@@ -100,6 +103,13 @@ export default function RegisterPage() {
                   allFormData={formData}
                 />
               )}
+
+              <div className="mt-6 text-center text-sm">
+                Already have an account?{" "}
+                <Link href="/login" className="text-primary underline">
+                  Login
+                </Link>
+              </div>
             </CardContent>
           </Card>
         </div>

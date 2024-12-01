@@ -1,10 +1,13 @@
-'use client'
+"use client";
 
-import { useForm } from "react-hook-form"
-import { zodResolver } from "@hookform/resolvers/zod"
-import { professionalInfoSchema, type ProfessionalInfoInput } from "@/lib/validations/auth"
-import { UserStatus, Department, Designation, District } from "@prisma/client"
-import { Button } from "@/components/ui/button"
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import {
+  professionalInfoSchema,
+  type ProfessionalInfoInput,
+} from "@/lib/validations/auth";
+import { UserStatus, Department, Designation, District } from "@prisma/client";
+import { Button } from "@/components/ui/button";
 import {
   Form,
   FormControl,
@@ -12,26 +15,26 @@ import {
   FormItem,
   FormLabel,
   FormMessage,
-} from "@/components/ui/form"
+} from "@/components/ui/form";
 import {
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from "@/components/ui/select"
-import { Textarea } from "@/components/ui/textarea"
+} from "@/components/ui/select";
+import { Textarea } from "@/components/ui/textarea";
 
 interface ProfessionalInfoFormProps {
-  onSubmit: (data: ProfessionalInfoInput) => void
-  onBack: () => void
-  initialData?: ProfessionalInfoInput | null
+  onSubmit: (data: ProfessionalInfoInput) => void;
+  onBack: () => void;
+  initialData?: ProfessionalInfoInput | null;
 }
 
 export function ProfessionalInfoForm({
   onSubmit,
   onBack,
-  initialData
+  initialData,
 }: ProfessionalInfoFormProps) {
   const form = useForm<ProfessionalInfoInput>({
     resolver: zodResolver(professionalInfoSchema),
@@ -42,10 +45,10 @@ export function ProfessionalInfoForm({
       officeAddress: "",
       workDistrict: undefined,
     },
-  })
+  });
 
-  const userStatus = form.watch('userStatus')
-  const isWorking = userStatus === 'WORKING'
+  const userStatus = form.watch("userStatus");
+  const isWorking = userStatus === "WORKING";
 
   return (
     <Form {...form}>
@@ -57,7 +60,10 @@ export function ProfessionalInfoForm({
             render={({ field }) => (
               <FormItem>
                 <FormLabel>Status</FormLabel>
-                <Select onValueChange={field.onChange} defaultValue={field.value}>
+                <Select
+                  onValueChange={field.onChange}
+                  defaultValue={field.value}
+                >
                   <FormControl>
                     <SelectTrigger>
                       <SelectValue placeholder="Select your status" />
@@ -66,7 +72,7 @@ export function ProfessionalInfoForm({
                   <SelectContent>
                     {Object.entries(UserStatus).map(([key, value]) => (
                       <SelectItem key={key} value={value}>
-                        {key.replace(/_/g, ' ')}
+                        {key.replace(/_/g, " ")}
                       </SelectItem>
                     ))}
                   </SelectContent>
@@ -84,7 +90,10 @@ export function ProfessionalInfoForm({
                 render={({ field }) => (
                   <FormItem>
                     <FormLabel>Department</FormLabel>
-                    <Select onValueChange={field.onChange} defaultValue={field.value}>
+                    <Select
+                      onValueChange={field.onChange}
+                      defaultValue={field.value}
+                    >
                       <FormControl>
                         <SelectTrigger>
                           <SelectValue placeholder="Select your department" />
@@ -93,7 +102,7 @@ export function ProfessionalInfoForm({
                       <SelectContent>
                         {Object.entries(Department).map(([key, value]) => (
                           <SelectItem key={key} value={value}>
-                            {key.replace(/_/g, ' ')}
+                            {key.replace(/_/g, " ")}
                           </SelectItem>
                         ))}
                       </SelectContent>
@@ -109,7 +118,10 @@ export function ProfessionalInfoForm({
                 render={({ field }) => (
                   <FormItem>
                     <FormLabel>Designation</FormLabel>
-                    <Select onValueChange={field.onChange} defaultValue={field.value}>
+                    <Select
+                      onValueChange={field.onChange}
+                      defaultValue={field.value}
+                    >
                       <FormControl>
                         <SelectTrigger>
                           <SelectValue placeholder="Select your designation" />
@@ -118,7 +130,7 @@ export function ProfessionalInfoForm({
                       <SelectContent>
                         {Object.entries(Designation).map(([key, value]) => (
                           <SelectItem key={key} value={value}>
-                            {key.replace(/_/g, ' ')}
+                            {key.replace(/_/g, " ")}
                           </SelectItem>
                         ))}
                       </SelectContent>
@@ -152,7 +164,10 @@ export function ProfessionalInfoForm({
                 render={({ field }) => (
                   <FormItem>
                     <FormLabel>Work District</FormLabel>
-                    <Select onValueChange={field.onChange} defaultValue={field.value}>
+                    <Select
+                      onValueChange={field.onChange}
+                      defaultValue={field.value}
+                    >
                       <FormControl>
                         <SelectTrigger>
                           <SelectValue placeholder="Select your work district" />
@@ -161,7 +176,7 @@ export function ProfessionalInfoForm({
                       <SelectContent>
                         {Object.entries(District).map(([key, value]) => (
                           <SelectItem key={key} value={value}>
-                            {key.replace(/_/g, ' ')}
+                            {key.replace(/_/g, " ")}
                           </SelectItem>
                         ))}
                       </SelectContent>
@@ -178,11 +193,11 @@ export function ProfessionalInfoForm({
           <Button type="button" variant="outline" onClick={onBack}>
             Previous Step
           </Button>
-          <Button type="submit">
+          <Button type="submit" className="bg-[#20333C] hover:bg-[#20333C]/90">
             Next Step
           </Button>
         </div>
       </form>
     </Form>
-  )
+  );
 }

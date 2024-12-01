@@ -166,7 +166,11 @@ export function PhotoUploadForm({
           <Button type="button" variant="outline" onClick={onBack}>
             Previous Step
           </Button>
-          <Button type="submit" disabled={isSubmitting || isUploading}>
+          <Button
+            type="submit"
+            className="bg-[#20333C] hover:bg-[#20333C]/90"
+            disabled={isSubmitting || isUploading}
+          >
             {isSubmitting ? (
               <>
                 <Loader2 className="mr-2 h-4 w-4 animate-spin" />
