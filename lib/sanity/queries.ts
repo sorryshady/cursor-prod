@@ -69,22 +69,26 @@ export function isEventOver(eventDate: string): boolean {
   return eventDateTime < currentDate;
 }
 
-export async function getEvents(): Promise<UpcomingEvent[]> {
+export async function getEvents() {
   const currentDate = new Date();
   const pastMonthDate = new Date(
     currentDate.setMonth(currentDate.getMonth() - 1)
   );
 
-  return client.fetch(
-    `*[_type == "upcomingEvent" && date >= $pastMonthDate] | order(date desc) {
+  // Fetch events from past month to future
+  const events = await client.fetch(
+    `*[_type == "upcomingEvent" && date >= $pastMonthDate] | order(date asc) {
       _id,
       title,
       date,
       description,
-      image
+      image,
     }`,
     { pastMonthDate }
   );
+
+  // Use existing separateEvents function to split them
+  return separateEvents(events);
 }
 
 export function separateEvents(events: UpcomingEvent[]): {
@@ -96,10 +100,10 @@ export function separateEvents(events: UpcomingEvent[]): {
   return {
     upcomingEvents: events.filter(
       event => new Date(event.date) >= currentDate
-    ),
+    ).sort((a, b) => new Date(a.date).getTime() - new Date(b.date).getTime()), // Ascending for upcoming
     pastEvents: events.filter(
       event => new Date(event.date) < currentDate
-    ),
+    ).sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime()), // Descending for past
   };
 }
 

@@ -7,6 +7,7 @@ import { prisma } from './lib/db'
 // Define protected routes
 const protectedRoutes = [
   "/gallery",
+  "/downloads",
   "/news-letter",
   "/dashboard",
   "/admin",
