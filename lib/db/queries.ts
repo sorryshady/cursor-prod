@@ -1,5 +1,5 @@
 import { prisma } from "@/lib/db";
-import { StatePositionTitle, CommitteeType, VerificationStatus } from "@prisma/client";
+import { StatePositionTitle, CommitteeType, VerificationStatus, BloodGroup } from "@prisma/client";
 
 // Helper function to get position order
 function getPositionOrder(position: StatePositionTitle): number {
@@ -24,6 +24,11 @@ interface CommitteeMember {
   positionState: StatePositionTitle | null;
   designation: string | null;
   department: string | null;
+  bloodGroup: BloodGroup ;
+  mobileNumber: string;
+  membershipId: number | null;
+  personalAddress: string;
+  email: string;
 }
 
 export async function getStateCommitteeMembers(excludeExecutive: boolean = false) {
@@ -46,6 +51,11 @@ export async function getStateCommitteeMembers(excludeExecutive: boolean = false
       positionState: true,
       designation: true,
       department: true,
+      mobileNumber: true,
+      membershipId: true,
+      personalAddress: true,
+      email: true,
+      bloodGroup: true,
     },
     orderBy: {
       positionState: 'asc', // Basic ordering, we'll sort further in JS
