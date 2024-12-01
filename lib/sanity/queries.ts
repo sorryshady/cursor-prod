@@ -150,3 +150,20 @@ export async function getNewsBySlug(slug: string) {
     { slug }
   );
 }
+
+export async function getGalleryCategories() {
+  return client.fetch(`
+    *[_type == "gallery"] {
+      title,
+      slug,
+      "firstImage": images[0] {
+        asset->{
+          url,
+          metadata {
+            dimensions
+          }
+        }
+      }
+    }
+  `);
+}
