@@ -20,3 +20,9 @@ export function formatDepartment(department: string) {
 export function formatDesignation(designation: string) {
   return designation.replace(/_/g, " ").toLowerCase().replace(/\b\w/g, l => l.toUpperCase());
 }
+
+export const changeTypeToText = (value: string) => {
+    const lower = value.toLowerCase().split("_").join(" ");
+    const returnValue = lower.charAt(0).toUpperCase() + lower.slice(1);
+    return returnValue;
+  };

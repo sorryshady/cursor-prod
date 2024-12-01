@@ -2,10 +2,12 @@
 
 import { createContext, useContext, useEffect, useState } from "react";
 import { User } from "../types/prisma.types";
+import { auth } from "@/lib/auth/auth";
 
 interface AuthContextType {
   user: User | null;
-  loading: boolean;
+  isLoading: boolean;
+  updateSession: () => Promise<void>;
   login: (token: string) => void;
   logout: () => void;
 }
@@ -43,8 +45,15 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     setUser(null);
   };
 
+  const updateSession = async () => {
+    // Trigger a refresh of the session
+    await checkAuth();
+  };
+
   return (
-    <AuthContext.Provider value={{ user, loading, login, logout }}>
+    <AuthContext.Provider
+      value={{ user, isLoading: loading, updateSession, login, logout }}
+    >
       {children}
     </AuthContext.Provider>
   );
