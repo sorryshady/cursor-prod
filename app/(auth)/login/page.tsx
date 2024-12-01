@@ -41,6 +41,7 @@ import Link from "next/link";
 import { useRouter, useSearchParams } from "next/navigation";
 import { SecurityQuestionType } from "@prisma/client";
 import { PasswordStrength } from "@/components/auth/password-strength";
+import { useAuth } from "@/contexts/auth-context";
 
 interface UserDetails {
   id: string;
@@ -52,6 +53,7 @@ interface UserDetails {
 
 export default function LoginPage() {
   const router = useRouter();
+  const { login } = useAuth();
   const searchParams = useSearchParams();
   const returnUrl = searchParams.get("returnUrl");
   const [isLoading, setIsLoading] = useState(false);
@@ -137,7 +139,11 @@ export default function LoginPage() {
         throw new Error(result.error);
       }
 
-      const redirectUrl = returnUrl ? decodeURIComponent(returnUrl) : "/dashboard";
+      login();
+
+      const redirectUrl = returnUrl
+        ? decodeURIComponent(returnUrl)
+        : "/dashboard";
       router.push(redirectUrl);
     } catch (error) {
       setFormError(
@@ -168,6 +174,7 @@ export default function LoginPage() {
       if (!response.ok) {
         throw new Error(result.error);
       }
+      login();
 
       router.push("/dashboard");
     } catch (error) {
@@ -269,7 +276,9 @@ export default function LoginPage() {
                           </div>
                         )}
                       </div>
-                      <div className="font-medium text-lg">{userDetails.name}</div>
+                      <div className="font-medium text-lg">
+                        {userDetails.name}
+                      </div>
                     </div>
                   )}
 
@@ -297,7 +306,9 @@ export default function LoginPage() {
                                     variant="ghost"
                                     size="sm"
                                     className="absolute right-0 top-0 h-full px-3 py-2 hover:bg-transparent"
-                                    onClick={() => setShowPassword(!showPassword)}
+                                    onClick={() =>
+                                      setShowPassword(!showPassword)
+                                    }
                                   >
                                     {showPassword ? (
                                       <EyeOff className="h-4 w-4" />
@@ -372,7 +383,9 @@ export default function LoginPage() {
                                       Your mother&apos;s maiden name.
                                     </SelectItem>
                                     <SelectItem
-                                      value={SecurityQuestionType.FAVOURITE_BOOK}
+                                      value={
+                                        SecurityQuestionType.FAVOURITE_BOOK
+                                      }
                                     >
                                       Your favourite book.
                                     </SelectItem>
@@ -432,7 +445,9 @@ export default function LoginPage() {
                                     variant="ghost"
                                     size="sm"
                                     className="absolute right-0 top-0 h-full px-3 py-2 hover:bg-transparent"
-                                    onClick={() => setShowPassword(!showPassword)}
+                                    onClick={() =>
+                                      setShowPassword(!showPassword)
+                                    }
                                   >
                                     {showPassword ? (
                                       <EyeOff className="h-4 w-4" />
@@ -456,7 +471,9 @@ export default function LoginPage() {
                               <FormControl>
                                 <div className="relative">
                                   <Input
-                                    type={showConfirmPassword ? "text" : "password"}
+                                    type={
+                                      showConfirmPassword ? "text" : "password"
+                                    }
                                     placeholder="Confirm your password"
                                     {...field}
                                   />
@@ -466,7 +483,9 @@ export default function LoginPage() {
                                     size="sm"
                                     className="absolute right-0 top-0 h-full px-3 py-2 hover:bg-transparent"
                                     onClick={() =>
-                                      setShowConfirmPassword(!showConfirmPassword)
+                                      setShowConfirmPassword(
+                                        !showConfirmPassword,
+                                      )
                                     }
                                   >
                                     {showConfirmPassword ? (

@@ -30,7 +30,7 @@ const navLinks = [
 
 export function Navbar() {
   const pathname = usePathname();
-  const { user, logout } = useAuth();
+  const { user } = useAuth();
 
   return (
     <nav className="sticky top-0 z-50 w-full bg-[#20333C] text-white p-4">
