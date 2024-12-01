@@ -4,6 +4,7 @@ import { Footer } from '@/components/layout/footer'
 import { AuthProvider } from '@/contexts/auth-context'
 import './globals.css'
 import { Toaster } from 'sonner'
+import { CookieConsent } from "@/components/cookie-consent";
 
 const inter = Inter({ subsets: ['latin'] })
 
@@ -24,6 +25,7 @@ export default function RootLayout({
             <Footer />
           </div>
           <Toaster />
+          <CookieConsent />
         </AuthProvider>
       </body>
     </html>

@@ -38,7 +38,7 @@ import {
 import { Loader2, ArrowLeft, Eye, EyeOff } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import { SecurityQuestionType } from "@prisma/client";
 import { PasswordStrength } from "@/components/auth/password-strength";
 
@@ -52,6 +52,8 @@ interface UserDetails {
 
 export default function LoginPage() {
   const router = useRouter();
+  const searchParams = useSearchParams();
+  const returnUrl = searchParams.get("returnUrl");
   const [isLoading, setIsLoading] = useState(false);
   const [formError, setFormError] = useState("");
   const [step, setStep] = useState<"identifier" | "password" | "setup">(
@@ -135,7 +137,8 @@ export default function LoginPage() {
         throw new Error(result.error);
       }
 
-      router.push("/dashboard");
+      const redirectUrl = returnUrl ? decodeURIComponent(returnUrl) : "/dashboard";
+      router.push(redirectUrl);
     } catch (error) {
       setFormError(
         error instanceof Error ? error.message : "Invalid credentials",
