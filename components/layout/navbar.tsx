@@ -13,15 +13,10 @@ import {
   SheetTrigger,
   SheetHeader,
 } from "@/components/ui/sheet";
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
 import { MenuIcon } from "lucide-react";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Separator } from "../ui/separator";
+import { UserDropdown } from "../auth/user-dropdown";
 
 const navLinks = [
   { href: "/", label: "Home" },
@@ -70,32 +65,12 @@ export function Navbar() {
               </Link>
             ))}
             {user ? (
-              <DropdownMenu>
-                <DropdownMenuTrigger>
-                  <Avatar>
-                    <AvatarImage src={user.photoUrl || ""} />
-                    <AvatarFallback>{user.name?.[0]}</AvatarFallback>
-                  </Avatar>
-                </DropdownMenuTrigger>
-                <DropdownMenuContent align="end">
-                  <DropdownMenuItem asChild>
-                    <Link href="/account">Account</Link>
-                  </DropdownMenuItem>
-                  {user.userRole === "ADMIN" && (
-                    <DropdownMenuItem asChild>
-                      <Link href="/admin">Admin</Link>
-                    </DropdownMenuItem>
-                  )}
-                  <DropdownMenuItem onClick={() => logout()}>
-                    Logout
-                  </DropdownMenuItem>
-                </DropdownMenuContent>
-              </DropdownMenu>
+              <UserDropdown user={user} align="center" />
             ) : (
               <Button
                 asChild
                 className="py-2 px-12 font-semibold shadow-md"
-                variant={"destructive"}
+                variant="destructive"
               >
                 <Link href="/login">Login</Link>
               </Button>
@@ -135,24 +110,12 @@ export function Navbar() {
                   </Link>
                 ))}
                 {user ? (
-                  <>
-                    <Link href="/account">Account</Link>
-                    {user.userRole === "ADMIN" && (
-                      <Link href="/admin">Admin</Link>
-                    )}
-                    <Button
-                      variant="ghost"
-                      onClick={() => logout()}
-                      className="justify-start px-0 hover:text-[#FACE30]"
-                    >
-                      Logout
-                    </Button>
-                  </>
+                  <UserDropdown user={user} align="start" />
                 ) : (
                   <Button
                     asChild
                     className="py-2 px-12 font-semibold shadow-md"
-                    variant={"destructive"}
+                    variant="destructive"
                   >
                     <Link href="/login">Login</Link>
                   </Button>

@@ -149,11 +149,11 @@ export default function LoginPage() {
     setIsLoading(true);
     setFormError("");
     try {
-      const response = await fetch("/api/auth/setup-password", {
+      const response = await fetch("/api/auth/set-password", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
-          identifier: identifierForm.getValues("identifier"),
+          userId: userDetails?.id,
           password: data.password,
           securityQuestion: data.securityQuestion,
           securityAnswer: data.securityAnswer,
