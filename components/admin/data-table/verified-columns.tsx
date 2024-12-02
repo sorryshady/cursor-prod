@@ -8,7 +8,7 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { Button } from "@/components/ui/button";
-import { Ellipsis, Trash, UserPen } from "lucide-react";
+import { Ellipsis, UserPen } from "lucide-react";
 import Link from "next/link";
 import { TableData } from "@/components/admin/data-table/type";
 export const verifiedColumns: ColumnDef<TableData>[] = [
