@@ -10,17 +10,6 @@ import {
 import { Button } from "@/components/ui/button";
 import { Ellipsis, Trash, UserPen } from "lucide-react";
 import Link from "next/link";
-import {
-  AlertDialog,
-  AlertDialogAction,
-  AlertDialogCancel,
-  AlertDialogContent,
-  AlertDialogDescription,
-  AlertDialogFooter,
-  AlertDialogHeader,
-  AlertDialogTitle,
-  AlertDialogTrigger,
-} from "@/components/ui/alert-dialog";
 import { TableData } from "@/components/admin/data-table/type";
 export const verifiedColumns: ColumnDef<TableData>[] = [
   {
@@ -107,36 +96,6 @@ export const verifiedColumns: ColumnDef<TableData>[] = [
               <Link href={`/admin/${email}?status=verified`}>
                 <UserPen className="mr-2" /> View/Edit Profile
               </Link>
-            </DropdownMenuItem>
-            <DropdownMenuItem asChild>
-              <AlertDialog>
-                <AlertDialogTrigger asChild>
-                  <DropdownMenuItem onSelect={(e) => e.preventDefault()}>
-                    <Trash className="mr-2" /> Delete User
-                  </DropdownMenuItem>
-                </AlertDialogTrigger>
-                <AlertDialogContent>
-                  <AlertDialogHeader>
-                    <AlertDialogTitle>
-                      Are you absolutely sure?
-                    </AlertDialogTitle>
-                    <AlertDialogDescription>
-                      This action cannot be undone. This will permanently delete
-                      the user and remove their data from the server.
-                    </AlertDialogDescription>
-                  </AlertDialogHeader>
-                  <AlertDialogFooter>
-                    <AlertDialogCancel>Cancel</AlertDialogCancel>
-                    <Button variant={"destructive"} asChild>
-                      <AlertDialogAction
-                        onClick={() => console.log(row.getValue("email"))}
-                      >
-                        Delete
-                      </AlertDialogAction>
-                    </Button>
-                  </AlertDialogFooter>
-                </AlertDialogContent>
-              </AlertDialog>
             </DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>
