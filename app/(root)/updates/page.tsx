@@ -31,39 +31,22 @@ type Obituaries = {
 };
 export const dynamic = "force-dynamic";
 async function getData() {
-  try {
-    const response = await fetch(
-      `${process.env.NEXT_PUBLIC_API_URL}/api/general`,
-      {
-        headers: {
-          "Content-Type": "application/json",
-        },
-      },
-    );
-
-    if (!response.ok) {
-      throw new Error(`HTTP error! status: ${response.status}`);
-    }
-
-    const data = await response.json();
-    const {
-      promotions = [],
-      transfers = [],
-      retirements = [],
-      obituaries = [],
-    }: {
-      promotions: Promotions[];
-      transfers: Transfers[];
-      retirements: Retirements[];
-      obituaries: Obituaries[];
-    } = data;
-
-    return { promotions, transfers, retirements, obituaries };
-  } catch (error) {
-    console.error("Fetch error:", error);
-    // Return empty arrays as fallback
-    return { promotions: [], transfers: [], retirements: [], obituaries: [] };
-  }
+  const response = await fetch(
+    `${process.env.NEXT_PUBLIC_API_URL}/api/general/requests`,
+  );
+  const data = await response.json();
+  const {
+    promotions,
+    transfers,
+    retirements,
+    obituaries,
+  }: {
+    promotions: Promotions[];
+    transfers: Transfers[];
+    retirements: Retirements[];
+    obituaries: Obituaries[];
+  } = data;
+  return { promotions, transfers, retirements, obituaries };
 }
 export default async function Updates() {
   const { promotions, transfers, retirements, obituaries } = await getData();
