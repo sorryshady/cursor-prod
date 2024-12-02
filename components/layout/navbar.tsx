@@ -16,6 +16,7 @@ import {
 import { MenuIcon } from "lucide-react";
 import { Separator } from "../ui/separator";
 import { UserDropdown } from "../auth/user-dropdown";
+import { useState } from "react";
 
 const navLinks = [
   { href: "/", label: "Home" },
@@ -31,6 +32,7 @@ const navLinks = [
 export function Navbar() {
   const pathname = usePathname();
   const { user } = useAuth();
+  const [isOpen, setIsOpen] = useState(false);
 
   return (
     <nav className="sticky top-0 z-50 w-full bg-[#20333C] text-white p-4">
@@ -77,7 +79,7 @@ export function Navbar() {
           </div>
 
           {/* Mobile Navigation */}
-          <Sheet>
+          <Sheet open={isOpen} onOpenChange={setIsOpen}>
             <SheetTrigger asChild className="lg:hidden">
               <Button size="icon" variant="outline" className="bg-[#20333C]">
                 <MenuIcon className="h-6 w-6" />
@@ -99,6 +101,11 @@ export function Navbar() {
                   <Link
                     key={link.href}
                     href={link.href}
+                    onClick={() => {
+                      setTimeout(() => {
+                        setIsOpen(false);
+                      }, 300);
+                    }}
                     className={cn(
                       "transition-colors hover:text-[#FACE30]",
                       pathname === link.href &&
