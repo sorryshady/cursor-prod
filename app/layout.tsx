@@ -5,6 +5,13 @@ import "./globals.css";
 import { Toaster } from "sonner";
 import { CookieConsent } from "@/components/cookie-consent";
 import { Providers } from "./providers";
+import { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: "Association of Engineers Kerala",
+  description:
+    "The Association of Engineers Kerala is a non-profit politically neutral organization representing working as well as retired engineers from the Public Works, Irrigation and Local Self Government Departments of the Government of Kerala",
+};
 
 export default function RootLayout({
   children,
