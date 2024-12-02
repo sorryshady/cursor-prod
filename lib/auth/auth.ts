@@ -27,7 +27,6 @@ export async function auth() {
 
   try {
     const payload = (await verifyJWT(token)) as JWTPayload;
-
     const user = await prisma.user.findUnique({
       where: {
         id: payload.userId,

@@ -37,6 +37,9 @@ interface JWTPayload {
   userId: string;
 }
 
+// Add auth routes that should redirect to dashboard if logged in
+const authRoutes = ["/login", "/register", "/forgot-password"];
+
 export async function middleware(request: NextRequest) {
   const { pathname } = request.nextUrl;
   const ip = request.headers.get("x-forwarded-for") ?? "127.0.0.1";
@@ -50,8 +53,24 @@ export async function middleware(request: NextRequest) {
         { status: 429 }
       );
     }
+  }
 
-    // Create
+  // Check if it's an auth route
+  const isAuthRoute = authRoutes.some(route => pathname.startsWith(route));
+
+  if (isAuthRoute) {
+    // If token exists, verify it
+    const token = request.cookies.get("auth-token")?.value;
+    if (token) {
+      try {
+        await verifyJWT(token);
+        // Token is valid, redirect to dashboard
+        return NextResponse.redirect(new URL("/dashboard", request.url));
+      } catch {
+        // Token is invalid, allow access to auth routes
+        return NextResponse.next();
+      }
+    }
   }
 
   // Check if it's a protected route
