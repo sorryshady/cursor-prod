@@ -50,6 +50,7 @@ export async function POST(req: NextRequest) {
         name: true,
         email: true,
         membershipId: true,
+        userRole: true,
       },
     });
 
@@ -57,6 +58,7 @@ export async function POST(req: NextRequest) {
     if (isMobileApp) {
       const token = await signJWT({
         userId: updatedUser.id,
+        role: updatedUser.userRole,
         membershipId: updatedUser.membershipId,
       });
 

@@ -2,7 +2,6 @@ import { NextResponse } from "next/server";
 import type { NextRequest } from "next/server";
 import { verifyJWT } from "@/lib/auth/jwt";
 import { LRUCache } from "lru-cache";
-import { prisma } from './lib/db'
 
 // Define protected routes
 const protectedRoutes = [
@@ -28,13 +27,9 @@ const ratelimit = new LRUCache<string, number>({
 // Rate limit function
 function getRateLimit(ip: string): boolean {
   const tokenCount = ratelimit.get(ip) || 0;
-  if (tokenCount > 10) return false;
+  if (tokenCount > 50) return false;
   ratelimit.set(ip, tokenCount + 1);
   return true;
-}
-
-interface JWTPayload {
-  userId: string;
 }
 
 // Add auth routes that should redirect to dashboard if logged in
@@ -59,15 +54,12 @@ export async function middleware(request: NextRequest) {
   const isAuthRoute = authRoutes.some(route => pathname.startsWith(route));
 
   if (isAuthRoute) {
-    // If token exists, verify it
     const token = request.cookies.get("auth-token")?.value;
     if (token) {
       try {
         await verifyJWT(token);
-        // Token is valid, redirect to dashboard
         return NextResponse.redirect(new URL("/dashboard", request.url));
       } catch {
-        // Token is invalid, allow access to auth routes
         return NextResponse.next();
       }
     }
@@ -77,22 +69,15 @@ export async function middleware(request: NextRequest) {
   if (protectedRoutes.some(route => pathname.startsWith(route))) {
     const isMobileApp = request.headers.get("x-client-type") === "mobile";
     let isAuthenticated = false;
-    let userId: string | null = null;
+    let decodedToken: any = null;
 
     if (isMobileApp) {
       const authHeader = request.headers.get("Authorization");
       if (authHeader && authHeader.startsWith("Bearer ")) {
         const token = authHeader.substring(7);
         try {
-          const decoded = await verifyJWT(token);
-          if (!decoded || typeof decoded !== 'object' || !('userId' in decoded)) {
-            // Handle invalid token
-            isAuthenticated = false;
-          } else {
-            const payload = decoded as unknown as JWTPayload;
-            userId = payload.userId;
-            isAuthenticated = true;
-          }
+          decodedToken = await verifyJWT(token);
+          isAuthenticated = true;
         } catch {
           isAuthenticated = false;
         }
@@ -101,22 +86,15 @@ export async function middleware(request: NextRequest) {
       const token = request.cookies.get("auth-token");
       if (token) {
         try {
-          const decoded = await verifyJWT(token.value);
-          if (!decoded || typeof decoded !== 'object' || !('userId' in decoded)) {
-            // Handle invalid token
-            isAuthenticated = false;
-          } else {
-            const payload = decoded as unknown as JWTPayload;
-            userId = payload.userId;
-            isAuthenticated = true;
-          }
+          decodedToken = await verifyJWT(token.value);
+          isAuthenticated = true;
         } catch {
           isAuthenticated = false;
         }
       }
     }
 
-    if (!isAuthenticated) {
+    if (!isAuthenticated || !decodedToken) {
       if (isMobileApp) {
         return NextResponse.json(
           { error: "Unauthorized" },
@@ -130,25 +108,9 @@ export async function middleware(request: NextRequest) {
       }
     }
 
-    // Check for admin routes with caching
-    if (pathname.startsWith("/admin") && userId) {
-      // Try to get role from cache first
-      let userRole = userRoleCache.get(userId);
-
-      if (!userRole) {
-        // If not in cache, get from database
-        const user = await prisma.user.findUnique({
-          where: { id: userId },
-          select: { userRole: true },
-        });
-        userRole = user?.userRole;
-
-        // Cache the result
-        if (userRole) {
-          userRoleCache.set(userId, userRole);
-        }
-      }
-
+    // For admin routes, check the role from the JWT token
+    if (pathname.startsWith("/admin")) {
+      const userRole = decodedToken.role;
       if (userRole !== "ADMIN") {
         if (isMobileApp) {
           return NextResponse.json(
@@ -156,7 +118,7 @@ export async function middleware(request: NextRequest) {
             { status: 403 }
           );
         } else {
-          return NextResponse.redirect(new URL("/", request.url));
+          return NextResponse.redirect(new URL("/dashboard", request.url));
         }
       }
     }

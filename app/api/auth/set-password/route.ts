@@ -32,6 +32,7 @@ export async function POST(req: NextRequest) {
     // Generate JWT
     const token = await signJWT({
       userId: user.id,
+      role: user.userRole,
       membershipId: user.membershipId,
     });
 
