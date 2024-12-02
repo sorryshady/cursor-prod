@@ -14,7 +14,7 @@ import { TableData } from "@/components/admin/data-table/type";
 export const verifiedColumns: ColumnDef<TableData>[] = [
   {
     accessorKey: "membershipId",
-    header: "Membership ID",
+    header: "ID",
   },
   {
     accessorKey: "name",
@@ -80,6 +80,7 @@ export const verifiedColumns: ColumnDef<TableData>[] = [
   },
   {
     id: "actions",
+    header: "Actions",
     cell: ({ row }) => {
       const email = row.getValue("email") as string;
       return (

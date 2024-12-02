@@ -7,11 +7,13 @@ import { cn } from "@/lib/utils";
 interface LogoutButtonProps
   extends React.ButtonHTMLAttributes<HTMLButtonElement> {
   children?: React.ReactNode;
+  clickHandler?: () => void;
 }
 
 export function LogoutButton({
   className,
   children,
+  clickHandler,
   ...props
 }: LogoutButtonProps) {
   const { logout } = useAuth();
@@ -20,7 +22,12 @@ export function LogoutButton({
     <Button
       variant="default"
       className={cn("w-full justify-center", className)}
-      onClick={() => logout()}
+      onClick={() => {
+        if (clickHandler) {
+          clickHandler();
+        }
+        logout();
+      }}
       {...props}
     >
       {children}

@@ -116,14 +116,20 @@ export function Navbar() {
                   </Link>
                 ))}
                 {user ? (
-                  <UserDropdown user={user} align="start" />
+                  <UserDropdown
+                    user={user}
+                    align="start"
+                    setModelOpen={setIsOpen}
+                  />
                 ) : (
                   <Button
                     asChild
                     className="py-2 px-12 font-semibold shadow-md"
                     variant="destructive"
                   >
-                    <Link href="/login">Login</Link>
+                    <Link href="/login" onClick={() => setIsOpen(false)}>
+                      Login
+                    </Link>
                   </Button>
                 )}
               </div>

@@ -24,6 +24,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { Textarea } from "@/components/ui/textarea";
+import { changeTypeToText } from "@/lib/utils";
 
 interface ProfessionalInfoFormProps {
   onSubmit: (data: ProfessionalInfoInput) => void;
@@ -70,11 +71,8 @@ export function ProfessionalInfoForm({
                     </SelectTrigger>
                   </FormControl>
                   <SelectContent>
-                    {Object.entries(UserStatus).map(([key, value]) => (
-                      <SelectItem key={key} value={value}>
-                        {key.replace(/_/g, " ")}
-                      </SelectItem>
-                    ))}
+                    <SelectItem value="WORKING">Working</SelectItem>
+                    <SelectItem value="RETIRED">Retired</SelectItem>
                   </SelectContent>
                 </Select>
                 <FormMessage />
@@ -129,8 +127,12 @@ export function ProfessionalInfoForm({
                       </FormControl>
                       <SelectContent>
                         {Object.entries(Designation).map(([key, value]) => (
-                          <SelectItem key={key} value={value}>
-                            {key.replace(/_/g, " ")}
+                          <SelectItem
+                            key={key}
+                            value={value}
+                            className="capitalize"
+                          >
+                            {changeTypeToText(key)}
                           </SelectItem>
                         ))}
                       </SelectContent>
@@ -176,7 +178,7 @@ export function ProfessionalInfoForm({
                       <SelectContent>
                         {Object.entries(District).map(([key, value]) => (
                           <SelectItem key={key} value={value}>
-                            {key.replace(/_/g, " ")}
+                            {changeTypeToText(key)}
                           </SelectItem>
                         ))}
                       </SelectContent>

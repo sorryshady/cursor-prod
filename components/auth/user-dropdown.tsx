@@ -18,12 +18,25 @@ interface UserDropdownProps {
     photoUrl?: string | null;
     userRole?: string;
   };
+  setModelOpen?: (open: boolean) => void;
   align?: "start" | "center" | "end";
 }
 
-export function UserDropdown({ user, align = "end" }: UserDropdownProps) {
+export function UserDropdown({
+  user,
+  align = "end",
+  setModelOpen,
+}: UserDropdownProps) {
   const router = useRouter();
   const [open, setOpen] = useState(false);
+  const clickHandler = () => {
+    setOpen(false);
+    if (setModelOpen) {
+      setTimeout(() => {
+        setModelOpen(false);
+      }, 300);
+    }
+  };
 
   return (
     <Popover open={open} onOpenChange={setOpen}>
@@ -45,7 +58,7 @@ export function UserDropdown({ user, align = "end" }: UserDropdownProps) {
             variant="ghost"
             onClick={() => {
               router.push("/dashboard");
-              setOpen(false);
+              clickHandler();
             }}
             className="flex items-center gap-2"
           >
@@ -57,7 +70,7 @@ export function UserDropdown({ user, align = "end" }: UserDropdownProps) {
               variant="ghost"
               onClick={() => {
                 router.push("/admin");
-                setOpen(false);
+                clickHandler();
               }}
               className="flex items-center gap-2"
             >
@@ -65,7 +78,10 @@ export function UserDropdown({ user, align = "end" }: UserDropdownProps) {
               Admin
             </Button>
           )}
-          <LogoutButton className="w-full bg-black hover:bg-black/90 flex items-center gap-2">
+          <LogoutButton
+            className="w-full bg-black hover:bg-black/90 flex items-center gap-2"
+            clickHandler={clickHandler}
+          >
             <LogOut /> Logout
           </LogoutButton>
         </div>

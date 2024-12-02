@@ -42,6 +42,7 @@ import { useRouter, useSearchParams } from "next/navigation";
 import { SecurityQuestionType } from "@prisma/client";
 import { PasswordStrength } from "@/components/auth/password-strength";
 import { useAuth } from "@/contexts/auth-context";
+import { toast } from "sonner";
 
 interface UserDetails {
   id: string;
@@ -140,6 +141,7 @@ export default function LoginPage() {
       }
 
       login();
+      toast.success("Logged in successfully");
 
       const redirectUrl = returnUrl
         ? decodeURIComponent(returnUrl)
@@ -175,7 +177,7 @@ export default function LoginPage() {
         throw new Error(result.error);
       }
       login();
-
+      toast.success("Password set up successfully");
       router.push("/dashboard");
     } catch (error) {
       setFormError(

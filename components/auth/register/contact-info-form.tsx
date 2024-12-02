@@ -25,6 +25,7 @@ import {
 } from "@/components/ui/select";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
+import { changeTypeToText } from "@/lib/utils";
 
 interface ContactInfoFormProps {
   onSubmit: (data: ContactInfoInput) => void;
@@ -88,7 +89,7 @@ export function ContactInfoForm({
                   <SelectContent>
                     {Object.entries(District).map(([key, value]) => (
                       <SelectItem key={key} value={value}>
-                        {key.replace(/_/g, " ")}
+                        {changeTypeToText(key)}
                       </SelectItem>
                     ))}
                   </SelectContent>

@@ -25,6 +25,7 @@ import {
 } from "@/components/ui/select";
 import { Input } from "@/components/ui/input";
 import CustomDate from "@/components/form/custom-date";
+import { changeTypeToText } from "@/lib/utils";
 
 interface PersonalInfoFormProps {
   onSubmit: (data: PersonalInfoInput) => void;
@@ -103,7 +104,7 @@ export function PersonalInfoForm({
                         value={value}
                         className="capitalize"
                       >
-                        {key.replace(/_/g, " ").toLowerCase()}
+                        {changeTypeToText(key)}
                       </SelectItem>
                     ))}
                   </SelectContent>
