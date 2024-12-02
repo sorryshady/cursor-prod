@@ -1,7 +1,6 @@
 import { NextResponse } from "next/server";
 import type { NextRequest } from "next/server";
 import { verifyJWT } from "@/lib/auth/jwt";
-import { LRUCache } from "lru-cache";
 
 // Define protected routes
 const protectedRoutes = [
@@ -12,43 +11,11 @@ const protectedRoutes = [
   "/admin",
 ];
 
-// In-memory cache for user roles - using Edge compatible options
-const userRoleCache = new LRUCache<string, string>({
-  max: 500,
-  ttl: 1000 * 60 * 5, // 5 minutes
-});
-
-// Rate limiter - using Edge compatible options
-const ratelimit = new LRUCache<string, number>({
-  max: 500,
-  ttl: 1000 * 60, // 1 minute
-});
-
-// Rate limit function
-function getRateLimit(ip: string): boolean {
-  const tokenCount = ratelimit.get(ip) || 0;
-  if (tokenCount > 50) return false;
-  ratelimit.set(ip, tokenCount + 1);
-  return true;
-}
-
 // Add auth routes that should redirect to dashboard if logged in
 const authRoutes = ["/login", "/register", "/forgot-password"];
 
 export async function middleware(request: NextRequest) {
   const { pathname } = request.nextUrl;
-  const ip = request.headers.get("x-forwarded-for") ?? "127.0.0.1";
-
-  // Apply rate limiting to API routes
-  if (pathname.startsWith("/api")) {
-    const isAllowed = getRateLimit(ip);
-    if (!isAllowed) {
-      return NextResponse.json(
-        { error: "Too many requests" },
-        { status: 429 }
-      );
-    }
-  }
 
   // Check if it's an auth route
   const isAuthRoute = authRoutes.some(route => pathname.startsWith(route));

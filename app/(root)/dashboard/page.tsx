@@ -9,23 +9,22 @@ import { AccountUpdate } from "@/components/dashboard/account-update";
 import { changeTypeToText } from "@/lib/utils";
 import { UserProfilePhoto } from "@/components/dashboard/user-profile-photo";
 import { Requests } from "@/components/dashboard/requests";
-import { PromotionTransferRequest } from "@prisma/client";
+import { PromotionTransferRequest, VerificationStatus } from "@prisma/client";
 import { FormMessage } from "@/components/ui/form-message";
 import { PageBackground } from "@/components/layout/page-background";
-import ChangePassword from '@/components/dashboard/change-password'
+import ChangePassword from "@/components/dashboard/change-password";
 
 export const metadata: Metadata = {
   title: "Account Details | AOEK",
   description: "View and manage your account details",
 };
-async function getData() {
-  const user = await auth();
+async function getData(membershipId: number) {
   const host = (await headers()).get("host");
   const protocol = process?.env.NODE_ENV === "development" ? "http" : "https";
 
   try {
     const response = await fetch(
-      `${protocol}://${host}/api/user/request?membershipId=${user?.membershipId}`,
+      `${protocol}://${host}/api/user/request?membershipId=${membershipId}`,
     );
 
     if (!response.ok) {
@@ -33,9 +32,9 @@ async function getData() {
     }
 
     const request: PromotionTransferRequest = await response.json();
-    if (request === null) {
+    if (!request) {
       return {
-        status: "VERIFIED",
+        status: "VERIFIED" as VerificationStatus,
         id: null,
         adminComments: null,
         showAgain: false,
@@ -43,7 +42,6 @@ async function getData() {
     }
     const { status, id, adminComments, showAgain } = request;
     return {
-      user,
       status,
       id,
       adminComments,
@@ -56,32 +54,31 @@ async function getData() {
 }
 
 export default async function DashboardPage() {
-  const data = await getData();
-
-  if (!data?.user) {
+  const user = await auth();
+  if (!user) {
     redirect("/login");
   }
-  const { user, status, id, adminComments, showAgain } = data;
+  const data = await getData(user.membershipId!);
 
   return (
     <main className="relative overflow-hidden">
       <PageBackground imageType="body" className="opacity-5" />
       <Wrapper className="flex flex-col justify-center items-center mb-[5rem] relative z-20">
         <h1 className="text-3xl font-bold my-5 lg:my-10">Account Details</h1>
-        {status === "REJECTED" && showAgain && (
+        {data?.status === "REJECTED" && data?.showAgain && (
           <FormMessage
             type="error"
-            message={`Request Rejected: ${adminComments || "No comments"}`}
-            visible={showAgain}
-            requestId={id || ""}
+            message={`Request Rejected: ${data?.adminComments || "No comments"}`}
+            visible={data?.showAgain}
+            requestId={data?.id || ""}
           />
         )}
-        {status === "VERIFIED" && showAgain && (
+        {data?.status === "VERIFIED" && data?.showAgain && (
           <FormMessage
             type="success"
-            message={`Request Accepted: ${adminComments || "No comments"}`}
-            visible={showAgain}
-            requestId={id || ""}
+            message={`Request Accepted: ${data?.adminComments || "No comments"}`}
+            visible={data?.showAgain}
+            requestId={data?.id || ""}
           />
         )}
         <div className="flex w-full gap-14 md:max-w-[90%] lg:flex-row flex-col-reverse mt-5 lg:mt-10">
@@ -147,7 +144,7 @@ export default async function DashboardPage() {
             <Separator />
             {user.userStatus === "WORKING" && (
               <>
-                <Requests requestStatus={status || "VERIFIED"} />
+                <Requests requestStatus={data?.status || "VERIFIED"} />
                 <Separator />
               </>
             )}

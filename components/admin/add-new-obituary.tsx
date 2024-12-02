@@ -97,20 +97,17 @@ const AddNewObituary = () => {
     if (!selectedUser) return;
 
     try {
-      const response = await fetch(
-        `${process.env.NEXT_PUBLIC_URL}/api/admin/obituaries`,
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({
-            membershipId: selectedUser.membershipId,
-            additionalNote: data.additionalNote,
-            dateOfDeath: data.dateOfDeath,
-          }),
+      const response = await fetch(`/api/admin/obituaries`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
         },
-      );
+        body: JSON.stringify({
+          membershipId: selectedUser.membershipId,
+          additionalNote: data.additionalNote,
+          dateOfDeath: data.dateOfDeath,
+        }),
+      });
 
       const responseData = await response.json();
       if (responseData.error) {

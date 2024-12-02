@@ -117,19 +117,16 @@ export const AdminUpdate = ({ user }: { user: User }) => {
           ? values.positionDistrict
           : null,
       };
-      const response = await fetch(
-        `${process.env.NEXT_PUBLIC_URL}/api/auth/user`,
-        {
-          method: "PATCH",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({
-            membershipId: user.membershipId,
-            ...submissionData,
-          }),
+      const response = await fetch(`/api/admin/update-user`, {
+        method: "PATCH",
+        headers: {
+          "Content-Type": "application/json",
         },
-      );
+        body: JSON.stringify({
+          membershipId: user.membershipId,
+          ...submissionData,
+        }),
+      });
       const data = await response.json();
 
       if (data.error) {
