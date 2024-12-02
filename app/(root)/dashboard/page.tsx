@@ -12,6 +12,7 @@ import { Requests } from "@/components/dashboard/requests";
 import { PromotionTransferRequest } from "@prisma/client";
 import { FormMessage } from "@/components/ui/form-message";
 import { PageBackground } from "@/components/layout/page-background";
+import ChangePassword from '@/components/dashboard/change-password'
 
 export const metadata: Metadata = {
   title: "Account Details | AOEK",
@@ -150,7 +151,7 @@ export default async function DashboardPage() {
                 <Separator />
               </>
             )}
-            {/* <ChangePassword />  */}
+            <ChangePassword />
           </div>
         </div>
       </Wrapper>
