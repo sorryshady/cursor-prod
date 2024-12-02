@@ -32,7 +32,7 @@ type Obituaries = {
 export const dynamic = "force-dynamic";
 async function getData() {
   const response = await fetch(
-    `${process.env.NEXT_PUBLIC_API_URL}/api/general/requests`,
+    `${process.env.NEXT_PUBLIC_API_URL}/api/general`,
   );
   const data = await response.json();
   const {

@@ -5,7 +5,12 @@ import FileActions from "@/components/file-actions";
 import { Wrapper } from "@/components/layout/wrapper";
 import { PageBackground } from "@/components/layout/page-background";
 import { PageHeader } from "@/components/layout/page-header";
+import { Metadata } from "next";
 
+export const metadata: Metadata = {
+  title: "Downloads | AOEK",
+  description: "Access our downloads here",
+};
 async function getData() {
   const query = `*[_type == "downloads"] | order(date desc) {
     title,

@@ -65,9 +65,8 @@ export async function middleware(request: NextRequest) {
           { status: 401 }
         );
       } else {
-        const returnUrl = encodeURIComponent(pathname);
         return NextResponse.redirect(
-          new URL(`/login?returnUrl=${returnUrl}`, request.url)
+          new URL(`/login`, request.url)
         );
       }
     }

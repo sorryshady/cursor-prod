@@ -6,7 +6,12 @@ import FileActions from "@/components/file-actions";
 import { PageBackground } from "@/components/layout/page-background";
 import { PageHeader } from "@/components/layout/page-header";
 import { Newsletter } from "../downloads/page";
+import { Metadata } from "next";
 
+export const metadata: Metadata = {
+  title: "Newsletter | AOEK",
+  description: "Access our newsletter here",
+};
 async function getData() {
   const query = `*[_type == "downloads"] | order(date desc) {
     title,
