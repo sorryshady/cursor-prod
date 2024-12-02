@@ -1,7 +1,6 @@
 import { Metadata } from "next";
 import { redirect, notFound } from "next/navigation";
 import { auth } from "@/lib/auth/auth";
-import { headers } from "next/headers";
 
 import { Separator } from "@/components/ui/separator";
 import { Wrapper } from "@/components/layout/wrapper";
@@ -14,17 +13,15 @@ import { FormMessage } from "@/components/ui/form-message";
 import { PageBackground } from "@/components/layout/page-background";
 import ChangePassword from "@/components/dashboard/change-password";
 
+export const dynamic = "force-dynamic";
 export const metadata: Metadata = {
   title: "Account Details | AOEK",
   description: "View and manage your account details",
 };
 async function getData(membershipId: number) {
-  const host = (await headers()).get("host");
-  const protocol = process?.env.NODE_ENV === "development" ? "http" : "https";
-
   try {
     const response = await fetch(
-      `${protocol}://${host}/api/user/request?membershipId=${membershipId}`,
+      `${process.env.NEXT_PUBLIC_API_URL}/api/user/request?membershipId=${membershipId}`,
     );
 
     if (!response.ok) {

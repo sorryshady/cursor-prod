@@ -4,7 +4,6 @@ import { Wrapper } from "@/components/layout/wrapper";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { changeTypeToText } from "@/lib/utils";
 import { Designation, User, District } from "@prisma/client";
-import { headers } from "next/headers";
 import Image from "next/image";
 
 type Promotions = {
@@ -30,24 +29,41 @@ type Obituaries = {
     designation: Designation;
   };
 };
-
+export const dynamic = "force-dynamic";
 async function getData() {
-  const host = (await headers()).get("host");
-  const protocol = process?.env.NODE_ENV === "development" ? "http" : "https";
-  const response = await fetch(`${protocol}://${host}/api/general`);
-  const data = await response.json();
-  const {
-    promotions,
-    transfers,
-    retirements,
-    obituaries,
-  }: {
-    promotions: Promotions[];
-    transfers: Transfers[];
-    retirements: Retirements[];
-    obituaries: Obituaries[];
-  } = data;
-  return { promotions, transfers, retirements, obituaries };
+  try {
+    const response = await fetch(
+      `${process.env.NEXT_PUBLIC_API_URL}/api/general`,
+      {
+        headers: {
+          "Content-Type": "application/json",
+        },
+      },
+    );
+
+    if (!response.ok) {
+      throw new Error(`HTTP error! status: ${response.status}`);
+    }
+
+    const data = await response.json();
+    const {
+      promotions = [],
+      transfers = [],
+      retirements = [],
+      obituaries = [],
+    }: {
+      promotions: Promotions[];
+      transfers: Transfers[];
+      retirements: Retirements[];
+      obituaries: Obituaries[];
+    } = data;
+
+    return { promotions, transfers, retirements, obituaries };
+  } catch (error) {
+    console.error("Fetch error:", error);
+    // Return empty arrays as fallback
+    return { promotions: [], transfers: [], retirements: [], obituaries: [] };
+  }
 }
 export default async function Updates() {
   const { promotions, transfers, retirements, obituaries } = await getData();
