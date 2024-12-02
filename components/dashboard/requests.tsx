@@ -243,7 +243,7 @@ function RequestForm({ type, setOpen }: RequestFormProps) {
         <FormField
           control={form.control}
           name="retirementDate"
-          render={({ field }) => (
+          render={() => (
             <FormItem>
               <FormLabel>Retirement Date</FormLabel>
               <FormControl>

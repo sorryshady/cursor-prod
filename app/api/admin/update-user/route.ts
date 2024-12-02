@@ -17,6 +17,7 @@ export async function PATCH(request: NextRequest) {
     });
     return NextResponse.json({ success: true });
   } catch (error) {
+    console.error("Updating user error:", error);
     return NextResponse.json(
       { error: "Something went wrong" },
       { status: 500 },

@@ -1,5 +1,5 @@
 import { ColumnDef } from "@tanstack/react-table";
-import { TableData } from "@/types/user-types";
+import { TableData } from "@/components/admin/data-table/type";
 import { Button } from "@/components/ui/button";
 import {
   DropdownMenu,

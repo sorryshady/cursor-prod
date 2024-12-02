@@ -56,7 +56,6 @@ export const AdminUpdate = ({ user }: { user: User }) => {
   const searchParams = useSearchParams();
   const query = searchParams.get("status");
   const router = useRouter();
-  const [isSubmitting, setIsSubmitting] = useState(false);
   const [error, setError] = useState("");
   const [edit, setEdit] = useState(false);
   const [isDialogOpen, setIsDialogOpen] = useState(false);
@@ -85,7 +84,6 @@ export const AdminUpdate = ({ user }: { user: User }) => {
 
   const onSubmit = async (values: AdminUpdateSchema) => {
     try {
-      setIsSubmitting(true);
       const hasChanges = Object.keys(initialData).some(
         (key) =>
           initialData[key as keyof AdminUpdateSchema] !==
@@ -142,8 +140,6 @@ export const AdminUpdate = ({ user }: { user: User }) => {
     } catch (error) {
       setError("An error occurred while submitting the form");
       reset(initialData);
-    } finally {
-      setIsSubmitting(false);
     }
   };
 

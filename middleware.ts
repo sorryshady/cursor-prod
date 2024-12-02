@@ -4,9 +4,6 @@ import { verifyJWT } from "@/lib/auth/jwt";
 
 // Define protected routes
 const protectedRoutes = [
-  "/gallery",
-  "/downloads",
-  "/news-letter",
   "/dashboard",
   "/admin",
 ];

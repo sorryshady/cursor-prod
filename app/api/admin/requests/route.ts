@@ -3,11 +3,11 @@ import { VerificationStatus } from "@prisma/client";
 import { prisma } from "@/lib/db";
 import { auth } from "@/lib/auth/auth";
 
-function isValidStatus(status: any): status is VerificationStatus {
+function isValidStatus(status: VerificationStatus): status is VerificationStatus {
   return Object.values(VerificationStatus).includes(status);
 }
 
-export async function GET(request: NextRequest) {
+export async function GET() {
   try {
     // Check admin authorization
     const user = await auth();

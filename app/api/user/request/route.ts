@@ -3,9 +3,6 @@ import { auth } from "@/lib/auth/auth";
 import { VerificationStatus, RequestType } from "@prisma/client";
 import { NextRequest, NextResponse } from "next/server";
 import { parse } from "date-fns";
-import { cookies } from "next/headers";
-import { verifyJWT } from '@/lib/auth/jwt'
-import { JWTPayload } from 'jose'
 
 
 export async function POST(request: Request) {

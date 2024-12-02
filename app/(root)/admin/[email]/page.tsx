@@ -8,11 +8,44 @@ import { notFound } from "next/navigation";
 import React from "react";
 import { Wrapper } from "@/components/layout/wrapper";
 import ActionButtons from "./action-buttons";
+import {
+  CommitteeType,
+  User,
+  StatePositionTitle,
+  DistrictPositionTitle,
+  UserRole,
+} from "@prisma/client";
+
+export type AdminUserView = Pick<
+  User,
+  | "name"
+  | "email"
+  | "dob"
+  | "gender"
+  | "bloodGroup"
+  | "userStatus"
+  | "department"
+  | "designation"
+  | "officeAddress"
+  | "workDistrict"
+  | "personalAddress"
+  | "homeDistrict"
+  | "phoneNumber"
+  | "mobileNumber"
+  | "verificationStatus"
+  | "photoUrl"
+> & {
+  userRole?: UserRole;
+  membershipId?: number | null;
+  committeeType?: CommitteeType | null;
+  positionState?: StatePositionTitle | null;
+  positionDistrict?: DistrictPositionTitle | null;
+};
 
 async function getData(
   email: string,
   status: "verified" | "pending",
-): Promise<{ user: any }> {
+): Promise<{ user: AdminUserView }> {
   if (status === "verified") {
     const existingUser = await prisma.user.findUnique({
       where: { email },
@@ -109,7 +142,7 @@ export default async function ProfilePage({
             </div>
           </div>
           <Separator />
-          <AdminUpdate user={user} />
+          <AdminUpdate user={user as User} />
         </div>
       </div>
     </Wrapper>
