@@ -10,7 +10,9 @@ type JWTPayload = {
 
 export async function auth() {
   const headersList = await headers();
-  const isMobileApp = headersList.get("x-client-type") === "mobile";
+  const isMobileApp =
+    headersList.get("x-client-type") === "mobile" ||
+    headersList.get("User-Agent")?.includes("okhttp");
   let token: string | undefined;
 
   if (isMobileApp) {
