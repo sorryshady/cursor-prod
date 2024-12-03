@@ -2,7 +2,6 @@ import { Wrapper } from "@/components/layout/wrapper";
 import { PageBackground } from "@/components/layout/page-background";
 import { PageHeader } from "@/components/layout/page-header";
 import { Skeleton } from "@/components/ui/skeleton";
-import { Card } from "@/components/ui/card";
 export default function CommitteeLoading() {
   return (
     <div className="relative min-h-screen">

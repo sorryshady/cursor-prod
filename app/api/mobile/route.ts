@@ -3,7 +3,7 @@ import { prisma } from "@/lib/db";
 import { utapi } from "@/lib/utapi";
 import { NextRequest, NextResponse } from "next/server";
 
-export async function GET(req: NextRequest) {
+export async function GET() {
   const user = await auth();
   if (!user) {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });

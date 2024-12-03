@@ -6,7 +6,7 @@ import {
   professionalInfoSchema,
   type ProfessionalInfoInput,
 } from "@/lib/validations/auth";
-import { UserStatus, Department, Designation, District } from "@prisma/client";
+import { Department, Designation, District } from "@prisma/client";
 import { Button } from "@/components/ui/button";
 import {
   Form,
