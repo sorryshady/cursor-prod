@@ -65,4 +65,4 @@ export async function PATCH(req: Request) {
     console.error("[USER_UPDATE_ERROR]", error);
     return new Response("Internal Server Error", { status: 500 });
   }
-} 
+}

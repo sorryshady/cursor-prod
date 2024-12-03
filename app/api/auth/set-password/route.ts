@@ -9,7 +9,9 @@ export async function POST(req: NextRequest) {
     const { userId, password, securityQuestion, securityAnswer } =
       await req.json();
 
-    const isMobileApp = req.headers.get("x-client-type") === "mobile";
+    const isMobileApp =
+      req.headers.get("x-client-type") === "mobile" ||
+      req.headers.get("User-Agent")?.includes("okhttp");
 
     // Hash password and security answer
     const hashedPassword = await hashPassword(password);

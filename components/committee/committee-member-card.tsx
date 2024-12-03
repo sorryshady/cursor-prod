@@ -70,12 +70,12 @@ export function CommitteeMemberCard({ member }: CommitteeMemberProps) {
               <span>View Details</span>
             </button>
           </DialogTrigger>
-          <DialogContent className="sm:max-w-[425px]">
+          <DialogContent className="max-w-[90vw] md:max-w-[500px] rounded-md">
             <DialogHeader>
               <DialogTitle className="text-xl mb-4">{member.name}</DialogTitle>
             </DialogHeader>
 
-            <div className="relative w-full aspect-square mb-6">
+            <div className="relative w-full aspect-square mb-6 overflow-hidden">
               <Image
                 src={member.photoUrl || "/member-placeholder.webp"}
                 alt={member.name}

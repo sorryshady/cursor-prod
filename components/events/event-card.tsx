@@ -76,7 +76,7 @@ export function EventCard({ event }: EventCardProps) {
               <span>View Details</span>
             </Button>
           </DialogTrigger>
-          <DialogContent className="sm:max-w-[425px]">
+          <DialogContent className="max-w-[90vw] md:max-w-[500px] rounded-md">
             <DialogHeader>
               <DialogTitle className="mb-4">{event.title}</DialogTitle>
               <div className="flex items-center gap-2 text-sm text-muted-foreground mb-4">
