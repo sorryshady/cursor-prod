@@ -11,7 +11,7 @@ export default function NewsLoading() {
       <main className="relative z-10">
         <Wrapper className="py-20">
           <PageHeader
-            title="News"
+            title="Latest News"
             description="Stay updated with the latest news and announcements"
             className="mb-12"
             titleClassName="text-white"

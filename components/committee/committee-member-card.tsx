@@ -17,6 +17,7 @@ import {
   Designation,
   BloodGroup,
 } from "@prisma/client";
+import { cn } from "@/lib/utils";
 
 interface CommitteeMemberProps {
   member: {
@@ -33,13 +34,17 @@ interface CommitteeMemberProps {
     personalAddress: string;
     email: string;
   };
+  className?: string;
 }
 
-export function CommitteeMemberCard({ member }: CommitteeMemberProps) {
+export function CommitteeMemberCard({
+  member,
+  className,
+}: CommitteeMemberProps) {
   const position = member.positionState || member.positionDistrict;
 
   return (
-    <Card className="overflow-hidden bg-white w-[300px]">
+    <Card className={cn("overflow-hidden bg-white w-[300px]", className)}>
       <div className="relative aspect-square w-full">
         <Image
           src={member.photoUrl || "/member-placeholder.webp"}

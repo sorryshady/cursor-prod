@@ -5,6 +5,11 @@ import { PageHeader } from "@/components/layout/page-header";
 import { Wrapper } from "@/components/layout/wrapper";
 import { MailOpen, MapPin, Phone } from "lucide-react";
 
+export const metadata = {
+  title: "Contact Us | AOEK",
+  description: "Get in touch with us for inquiries, collaborations, and more.",
+};
+
 export default function Contact() {
   return (
     <div className="relative min-h-screen">

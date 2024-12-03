@@ -7,6 +7,15 @@ import { PageHeader } from "@/components/layout/page-header";
 import { notFound } from "next/navigation";
 import { urlFor } from "@/lib/sanity";
 
+export const revalidate = 86400; // Revalidate daily
+
+export const metadata = {
+  title: `Gallery | AOEK`,
+  description: `Browse through our collection of memories`,
+};
+
+// Note: The dynamic metadata with slug is already handled by the generateMetadata function below
+
 interface GallerySlugPageProps {
   params: Promise<{
     slug: string;

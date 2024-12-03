@@ -28,10 +28,12 @@ export default async function StateCommitteePage() {
             descriptionClassName="text-gray-200"
           />
 
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-            {stateMembers.map((member) => (
-              <CommitteeMemberCard key={member.id} member={member} />
-            ))}
+          <div className="flex justify-center">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 justify-items-center">
+              {stateMembers.map((member) => (
+                <CommitteeMemberCard key={member.id} member={member} />
+              ))}
+            </div>
           </div>
         </Wrapper>
       </main>

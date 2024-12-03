@@ -24,22 +24,24 @@ export default function CommitteeLoading() {
               State Committee
             </h2>
 
-            <Card className="w-full max-w-7xl mx-auto p-20 bg-gradient-to-b from-slate-700 to-slate-800 ">
-              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-                {[1, 2, 3, 4].map((i) => (
-                  <div
-                    key={i}
-                    className="bg-white/5 rounded-lg overflow-hidden"
-                  >
-                    <Skeleton className="aspect-square w-full" />
-                    <div className="p-4">
-                      <Skeleton className="h-6 w-3/4 mb-2 mx-auto" />
-                      <Skeleton className="h-4 w-1/2 mb-2 mx-auto" />
-                    </div>
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+              {[1, 2, 3, 4].map((i) => (
+                <div
+                  key={i}
+                  className="bg-white/80 rounded-lg p-4 w-full max-w-[300px]"
+                >
+                  <Skeleton className="aspect-square w-full bg-gray-400/20" />
+                  <div className="mt-4 space-y-2">
+                    <Skeleton className="h-6 w-3/4 bg-gray-400/20" />
+                    <Skeleton className="h-4 w-1/2 bg-gray-400/20" />
                   </div>
-                ))}
-              </div>
-            </Card>
+                </div>
+              ))}
+            </div>
+
+            <div className="mt-8 text-center w-fit mx-auto">
+              <Skeleton className="h-10 w-32 bg-gray-400/20" />
+            </div>
           </section>
 
           {/* District Committee Section */}
@@ -47,7 +49,14 @@ export default function CommitteeLoading() {
             <h2 className="text-2xl font-semibold text-center text-black mb-8">
               District Committee
             </h2>
-            {/* We'll add district committee loading state later */}
+            <div className="bg-white/80 rounded-lg p-6 max-w-3xl mx-auto">
+              <Skeleton className="h-12 w-full mb-4 bg-gray-400/20" />
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                {[1, 2, 3, 4].map((i) => (
+                  <Skeleton key={i} className="h-24 w-full bg-gray-400/20" />
+                ))}
+              </div>
+            </div>
           </section>
         </Wrapper>
       </main>

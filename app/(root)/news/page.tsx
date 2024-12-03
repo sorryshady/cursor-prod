@@ -19,7 +19,7 @@ export const metadata: Metadata = {
       "Stay updated with the latest news and updates from the Association of Engineers Kerala.",
     images: [
       {
-        url: "/og-news.jpg",
+        url: "/news-placeholder.webp",
         width: 1200,
         height: 630,
         alt: "AOEK News",
@@ -55,7 +55,7 @@ export default async function NewsPage({ searchParams }: NewsPageProps) {
         <Wrapper className="py-20">
           <PageHeader
             title="Latest News"
-            description="Stay updated with our latest announcements"
+            description="Stay updated with the latest news and announcements"
             className="mb-12"
             titleClassName="text-white"
             descriptionClassName="text-gray-200"
