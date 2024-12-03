@@ -12,7 +12,8 @@ export async function auth() {
   const headersList = await headers();
   const isMobileApp =
     headersList.get("x-client-type") === "mobile" ||
-    headersList.get("User-Agent")?.includes("okhttp");
+    headersList.get("User-Agent")?.includes("okhttp") ||
+    headersList.get("User-Agent")?.includes("Expo");
   let token: string | undefined;
 
   if (isMobileApp) {

@@ -12,7 +12,8 @@ export async function GET(req: NextRequest) {
   try {
     const isMobileApp =
       req.headers.get("x-client-type") === "mobile" ||
-      req.headers.get("User-Agent")?.includes("okhttp");
+      req.headers.get("User-Agent")?.includes("okhttp") ||
+      req.headers.get("User-Agent")?.includes("Expo");
 
     let user;
 

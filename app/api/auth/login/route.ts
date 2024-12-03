@@ -9,7 +9,8 @@ export async function POST(req: NextRequest) {
     const { identifier, password } = await req.json();
     const isMobileApp =
       req.headers.get("x-client-type") === "mobile" ||
-      req.headers.get("User-Agent")?.includes("okhttp");
+      req.headers.get("User-Agent")?.includes("okhttp") ||
+      req.headers.get("User-Agent")?.includes("Expo");
 
     // Find user by email or membershipId
     const user = await prisma.user.findFirst({
