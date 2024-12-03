@@ -12,11 +12,19 @@ import { cn } from "@/lib/utils";
 export const metadata: Metadata = {
   title: "Latest News | AOEK",
   description:
-    "Stay updated with the latest news and updates from the Association of Engineers Kerala.",
+    "Stay updated with the latest news, events, and updates from the Association of Engineers Kerala. Discover insights, announcements, and stories that matter to our community.",
+  keywords: [
+    "latest news",
+    "AOEK",
+    "Association of Engineers Kerala",
+    "engineering news",
+    "community updates",
+    "events",
+  ],
   openGraph: {
     title: "Latest News | AOEK",
     description:
-      "Stay updated with the latest news and updates from the Association of Engineers Kerala.",
+      "Stay updated with the latest news, events, and updates from the Association of Engineers Kerala. Discover insights, announcements, and stories that matter to our community.",
     images: [
       {
         url: "/news-placeholder.webp",
@@ -25,6 +33,8 @@ export const metadata: Metadata = {
         alt: "AOEK News",
       },
     ],
+    type: "website",
+    url: `${process.env.NEXT_PUBLIC_SITE_URL}/news`,
   },
 };
 

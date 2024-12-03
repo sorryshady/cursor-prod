@@ -4,6 +4,7 @@ import { Wrapper } from "@/components/layout/wrapper";
 import { PageBackground } from "@/components/layout/page-background";
 import { PageHeader } from "@/components/layout/page-header";
 import { CommitteeMemberCard } from "@/components/committee/committee-member-card";
+import BackButton from "@/components/ui/back-button";
 
 export const metadata: Metadata = {
   title: "State Committee | AOEK",
@@ -19,7 +20,9 @@ export default async function StateCommitteePage() {
       <PageBackground imageType="body" withGradient />
 
       <main className="relative z-10">
-        <Wrapper className="py-20">
+        <Wrapper className="py-20 relative">
+          <BackButton href="/committee" label="Back to committee" />
+
           <PageHeader
             title="State Committee"
             description="Meet all our state committee members"

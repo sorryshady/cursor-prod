@@ -29,6 +29,30 @@ export type Obituaries = {
 };
 
 export const dynamic = "force-dynamic";
+export const metadata = {
+  title: "Updates",
+  description:
+    "Latest updates among the staff, including transfers, promotions, retirements, and obituaries.",
+  keywords: [
+    "updates",
+    "staff",
+    "transfers",
+    "promotions",
+    "retirements",
+    "obituaries",
+  ],
+  openGraph: {
+    title: "Updates",
+    description: "Stay informed with the latest updates among the staff.",
+    url: `${process.env.NEXT_PUBLIC_SITE_URL}/updates`,
+    type: "website",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Updates",
+    description: "Latest updates among the staff.",
+  },
+};
 
 async function getData() {
   const response = await fetch(

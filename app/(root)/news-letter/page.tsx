@@ -13,6 +13,18 @@ export const revalidate = 604800; // Revalidate weekly
 export const metadata: Metadata = {
   title: "Newsletter | AOEK",
   description: "Access our newsletter here",
+  keywords: ["newsletter", "AOEK", "updates", "downloads", "latest news"],
+  openGraph: {
+    title: "Newsletter | AOEK",
+    description: "Stay updated with our latest newsletters.",
+    url: `${process.env.NEXT_PUBLIC_SITE_URL}/newsletter`,
+    type: "website",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Newsletter | AOEK",
+    description: "Access our newsletter here",
+  },
 };
 
 async function getData() {

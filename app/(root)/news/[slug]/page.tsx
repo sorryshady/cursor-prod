@@ -1,10 +1,8 @@
 import { Metadata } from "next";
 import Image from "next/image";
-import Link from "next/link";
+import BackButton from "@/components/ui/back-button";
 import { notFound } from "next/navigation";
 import { PortableText } from "@portabletext/react";
-import { ChevronLeft } from "lucide-react";
-import { Button } from "@/components/ui/button";
 import { getNewsBySlug } from "@/lib/sanity/queries";
 import { urlFor } from "@/lib/sanity";
 import { formatDate } from "@/lib/utils";
@@ -28,15 +26,25 @@ export async function generateMetadata({
   if (!news) {
     return {
       title: "News Not Found | AOEK",
+      description: "The news article you are looking for does not exist.",
+      openGraph: {
+        title: "News Not Found | AOEK",
+        description: "The news article you are looking for does not exist.",
+        images: [],
+      },
     };
   }
 
   return {
     title: `${news.title} | AOEK News`,
     description: news.description,
+    keywords: news.keywords || "AOEK, News, Latest Updates",
+    authors: news.author || "AOEK Team",
     openGraph: {
       title: news.title,
       description: news.description,
+      url: `https://aoek.com/news/${slug}`,
+      type: "article",
       images: news.image
         ? [
             {
@@ -47,6 +55,7 @@ export async function generateMetadata({
             },
           ]
         : [],
+      siteName: "AOEK News",
     },
   };
 }
@@ -65,17 +74,7 @@ export default async function NewsSlugPage({ params }: NewsSlugPageProps) {
 
       <Wrapper className="relative z-10 py-20">
         {/* Back Button */}
-        <div className="absolute top-5 left-4 md:left-8 lg:left-12">
-          <Button
-            asChild
-            size="icon"
-            className="h-10 w-10 bg-white text-black hover:bg-white/80 "
-          >
-            <Link href="/news" aria-label="Back to news">
-              <ChevronLeft className="h-6 w-6" />
-            </Link>
-          </Button>
-        </div>
+        <BackButton href="/news" label="Back to news" />
 
         <div className="max-w-4xl mx-auto">
           <div className="mb-6">

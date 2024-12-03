@@ -6,13 +6,9 @@ import { PageBackground } from "@/components/layout/page-background";
 import { PageHeader } from "@/components/layout/page-header";
 import { notFound } from "next/navigation";
 import { urlFor } from "@/lib/sanity";
+import BackButton from "@/components/ui/back-button";
 
 export const revalidate = 86400; // Revalidate daily
-
-export const metadata = {
-  title: `Gallery | AOEK`,
-  description: `Browse through our collection of memories`,
-};
 
 // Note: The dynamic metadata with slug is already handled by the generateMetadata function below
 
@@ -54,7 +50,9 @@ export default async function GallerySlugPage({
       <PageBackground imageType="body" className="opacity-10" />
 
       <main className="relative z-10">
-        <Wrapper className="py-20">
+        <Wrapper className="py-20 relative">
+          <BackButton href="/gallery" label="Back to gallery" type="black" />
+
           <PageHeader
             title={gallery.title}
             description="Browse through the images in this gallery"
