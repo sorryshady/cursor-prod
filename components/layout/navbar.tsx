@@ -24,9 +24,9 @@ const navLinks = [
   { href: "/news", label: "News" },
   { href: "/events", label: "Events" },
   { href: "/gallery", label: "Gallery" },
-  { href: "/downloads", label: "Downloads" },
-  { href: "/news-letter", label: "News Letter" },
   { href: "/updates", label: "Updates" },
+  { href: "/news-letter", label: "News Letter" },
+  { href: "/downloads", label: "Downloads" },
 ];
 
 export function Navbar() {

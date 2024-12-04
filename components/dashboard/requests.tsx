@@ -290,7 +290,7 @@ export function Requests({ requestStatus }: RequestsProps) {
       <Dialog open={open} onOpenChange={setOpen}>
         <DialogTrigger asChild>
           <Button variant="outline" disabled={requestStatus === "PENDING"}>
-            {requestStatus === "PENDING" ? "Pending Request" : "Submit Request"}
+            {requestStatus === "PENDING" ? "Pending Request" : "Update Request"}
           </Button>
         </DialogTrigger>
         <DialogContent className="sm:max-w-[425px] lg:max-w-[600px]">

@@ -132,7 +132,7 @@ export function PersonalInfoForm({
                   <SelectContent>
                     {Object.entries(BloodGroup).map(([key, value]) => (
                       <SelectItem key={key} value={value}>
-                        {key.replace(/_/g, " ")}
+                        {key.replace("_POS", " +ve").replace("_NEG", " -ve")}
                       </SelectItem>
                     ))}
                   </SelectContent>

@@ -84,7 +84,7 @@ export default async function DashboardPage() {
             {/* Personal Information */}
             <div className="space-y-5">
               <h2 className="text-xl font-bold">Personal Information</h2>
-              <div className="grid grid-cols-2 capitalize gap-5">
+              <div className="grid grid-cols-2 gap-5">
                 <div>Name</div>
                 <div>{user.name}</div>
                 <div>Date of Birth</div>
@@ -98,9 +98,13 @@ export default async function DashboardPage() {
                 <div>Gender</div>
                 <div>{changeTypeToText(user.gender)}</div>
                 <div>Blood Group</div>
-                <div>{changeTypeToText(user.bloodGroup)}</div>
+                <div>
+                  {user.bloodGroup
+                    .replace("_POS", " +ve")
+                    .replace("_NEG", " -ve")}
+                </div>
                 <div>User Role</div>
-                <div>{user.userRole.toLowerCase()}</div>
+                <div className="capitalize">{user.userRole.toLowerCase()}</div>
                 <div>Membership ID</div>
                 <div>{user.membershipId}</div>
               </div>
@@ -117,7 +121,7 @@ export default async function DashboardPage() {
                 {user.userStatus === "WORKING" && (
                   <>
                     <div>Department</div>
-                    <div>{user.department!.toLowerCase()}</div>
+                    <div>{user.department!}</div>
                     <div>Designation</div>
                     <div>{changeTypeToText(user.designation!)}</div>
                     <div>Office Address</div>

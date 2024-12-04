@@ -70,19 +70,21 @@ export default async function NewsSlugPage({ params }: NewsSlugPageProps) {
 
   return (
     <div className="relative min-h-screen">
-      <PageBackground imageType="body" withGradient />
+      <PageBackground imageType="hero" />
 
       <Wrapper className="relative z-10 py-20">
         {/* Back Button */}
-        <BackButton href="/news" label="Back to news" />
+        <BackButton href="/news" label="Back to news" type="black" />
 
         <div className="max-w-4xl mx-auto">
           <div className="mb-6">
-            <p className="text-gray-200 mb-2">{formatDate(news.date)}</p>
-            <h1 className="text-3xl md:text-4xl lg:text-5xl font-bold text-white mb-4">
+            <p className="text-muted-foreground mb-2">
+              {formatDate(news.date)}
+            </p>
+            <h1 className="text-3xl md:text-4xl lg:text-5xl font-bold text-black mb-4">
               {news.title}
             </h1>
-            <p className="text-gray-200 text-lg">{news.description}</p>
+            <p className="text-muted-foreground text-lg">{news.description}</p>
           </div>
 
           {/* Featured Image */}
@@ -101,7 +103,7 @@ export default async function NewsSlugPage({ params }: NewsSlugPageProps) {
           </div>
 
           {/* Content */}
-          <div className="prose prose-lg prose-invert max-w-none text-white">
+          <div className="prose prose-lg prose-invert max-w-none text-gray-700">
             <PortableText value={news.content} />
           </div>
         </div>

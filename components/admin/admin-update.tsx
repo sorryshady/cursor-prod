@@ -169,7 +169,9 @@ export const AdminUpdate = ({ user }: { user: User }) => {
                   />
                   <InfoField
                     label="Blood Group"
-                    value={changeTypeToText(user.bloodGroup)}
+                    value={user.bloodGroup
+                      .replace("_POS", " +ve")
+                      .replace("_NEG", " -ve")}
                   />
                   <InfoField
                     label="User Status"
@@ -219,7 +221,7 @@ export const AdminUpdate = ({ user }: { user: User }) => {
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-x-5 gap-y-4">
                   <InfoField
                     label="Department"
-                    value={changeTypeToText(user.department || "-")}
+                    value={user.department || "-"}
                   />
                   <InfoField
                     label="Designation"
@@ -454,7 +456,9 @@ export const AdminUpdate = ({ user }: { user: User }) => {
                 />
                 <InfoField
                   label="Blood Group"
-                  value={changeTypeToText(user.bloodGroup)}
+                  value={user.bloodGroup
+                    .replace("_POS", " +ve")
+                    .replace("_NEG", " -ve")}
                 />
                 <InfoField
                   label="User Status"
@@ -480,10 +484,7 @@ export const AdminUpdate = ({ user }: { user: User }) => {
                 Employment Information
               </h2>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-x-5 gap-y-4">
-                <InfoField
-                  label="Department"
-                  value={changeTypeToText(user.department || "-")}
-                />
+                <InfoField label="Department" value={user.department || "-"} />
                 <InfoField
                   label="Designation"
                   value={changeTypeToText(user.designation || "-")}
