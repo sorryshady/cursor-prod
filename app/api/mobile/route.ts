@@ -34,7 +34,6 @@ export async function POST(req: NextRequest) {
     let formData: FormData;
     try {
       formData = await req.formData();
-      console.log(formData);
     } catch (error) {
       console.error("FormData parsing error:", error);
       return NextResponse.json(
