@@ -1,5 +1,11 @@
 import { client } from "@/lib/sanity";
-import { Download, GalleryItem, NewsItem, Newsletter, UpcomingEvent } from "@/types/sanity";
+import {
+  Download,
+  GalleryItem,
+  NewsItem,
+  Newsletter,
+  UpcomingEvent,
+} from "@/types/sanity";
 
 export async function getGalleries(): Promise<GalleryItem[]> {
   return client.fetch(
@@ -8,7 +14,7 @@ export async function getGalleries(): Promise<GalleryItem[]> {
       title,
       slug,
       images
-    }`
+    }`,
   );
 }
 
@@ -20,7 +26,7 @@ export async function getGalleryBySlug(slug: string): Promise<GalleryItem> {
       slug,
       images
     }`,
-    { slug }
+    { slug },
   );
 }
 
@@ -31,25 +37,26 @@ export async function getNewsletters(): Promise<Newsletter[]> {
       title,
       date,
       "file": file.asset->url
-    }`
+    }`,
   );
 }
 
-export async function getDownloads(category?: string): Promise<Download[]> {
-  const filter = category ? `&& category == $category` : '';
+export async function getDownloadsByCategory(
+  category: string,
+): Promise<Download[]> {
   return client.fetch(
-    `*[_type == "downloads" ${filter}] | order(_createdAt desc) {
-      _id,
-      title,
-      category,
-      "file": file.asset->url
-    }`,
-    { category }
+    `*[_type == "downloads" && category == $category] | order(_createdAt desc) {
+          _id,
+          title,
+          category,
+          "fileUrl": file.asset->url
+        }`,
+    { category }, // Bind category variable correctly
   );
 }
 
 export async function getNews(limit?: number): Promise<NewsItem[]> {
-  const limitFilter = limit ? `[0...${limit}]` : '';
+  const limitFilter = limit ? `[0...${limit}]` : "";
   return client.fetch(
     `*[_type == "news"] | order(date desc) ${limitFilter} {
       _id,
@@ -59,7 +66,7 @@ export async function getNews(limit?: number): Promise<NewsItem[]> {
       description,
       content,
       image
-    }`
+    }`,
   );
 }
 
@@ -72,7 +79,7 @@ export function isEventOver(eventDate: string): boolean {
 export async function getEvents() {
   const currentDate = new Date();
   const pastMonthDate = new Date(
-    currentDate.setMonth(currentDate.getMonth() - 1)
+    currentDate.setMonth(currentDate.getMonth() - 1),
   );
 
   // Fetch events from past month to future
@@ -84,7 +91,7 @@ export async function getEvents() {
       description,
       image,
     }`,
-    { pastMonthDate }
+    { pastMonthDate },
   );
 
   // Use existing separateEvents function to split them
@@ -98,12 +105,12 @@ export function separateEvents(events: UpcomingEvent[]): {
   const currentDate = new Date();
 
   return {
-    upcomingEvents: events.filter(
-      event => new Date(event.date) >= currentDate
-    ).sort((a, b) => new Date(a.date).getTime() - new Date(b.date).getTime()), // Ascending for upcoming
-    pastEvents: events.filter(
-      event => new Date(event.date) < currentDate
-    ).sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime()), // Descending for past
+    upcomingEvents: events
+      .filter((event) => new Date(event.date) >= currentDate)
+      .sort((a, b) => new Date(a.date).getTime() - new Date(b.date).getTime()), // Ascending for upcoming
+    pastEvents: events
+      .filter((event) => new Date(event.date) < currentDate)
+      .sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime()), // Descending for past
   };
 }
 
@@ -112,9 +119,7 @@ export async function getNewsPaginated(page: number = 1, limit: number = 9) {
   const end = start + limit;
 
   // Get total count for pagination
-  const total = await client.fetch(
-    `count(*[_type == "news"])`
-  );
+  const total = await client.fetch(`count(*[_type == "news"])`);
 
   // Get paginated news
   const news = await client.fetch(
@@ -126,13 +131,13 @@ export async function getNewsPaginated(page: number = 1, limit: number = 9) {
       description,
       image
     }`,
-    { start, end }
+    { start, end },
   );
 
   return {
     news,
     total,
-    totalPages: Math.ceil(total / limit)
+    totalPages: Math.ceil(total / limit),
   };
 }
 
@@ -147,7 +152,7 @@ export async function getNewsBySlug(slug: string) {
       content,
       image
     }`,
-    { slug }
+    { slug },
   );
 }
 

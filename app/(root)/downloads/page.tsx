@@ -1,36 +1,27 @@
 import { Card, CardContent } from "@/components/ui/card";
-
-import { client } from "@/lib/sanity";
-import FileActions from "@/components/file-actions";
+import { Button } from "@/components/ui/button";
 import { Wrapper } from "@/components/layout/wrapper";
 import { PageBackground } from "@/components/layout/page-background";
 import { PageHeader } from "@/components/layout/page-header";
 import { Metadata } from "next";
+import Link from "next/link";
 
 export const metadata: Metadata = {
   title: "Downloads | AOEK",
   description: "Access our downloads here",
 };
-async function getData() {
-  const query = `*[_type == "downloads"] | order(date desc) {
-    title,
-    category,
-    "fileUrl": file.asset->url,
-    date,
-  }`;
-  const data = await client.fetch(query);
-  return data;
-}
 
-export type Newsletter = {
-  title: string;
-  category: string;
-  fileUrl: string;
-  date: string;
+export const categories = {
+  "technical-writing": "Technical Writing",
+  "circulars-and-orders": "Circulars & Orders",
+  "election-nomination": "Election Nomination",
+  "is-codes": "IS Codes",
+  "irc-codes": "IRC Codes",
+  handbooks: "Handbooks",
+  others: "Others",
 };
-export default async function Downloads() {
-  const newsletters: Newsletter[] = await getData();
 
+export default function Downloads() {
   return (
     <div className="relative min-h-screen">
       <PageBackground imageType="body" withGradient />
@@ -43,21 +34,18 @@ export default async function Downloads() {
             titleClassName="text-white"
             descriptionClassName="text-gray-200"
           />
+
           <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3 relative z-10">
-            {newsletters.map((newsletter, index) => (
-              <Card key={index} className="overflow-hidden">
-                <CardContent className="text-center p-8">
-                  <h2 className="text-lg font-medium">{newsletter.title}</h2>
-                  <p className="text-sm text-muted-foreground">
-                    {new Date(newsletter.date).toLocaleDateString("en-US", {
-                      month: "long",
-                      year: "numeric",
-                    })}
-                  </p>
-                  <FileActions
-                    fileUrl={newsletter.fileUrl}
-                    title={newsletter.title}
-                  />
+            {Object.entries(categories).map(([key, value], index) => (
+              <Card
+                key={`${key}-${index}`}
+                className="overflow-hidden hover:shadow-lg transition-shadow"
+              >
+                <CardContent className="p-8 flex flex-col items-center text-center">
+                  <h2 className="text-xl font-semibold mb-4">{value}</h2>
+                  <Link href={`/downloads/${key}`}>
+                    <Button variant="secondary">View Downloads</Button>
+                  </Link>
                 </CardContent>
               </Card>
             ))}

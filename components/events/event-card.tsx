@@ -84,7 +84,7 @@ export function EventCard({ event }: EventCardProps) {
                 <time dateTime={event.date}>{formatDate(event.date)}</time>
               </div>
             </DialogHeader>
-            <div className="relative w-full aspect-video mb-4">
+            <div className="relative w-full aspect-video mb-4 overflow-hidden rounded-lg">
               <Image
                 src={
                   event.image
