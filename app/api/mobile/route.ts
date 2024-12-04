@@ -22,7 +22,7 @@ export async function POST(req: NextRequest) {
     if (!session) {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
     }
-
+    console.log("[POST]: ", req.headers);
     const contentType = req.headers.get("content-type");
     if (!contentType || !contentType.includes("multipart/form-data")) {
       return NextResponse.json(
