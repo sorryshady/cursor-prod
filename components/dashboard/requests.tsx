@@ -39,6 +39,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import CustomDate from "@/components/form/custom-date";
 import { changeTypeToText } from "@/lib/utils";
+import { isValid, parse } from "date-fns";
 
 // Schema definitions
 const transferSchema = z.object({
@@ -53,7 +54,15 @@ const promotionSchema = z.object({
 });
 
 const retirementSchema = z.object({
-  retirementDate: z.string().min(1, "Retirement date is required"),
+  retirementDate: z
+    .string()
+    .min(1, "Date of birth is required.")
+    .refine((val) => {
+      const date = parse(val, "dd/MM/yyyy", new Date());
+      return (
+        isValid(date) && date <= new Date() && date >= new Date("1900-01-01")
+      );
+    }, "Please enter a valid date in DD/MM/YYYY format"),
 });
 
 type RequestType = "promotion" | "transfer" | "retirement";

@@ -72,7 +72,7 @@ export function UserDropdown({
                 router.push("/admin");
                 clickHandler();
               }}
-              className="flex items-center gap-2"
+              className="hidden lg:flex items-center gap-2"
             >
               <Shield />
               Admin
