@@ -1,9 +1,6 @@
 {
     "name": "cursor-prod",
     "version": "0.1.0",
-    "engines": {
-        "node": ">=22.6.0"
-    },
     "private": true,
     "scripts": {
         "dev": "next dev --turbopack",
@@ -40,6 +37,7 @@
         "date-fns": "^4.1.0",
         "embla-carousel-autoplay": "^8.5.1",
         "embla-carousel-react": "^8.5.1",
+        "formidable": "^3.5.2",
         "framer-motion": "^11.12.0",
         "jose": "^5.9.6",
         "lru-cache": "^11.0.2",
@@ -63,6 +61,7 @@
         "@shadcn/ui": "^0.0.4",
         "@tailwindcss/typography": "^0.5.15",
         "@types/bcryptjs": "^2.4.6",
+        "@types/formidable": "^3.4.5",
         "@types/lru-cache": "^7.10.10",
         "@types/node": "^20.17.9",
         "@types/react": "^18.3.12",
