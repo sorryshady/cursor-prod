@@ -22,7 +22,7 @@ export async function POST(req: NextRequest) {
     if (!session) {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
     }
-
+    console.log("[POST]: ", req.headers, req.body, req);
     const contentType = req.headers.get("content-type");
     if (!contentType || !contentType.includes("multipart/form-data")) {
       return NextResponse.json(
@@ -34,7 +34,6 @@ export async function POST(req: NextRequest) {
     let formData: FormData;
     try {
       formData = await req.formData();
-      console.log(formData);
     } catch (error) {
       console.error("FormData parsing error:", error);
       return NextResponse.json(
