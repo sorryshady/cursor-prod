@@ -3,6 +3,11 @@ import { prisma } from "@/lib/db";
 import { utapi } from "@/lib/utapi";
 import { NextRequest, NextResponse } from "next/server";
 
+export const config = {
+  api: {
+    bodyParser: false,
+  },
+};
 export async function GET() {
   const user = await auth();
   if (!user) {
@@ -22,18 +27,19 @@ export async function POST(req: NextRequest) {
     if (!contentType || !contentType.includes("multipart/form-data")) {
       return NextResponse.json(
         { error: "Content type must be multipart/form-data" },
-        { status: 400 }
+        { status: 400 },
       );
     }
 
     let formData: FormData;
     try {
       formData = await req.formData();
+      console.log(formData);
     } catch (error) {
       console.error("FormData parsing error:", error);
       return NextResponse.json(
         { error: "Failed to parse form data" },
-        { status: 400 }
+        { status: 400 },
       );
     }
 
@@ -46,7 +52,7 @@ export async function POST(req: NextRequest) {
     if (!uploadedFile.data?.url || !uploadedFile.data?.key) {
       return NextResponse.json(
         { error: "Failed to upload photo" },
-        { status: 500 }
+        { status: 500 },
       );
     }
 
@@ -72,7 +78,7 @@ export async function POST(req: NextRequest) {
     console.error("Error in update-photo route:", error);
     return NextResponse.json(
       { error: "Internal server error" },
-      { status: 500 }
+      { status: 500 },
     );
   }
 }
