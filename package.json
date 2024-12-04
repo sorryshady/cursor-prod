@@ -2,7 +2,7 @@
     "name": "cursor-prod",
     "version": "0.1.0",
     "engines": {
-        "node": "23.1.0"
+        "node": ">=22.6.0"
     },
     "private": true,
     "scripts": {
