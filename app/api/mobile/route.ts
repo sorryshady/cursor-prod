@@ -16,13 +16,12 @@ export async function GET() {
   return NextResponse.json(user);
 }
 
-export async function POST(req: NextRequest) {
+export async function PATCH(req: NextRequest) {
   try {
     const session = await auth();
     if (!session) {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
     }
-    console.log("[POST]: ", req.headers, req.body, req);
     const contentType = req.headers.get("content-type");
     if (!contentType || !contentType.includes("multipart/form-data")) {
       return NextResponse.json(
@@ -75,6 +74,51 @@ export async function POST(req: NextRequest) {
     });
   } catch (error) {
     console.error("Error in update-photo route:", error);
+    return NextResponse.json(
+      { error: "Internal server error" },
+      { status: 500 },
+    );
+  }
+}
+
+export async function POST(req: NextRequest) {
+  try {
+    const contentType = req.headers.get("content-type");
+    if (!contentType || !contentType.includes("multipart/form-data")) {
+      return NextResponse.json(
+        { error: "Content type must be multipart/form-data" },
+        { status: 400 },
+      );
+    }
+    let formData: FormData;
+    try {
+      formData = await req.formData();
+    } catch (error) {
+      console.error("FormData parsing error:", error);
+      return NextResponse.json(
+        { error: "Failed to parse form data" },
+        { status: 400 },
+      );
+    }
+
+    const photo = formData.get("profile-photo") as File;
+    if (!photo) {
+      return NextResponse.json({ error: "No photo provided" }, { status: 400 });
+    }
+
+    const uploadedFile = await utapi.uploadFiles(photo);
+    if (!uploadedFile.data?.url || !uploadedFile.data?.key) {
+      return NextResponse.json(
+        { error: "Failed to upload photo" },
+        { status: 500 },
+      );
+    }
+    return NextResponse.json({
+      photoUrl: uploadedFile.data?.url,
+      photoId: uploadedFile.data?.key,
+    });
+  } catch (error) {
+    console.error("Error in upload-photo route:", error);
     return NextResponse.json(
       { error: "Internal server error" },
       { status: 500 },
