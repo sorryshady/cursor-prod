@@ -1,5 +1,4 @@
 import { Card, CardContent } from "@/components/ui/card";
-import { client } from "@/lib/sanity";
 import FileActions from "@/components/file-actions";
 import { Wrapper } from "@/components/layout/wrapper";
 import { PageBackground } from "@/components/layout/page-background";

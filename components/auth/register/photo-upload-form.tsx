@@ -94,21 +94,21 @@ export function PhotoUploadForm({
         bloodGroup: allFormData?.personalInfo?.bloodGroup,
 
         userStatus: allFormData?.professionalInfo?.userStatus,
-        department: allFormData?.professionalInfo?.department,
-        designation: allFormData?.professionalInfo?.designation,
-        officeAddress: allFormData?.professionalInfo?.officeAddress,
-        workDistrict: allFormData?.professionalInfo?.workDistrict,
+        department: allFormData?.professionalInfo?.department || undefined,
+        designation: allFormData?.professionalInfo?.designation || undefined,
+        officeAddress: allFormData?.professionalInfo?.officeAddress || "",
+        workDistrict: allFormData?.professionalInfo?.workDistrict || undefined,
 
         personalAddress: allFormData?.contactInfo?.personalAddress,
         homeDistrict: allFormData?.contactInfo?.homeDistrict,
         email: allFormData?.contactInfo?.email,
-        phoneNumber: allFormData?.contactInfo?.phoneNumber,
+        phoneNumber: allFormData?.contactInfo?.phoneNumber || undefined,
         mobileNumber: allFormData?.contactInfo?.mobileNumber,
 
-        photoUrl: data.photoUrl,
-        photoId: data.photoId,
+        photoUrl: data.photoUrl || undefined,
+        photoId: data.photoId || undefined,
       };
-
+      console.log(completeFormData);
       const response = await fetch("/api/auth/register", {
         method: "POST",
         headers: {

@@ -6,12 +6,11 @@ export async function POST(req: NextRequest) {
   try {
     const body = await req.json();
     const data = registrationSchema.parse(body);
-
+    console.log(body);
     // Check if email already exists
     const existingUser = await prisma.user.findUnique({
       where: { email: data.email },
     });
-
     if (existingUser) {
       return NextResponse.json(
         { error: "Email already registered" },
@@ -27,14 +26,14 @@ export async function POST(req: NextRequest) {
         gender: data.gender,
         bloodGroup: data.bloodGroup,
         userStatus: data.userStatus,
-        department: data.department,
-        designation: data.designation,
-        officeAddress: data.officeAddress,
-        workDistrict: data.workDistrict,
+        department: data?.department,
+        designation: data?.designation,
+        officeAddress: data?.officeAddress,
+        workDistrict: data?.workDistrict,
         personalAddress: data.personalAddress,
         homeDistrict: data.homeDistrict,
         email: data.email,
-        phoneNumber: data.phoneNumber,
+        phoneNumber: data?.phoneNumber,
         mobileNumber: data.mobileNumber,
         photoUrl: data.photoUrl,
         photoId: data.photoId,
