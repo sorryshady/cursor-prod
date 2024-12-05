@@ -5,20 +5,11 @@ import { PageBackground } from "@/components/layout/page-background";
 import { PageHeader } from "@/components/layout/page-header";
 import { Metadata } from "next";
 import Link from "next/link";
+import { categories } from "@/lib/utils";
 
 export const metadata: Metadata = {
   title: "Downloads | AOEK",
   description: "Access our downloads here",
-};
-
-export const categories = {
-  "technical-writing": "Technical Writing",
-  "circulars-and-orders": "Circulars & Orders",
-  "election-nomination": "Election Nomination",
-  "is-codes": "IS Codes",
-  "irc-codes": "IRC Codes",
-  handbooks: "Handbooks",
-  others: "Others",
 };
 
 export default function Downloads() {

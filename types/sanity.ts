@@ -4,12 +4,15 @@ import { PortableTextBlock } from "@portabletext/types";
 export interface Download {
   _id: string;
   title: string;
-  category: 'technicalWriting' | 'circulars' | 'electionNomination' | 'isCodes' | 'ircCodes' | 'handbooks' | 'others';
-  file: {
-    asset: {
-      url: string;
-    };
-  };
+  category:
+    | "technicalWriting"
+    | "circulars"
+    | "electionNomination"
+    | "isCodes"
+    | "ircCodes"
+    | "handbooks"
+    | "others";
+  fileUrl: string;
 }
 
 export interface GalleryItem {
@@ -55,11 +58,7 @@ export interface Newsletter {
   _id: string;
   title: string;
   date: string;
-  file: {
-    asset: {
-      url: string;
-    };
-  };
+  fileUrl: string;
 }
 
 export interface UpcomingEvent {

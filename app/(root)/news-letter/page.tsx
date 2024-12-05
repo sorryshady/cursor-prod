@@ -5,8 +5,8 @@ import { client } from "@/lib/sanity";
 import FileActions from "@/components/file-actions";
 import { PageBackground } from "@/components/layout/page-background";
 import { PageHeader } from "@/components/layout/page-header";
-import { Newsletter } from "../downloads/page";
 import { Metadata } from "next";
+import { Newsletter } from "@/types/sanity";
 
 export const revalidate = 604800; // Revalidate weekly
 
