@@ -54,6 +54,7 @@ export async function POST(req: NextRequest) {
         email: true,
         membershipId: true,
         userRole: true,
+        photoUrl: true,
       },
     });
 
