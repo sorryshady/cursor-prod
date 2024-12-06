@@ -7,7 +7,10 @@ import { signJWT } from "@/lib/auth/jwt";
 export async function POST(req: NextRequest) {
   try {
     const { userId, password } = await req.json();
-    const isMobileApp = req.headers.get("x-client-type") === "mobile";
+    const isMobileApp =
+      req.headers.get("x-client-type") === "mobile" ||
+      req.headers.get("User-Agent")?.includes("okhttp") ||
+      req.headers.get("User-Agent")?.includes("Expo");
 
     // Get current user with password
     const user = await prisma.user.findUnique({
