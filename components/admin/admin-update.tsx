@@ -20,13 +20,6 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { useState, useMemo } from "react";
-import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogHeader,
-  DialogTitle,
-} from "@/components/ui/dialog";
 import { Button } from "../ui/button";
 import {
   CommitteeType,
@@ -58,7 +51,6 @@ export const AdminUpdate = ({ user }: { user: User }) => {
   const router = useRouter();
   const [error, setError] = useState("");
   const [edit, setEdit] = useState(false);
-  const [isDialogOpen, setIsDialogOpen] = useState(false);
   const [committeeStatus, setCommitteeStatus] = useState<CommitteeType>(
     user.committeeType,
   );
@@ -157,21 +149,29 @@ export const AdminUpdate = ({ user }: { user: User }) => {
                   <InfoField label="Name" value={user.name} />
                   <InfoField
                     label="Date of Birth"
-                    value={new Date(user.dob).toLocaleDateString("en-IN", {
-                      year: "numeric",
-                      month: "long",
-                      day: "numeric",
-                    })}
+                    value={
+                      user.dob
+                        ? new Date(user.dob).toLocaleDateString("en-IN", {
+                            year: "numeric",
+                            month: "long",
+                            day: "numeric",
+                          })
+                        : "N/A"
+                    }
                   />
                   <InfoField
                     label="Gender"
-                    value={changeTypeToText(user.gender)}
+                    value={user.gender ? changeTypeToText(user.gender) : "N/A"}
                   />
                   <InfoField
                     label="Blood Group"
-                    value={user.bloodGroup
-                      .replace("_POS", " +ve")
-                      .replace("_NEG", " -ve")}
+                    value={
+                      user.bloodGroup
+                        ? user.bloodGroup
+                            .replace("_POS", " +ve")
+                            .replace("_NEG", " -ve")
+                        : "N/A"
+                    }
                   />
                   <InfoField
                     label="User Status"
@@ -219,22 +219,38 @@ export const AdminUpdate = ({ user }: { user: User }) => {
                   Employment Information
                 </h2>
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-x-5 gap-y-4">
-                  <InfoField
-                    label="Department"
-                    value={user.department || "-"}
-                  />
-                  <InfoField
-                    label="Designation"
-                    value={changeTypeToText(user.designation || "-")}
-                  />
-                  <InfoField
-                    label="Office Address"
-                    value={user.officeAddress || "-"}
-                  />
-                  <InfoField
-                    label="Work District"
-                    value={changeTypeToText(user.workDistrict || "-")}
-                  />
+                  {user.userStatus === "WORKING" && (
+                    <>
+                      <InfoField
+                        label="Department"
+                        value={user.department || "-"}
+                      />
+                      <InfoField
+                        label="Designation"
+                        value={changeTypeToText(user.designation || "-")}
+                      />
+                      <InfoField
+                        label="Office Address"
+                        value={user.officeAddress || "-"}
+                      />
+                      <InfoField
+                        label="Work District"
+                        value={changeTypeToText(user.workDistrict || "-")}
+                      />
+                    </>
+                  )}
+                  {user.userStatus === "RETIRED" && (
+                    <>
+                      <InfoField
+                        label="Status"
+                        value={changeTypeToText(user.userStatus)}
+                      />
+                      <InfoField
+                        label="Retired from"
+                        value={user.retiredDepartment || "-"}
+                      />
+                    </>
+                  )}
                 </div>
               </section>
               <Separator />
@@ -256,12 +272,15 @@ export const AdminUpdate = ({ user }: { user: User }) => {
                   Contact Information
                 </h2>
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-x-5 gap-y-4">
-                  <InfoField label="Email" value={user.email} />
+                  <InfoField label="Email" value={user.email || "-"} />
                   <InfoField
                     label="Phone Number"
                     value={user.phoneNumber || "-"}
                   />
-                  <InfoField label="Mobile Number" value={user.mobileNumber} />
+                  <InfoField
+                    label="Mobile Number"
+                    value={user.mobileNumber || "-"}
+                  />
                 </div>
               </section>
               <Separator />
@@ -417,21 +436,6 @@ export const AdminUpdate = ({ user }: { user: User }) => {
                   Cancel
                 </Button>
               </div>
-              <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
-                <DialogContent className="space-y-3">
-                  <DialogHeader className="space-y-5">
-                    <DialogTitle>Employment Status</DialogTitle>
-                    <DialogDescription className="text-black">
-                      If you are <span className="font-bold">retired</span>,
-                      your department, designation, office address and working
-                      district will be removed when submitting the form.
-                    </DialogDescription>
-                  </DialogHeader>
-                  <Button onClick={() => setIsDialogOpen(false)}>
-                    Understood
-                  </Button>
-                </DialogContent>
-              </Dialog>
             </form>
           </Form>
         ) : (
@@ -444,21 +448,29 @@ export const AdminUpdate = ({ user }: { user: User }) => {
                 <InfoField label="Name" value={user.name} />
                 <InfoField
                   label="Date of Birth"
-                  value={new Date(user.dob).toLocaleDateString("en-IN", {
-                    year: "numeric",
-                    month: "long",
-                    day: "numeric",
-                  })}
+                  value={
+                    user.dob
+                      ? new Date(user.dob).toLocaleDateString("en-IN", {
+                          year: "numeric",
+                          month: "long",
+                          day: "numeric",
+                        })
+                      : "N/A"
+                  }
                 />
                 <InfoField
                   label="Gender"
-                  value={changeTypeToText(user.gender)}
+                  value={user.gender ? changeTypeToText(user.gender) : "N/A"}
                 />
                 <InfoField
                   label="Blood Group"
-                  value={user.bloodGroup
-                    .replace("_POS", " +ve")
-                    .replace("_NEG", " -ve")}
+                  value={
+                    user.bloodGroup
+                      ? user.bloodGroup
+                          .replace("_POS", " +ve")
+                          .replace("_NEG", " -ve")
+                      : "N/A"
+                  }
                 />
                 <InfoField
                   label="User Status"
@@ -484,19 +496,38 @@ export const AdminUpdate = ({ user }: { user: User }) => {
                 Employment Information
               </h2>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-x-5 gap-y-4">
-                <InfoField label="Department" value={user.department || "-"} />
-                <InfoField
-                  label="Designation"
-                  value={changeTypeToText(user.designation || "-")}
-                />
-                <InfoField
-                  label="Office Address"
-                  value={user.officeAddress || "-"}
-                />
-                <InfoField
-                  label="Work District"
-                  value={changeTypeToText(user.workDistrict || "-")}
-                />
+                {user.userStatus === "WORKING" && (
+                  <>
+                    <InfoField
+                      label="Department"
+                      value={user.department || "-"}
+                    />
+                    <InfoField
+                      label="Designation"
+                      value={changeTypeToText(user.designation || "-")}
+                    />
+                    <InfoField
+                      label="Office Address"
+                      value={user.officeAddress || "-"}
+                    />
+                    <InfoField
+                      label="Work District"
+                      value={changeTypeToText(user.workDistrict || "-")}
+                    />
+                  </>
+                )}
+                {user.userStatus === "RETIRED" && (
+                  <>
+                    <InfoField
+                      label="Status"
+                      value={changeTypeToText(user.userStatus)}
+                    />
+                    <InfoField
+                      label="Retired from"
+                      value={user.retiredDepartment || "-"}
+                    />
+                  </>
+                )}
               </div>
             </section>
             <Separator />
@@ -516,12 +547,15 @@ export const AdminUpdate = ({ user }: { user: User }) => {
                 Contact Information
               </h2>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-x-5 gap-y-4">
-                <InfoField label="Email" value={user.email} />
+                <InfoField label="Email" value={user.email || "-"} />
                 <InfoField
                   label="Phone Number"
                   value={user.phoneNumber || "-"}
                 />
-                <InfoField label="Mobile Number" value={user.mobileNumber} />
+                <InfoField
+                  label="Mobile Number"
+                  value={user.mobileNumber || "-"}
+                />
               </div>
             </section>
             <Separator />

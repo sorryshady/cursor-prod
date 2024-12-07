@@ -63,6 +63,7 @@ async function getData(
         designation: true,
         officeAddress: true,
         workDistrict: true,
+        retiredDepartment: true,
         personalAddress: true,
         homeDistrict: true,
         phoneNumber: true,
@@ -92,6 +93,7 @@ async function getData(
         designation: true,
         officeAddress: true,
         workDistrict: true,
+        retiredDepartment: true,
         personalAddress: true,
         homeDistrict: true,
         phoneNumber: true,
@@ -139,7 +141,7 @@ export default async function ProfilePage({
               {user.verificationStatus === "VERIFIED" ? (
                 <Badge variant={"default"}>Verified</Badge>
               ) : (
-                <ActionButtons email={user.email} />
+                <ActionButtons email={user.email!} />
               )}
             </div>
           </div>
