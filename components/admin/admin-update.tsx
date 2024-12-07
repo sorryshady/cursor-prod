@@ -154,6 +154,8 @@ export const AdminUpdate = ({ user }: { user: User }) => {
     }
   };
 
+  const isRetired = user.userStatus === "RETIRED";
+
   return (
     <>
       <div className="relative">
@@ -303,178 +305,181 @@ export const AdminUpdate = ({ user }: { user: User }) => {
                 </div>
               </section>
               <Separator />
-              {user.workDistrict && (
-                <section>
-                  <h2 className="text-2xl font-semibold mb-4">
-                    Committee Information
-                  </h2>
-                  <div className="grid grid-cols-1 gap-x-5 gap-y-4">
-                    <FormField // committee type
+              <section>
+                <h2 className="text-2xl font-semibold mb-4">
+                  Committee Information
+                </h2>
+                <div className="grid grid-cols-1 gap-x-5 gap-y-4">
+                  <FormField
+                    control={form.control}
+                    name="committeeType"
+                    render={({ field }) => (
+                      <FormItem className="grid grid-cols-2 items-center">
+                        <span className="w-32 font-medium text-muted-foreground">
+                          Committee Type
+                        </span>
+                        <Select
+                          onValueChange={(value) => {
+                            field.onChange(value);
+                            setCommitteeStatus(value as CommitteeType);
+                            form.setValue("positionState", undefined);
+                            form.setValue("positionDistrict", undefined);
+                            setSwitchValue(false);
+                          }}
+                          defaultValue={field.value}
+                        >
+                          <FormControl>
+                            <SelectTrigger>
+                              <SelectValue placeholder="Select committee" />
+                            </SelectTrigger>
+                          </FormControl>
+                          <SelectContent>
+                            {Object.values(CommitteeType).map((item) => (
+                              <SelectItem key={item} value={item}>
+                                <span className="capitalize">
+                                  {changeTypeToText(item)}
+                                </span>
+                              </SelectItem>
+                            ))}
+                          </SelectContent>
+                        </Select>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+                  {committeeStatus === "STATE" && (
+                    <>
+                      <FormField
+                        control={form.control}
+                        name="positionState"
+                        render={({ field }) => (
+                          <FormItem className="grid grid-cols-2 items-center">
+                            <span className="w-32 font-medium text-muted-foreground">
+                              Position
+                            </span>
+                            <Select
+                              onValueChange={field.onChange}
+                              defaultValue={field.value}
+                            >
+                              <FormControl>
+                                <SelectTrigger>
+                                  <SelectValue placeholder="Select position" />
+                                </SelectTrigger>
+                              </FormControl>
+                              <SelectContent>
+                                {Object.values(StatePositionTitle)
+                                  .filter(
+                                    (position) =>
+                                      !isRetired ||
+                                      position ===
+                                        StatePositionTitle.DISTRICT_NOMINEE,
+                                  )
+                                  .map((item) => (
+                                    <SelectItem key={item} value={item}>
+                                      <span className="capitalize">
+                                        {changeTypeToText(item)}
+                                      </span>
+                                    </SelectItem>
+                                  ))}
+                              </SelectContent>
+                            </Select>
+                            <FormMessage />
+                          </FormItem>
+                        )}
+                      />
+                      {!isRetired && (
+                        <>
+                          <div className="grid grid-cols-2 items-center">
+                            <span className="w-44 md:w-fit font-medium text-muted-foreground">
+                              Is user a part of the district committee as well?
+                            </span>
+                            <Switch
+                              checked={switchValue}
+                              onCheckedChange={(checked) => {
+                                setSwitchValue(checked);
+                                if (!checked) {
+                                  form.setValue("positionDistrict", undefined);
+                                }
+                              }}
+                            />
+                          </div>
+                          {switchValue && (
+                            <FormField
+                              control={form.control}
+                              name="positionDistrict"
+                              render={({ field }) => (
+                                <FormItem className="grid grid-cols-2 items-center">
+                                  <span className="w-32 font-medium text-muted-foreground">
+                                    District Position
+                                  </span>
+                                  <Select
+                                    onValueChange={field.onChange}
+                                    defaultValue={field.value}
+                                  >
+                                    <FormControl>
+                                      <SelectTrigger>
+                                        <SelectValue placeholder="Select position" />
+                                      </SelectTrigger>
+                                    </FormControl>
+                                    <SelectContent>
+                                      {Object.values(DistrictPositionTitle).map(
+                                        (item) => (
+                                          <SelectItem key={item} value={item}>
+                                            <span className="capitalize">
+                                              {changeTypeToText(item)}
+                                            </span>
+                                          </SelectItem>
+                                        ),
+                                      )}
+                                    </SelectContent>
+                                  </Select>
+                                  <FormMessage />
+                                </FormItem>
+                              )}
+                            />
+                          )}
+                        </>
+                      )}
+                    </>
+                  )}
+
+                  {committeeStatus === "DISTRICT" && (
+                    <FormField
                       control={form.control}
-                      // disabled={isSubmitting}
-                      name="committeeType"
+                      name="positionDistrict"
                       render={({ field }) => (
                         <FormItem className="grid grid-cols-2 items-center">
                           <span className="w-32 font-medium text-muted-foreground">
-                            Committee Type
+                            Position
                           </span>
                           <Select
-                            onValueChange={(value) => {
-                              field.onChange(value);
-                              setCommitteeStatus(value as CommitteeType);
-                            }}
+                            onValueChange={field.onChange}
                             defaultValue={field.value}
                           >
                             <FormControl>
                               <SelectTrigger>
-                                <SelectValue placeholder="Select committee" />
+                                <SelectValue placeholder="Select position" />
                               </SelectTrigger>
                             </FormControl>
                             <SelectContent>
-                              {Object.values(CommitteeType).map((item) => (
-                                <SelectItem key={item} value={item}>
-                                  <span className="capitalize">
-                                    {changeTypeToText(item)}
-                                  </span>
-                                </SelectItem>
-                              ))}
+                              {Object.values(DistrictPositionTitle).map(
+                                (item) => (
+                                  <SelectItem key={item} value={item}>
+                                    <span className="capitalize">
+                                      {changeTypeToText(item)}
+                                    </span>
+                                  </SelectItem>
+                                ),
+                              )}
                             </SelectContent>
                           </Select>
                           <FormMessage />
                         </FormItem>
                       )}
                     />
-                    {committeeStatus === "STATE" && (
-                      <>
-                        <FormField //Position State
-                          control={form.control}
-                          name="positionState"
-                          render={({ field }) => (
-                            <FormItem className="grid grid-cols-2 items-center">
-                              <span className="w-32 font-medium text-muted-foreground">
-                                Position
-                              </span>
-                              <Select
-                                onValueChange={field.onChange}
-                                defaultValue={field.value}
-                              >
-                                <FormControl>
-                                  <SelectTrigger>
-                                    <SelectValue placeholder="Select position" />
-                                  </SelectTrigger>
-                                </FormControl>
-                                <SelectContent>
-                                  {Object.values(StatePositionTitle).map(
-                                    (item) => (
-                                      <SelectItem key={item} value={item}>
-                                        <span className="capitalize">
-                                          {changeTypeToText(item)}
-                                        </span>
-                                      </SelectItem>
-                                    ),
-                                  )}
-                                </SelectContent>
-                              </Select>
-                              <FormMessage />
-                            </FormItem>
-                          )}
-                        />
-                        <div className="grid grid-cols-2 items-center">
-                          <span className="w-44 md:w-fit font-medium text-muted-foreground">
-                            Is user a part of the district committee as well?
-                          </span>
-                          <Switch
-                            checked={switchValue}
-                            onCheckedChange={(checked) => {
-                              setSwitchValue(checked);
-                              if (!checked) {
-                                form.setValue("positionDistrict", undefined);
-                              }
-                            }}
-                          />
-                        </div>
-                        {switchValue && (
-                          <FormField //Position State
-                            control={form.control}
-                            name="positionDistrict"
-                            render={({ field }) => (
-                              <FormItem className="grid grid-cols-2 items-center">
-                                <span className="w-32 font-medium text-muted-foreground">
-                                  District Position
-                                </span>
-                                <Select
-                                  onValueChange={field.onChange}
-                                  defaultValue={field.value}
-                                >
-                                  <FormControl>
-                                    <SelectTrigger>
-                                      <SelectValue placeholder="Select position" />
-                                    </SelectTrigger>
-                                  </FormControl>
-                                  <SelectContent>
-                                    {Object.values(DistrictPositionTitle).map(
-                                      (item) => (
-                                        <SelectItem key={item} value={item}>
-                                          <span className="capitalize">
-                                            {changeTypeToText(item)}
-                                          </span>
-                                        </SelectItem>
-                                      ),
-                                    )}
-                                  </SelectContent>
-                                </Select>
-                                <FormMessage />
-                              </FormItem>
-                            )}
-                          />
-                        )}
-                      </>
-                    )}
-
-                    {committeeStatus === "DISTRICT" && (
-                      <>
-                        <FormField //Position State
-                          control={form.control}
-                          name="positionDistrict"
-                          render={({ field }) => (
-                            <FormItem className="grid grid-cols-2 items-center">
-                              <span className="w-32 font-medium text-muted-foreground">
-                                Position
-                              </span>
-                              <Select
-                                onValueChange={field.onChange}
-                                defaultValue={field.value}
-                              >
-                                <FormControl>
-                                  <SelectTrigger>
-                                    <SelectValue placeholder="Select position" />
-                                  </SelectTrigger>
-                                </FormControl>
-                                <SelectContent>
-                                  {Object.values(DistrictPositionTitle).map(
-                                    (item) => (
-                                      <SelectItem key={item} value={item}>
-                                        <span className="capitalize">
-                                          {changeTypeToText(item)}
-                                        </span>
-                                      </SelectItem>
-                                    ),
-                                  )}
-                                </SelectContent>
-                              </Select>
-                              <FormMessage />
-                            </FormItem>
-                          )}
-                        />
-                        <InfoField
-                          label="District"
-                          value={changeTypeToText(user.workDistrict || "-")}
-                        />
-                      </>
-                    )}
-                  </div>
-                </section>
-              )}
+                  )}
+                </div>
+              </section>
 
               {error && <CustomFormMessage type="error" message={error} />}
               <div className="flex w-full gap-5 mt-10">
