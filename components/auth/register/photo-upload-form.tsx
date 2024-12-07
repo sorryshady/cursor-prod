@@ -87,19 +87,22 @@ export function PhotoUploadForm({
   const handleSubmit = async (data: PhotoInput) => {
     setIsSubmitting(true);
     try {
+      const professionalInfo = allFormData?.professionalInfo;
       const completeFormData = {
         name: allFormData?.personalInfo?.name,
         dob: allFormData?.personalInfo?.dob,
         gender: allFormData?.personalInfo?.gender,
         bloodGroup: allFormData?.personalInfo?.bloodGroup,
 
-        userStatus: allFormData?.professionalInfo?.userStatus,
-        department: allFormData?.professionalInfo?.department || undefined,
-        designation: allFormData?.professionalInfo?.designation || undefined,
-        officeAddress: allFormData?.professionalInfo?.officeAddress || "",
-        workDistrict: allFormData?.professionalInfo?.workDistrict || undefined,
-        retiredDepartment:
-          allFormData?.professionalInfo?.retiredDepartment || undefined,
+        userStatus: professionalInfo?.userStatus,
+        ...(professionalInfo?.userStatus === "WORKING" ? {
+          department: professionalInfo.department,
+          designation: professionalInfo.designation,
+          officeAddress: professionalInfo.officeAddress,
+          workDistrict: professionalInfo.workDistrict,
+        } : {
+          retiredDepartment: professionalInfo?.retiredDepartment,
+        }),
 
         personalAddress: allFormData?.contactInfo?.personalAddress,
         homeDistrict: allFormData?.contactInfo?.homeDistrict,

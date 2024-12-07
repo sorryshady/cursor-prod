@@ -64,20 +64,24 @@ export default function CompleteAccountPage() {
       setFormData({
         personalInfo: {
           name: session.name || "",
-          gender: session.gender || undefined,
+          gender: session.gender || "MALE",
           dob: session.dob
             ? new Date(session.dob).toISOString().split("T")[0]
             : "",
-          bloodGroup: session.bloodGroup || undefined,
+          bloodGroup: session.bloodGroup || "A_POS",
         },
-        professionalInfo: {
-          designation: session.designation || undefined,
-          department: session.department || undefined,
-          officeAddress: session.officeAddress || "",
-          workDistrict: session.workDistrict || undefined,
-          userStatus: session.userStatus,
-          retiredDepartment: session.retiredDepartment || undefined,
-        },
+        professionalInfo: session.userStatus === "WORKING"
+          ? {
+              userStatus: "WORKING",
+              designation: session.designation!,
+              department: session.department!,
+              officeAddress: session.officeAddress || "",
+              workDistrict: session.workDistrict!,
+            }
+          : {
+              userStatus: "RETIRED",
+              retiredDepartment: session.retiredDepartment!,
+            },
         contactInfo: {
           email: session.email || "",
           mobileNumber: session.mobileNumber || "",
