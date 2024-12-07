@@ -44,16 +44,23 @@ const retiredSchema = z.object({
   })
 });
 
-export const professionalInfoSchema = z.discriminatedUnion("userStatus", [
-  z.object({
-    userStatus: z.literal(UserStatus.WORKING),
-    ...workingSchema.shape
-  }),
-  z.object({
-    userStatus: z.literal(UserStatus.RETIRED),
-    ...retiredSchema.shape
+export const professionalInfoSchema = z.object({
+  userStatus: z.nativeEnum(UserStatus, {
+    required_error: "Please select your current work status",
+    invalid_type_error: "Please select either WORKING or RETIRED"
   })
-]);
+}).and(
+  z.discriminatedUnion("userStatus", [
+    z.object({
+      userStatus: z.literal(UserStatus.WORKING),
+      ...workingSchema.shape
+    }),
+    z.object({
+      userStatus: z.literal(UserStatus.RETIRED),
+      ...retiredSchema.shape
+    })
+  ])
+);
 
 export const contactInfoSchema = z.object({
   personalAddress: z.string().min(1, "Personal address is required"),

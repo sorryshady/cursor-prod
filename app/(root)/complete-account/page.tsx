@@ -17,7 +17,7 @@ import type {
   ContactInfoInput,
   PhotoInput,
 } from "@/lib/validations/auth";
-import type { User } from "@prisma/client";
+import type { Department, Designation, District, User } from "@prisma/client";
 import { useAuth } from "@/contexts/auth-context";
 
 type CompletionStep = 1 | 2 | 3 | 4;
@@ -58,45 +58,52 @@ export default function CompleteAccountPage() {
       if (!session) {
         redirect("/login");
       }
-      setUser(session);
+
+      const res = await fetch("/api/mobile");
+      if (!res.ok) {
+        redirect("/login");
+      }
+      const userData = await res.json();
+      setUser(userData);
 
       // Initialize form data with existing user data
       setFormData({
         personalInfo: {
-          name: session.name || "",
-          gender: session.gender || "MALE",
-          dob: session.dob
-            ? new Date(session.dob).toISOString().split("T")[0]
+          name: userData.name || "",
+          gender: userData.gender || "",
+          dob: userData.dob
+            ? new Date(userData.dob).toLocaleDateString("en-GB")
             : "",
-          bloodGroup: session.bloodGroup || "A_POS",
+          bloodGroup: userData.bloodGroup || "",
         },
-        professionalInfo: session.userStatus === "WORKING"
-          ? {
-              userStatus: "WORKING",
-              designation: session.designation!,
-              department: session.department!,
-              officeAddress: session.officeAddress || "",
-              workDistrict: session.workDistrict!,
-            }
-          : {
-              userStatus: "RETIRED",
-              retiredDepartment: session.retiredDepartment!,
-            },
+        professionalInfo:
+          userData.userStatus === "WORKING"
+            ? {
+                userStatus: "WORKING",
+                designation: userData.designation as Designation,
+                department: userData.department as Department,
+                officeAddress: userData.officeAddress || "",
+                workDistrict: userData.workDistrict as District,
+              }
+            : {
+                userStatus: "RETIRED",
+                retiredDepartment: userData.retiredDepartment!,
+              },
         contactInfo: {
-          email: session.email || "",
-          mobileNumber: session.mobileNumber || "",
-          phoneNumber: session.phoneNumber || "",
-          personalAddress: session.personalAddress || "",
-          homeDistrict: session.homeDistrict || undefined,
+          email: userData.email || "",
+          mobileNumber: userData.mobileNumber || "",
+          phoneNumber: userData.phoneNumber || "",
+          personalAddress: userData.personalAddress || "",
+          homeDistrict: userData.homeDistrict || undefined,
         },
         photo: {
-          photoUrl: session.photoUrl || "",
-          photoId: session.photoId || "",
+          photoUrl: userData.photoUrl || "",
+          photoId: userData.photoId || "",
         },
       });
 
       // Set starting step based on missing data
-      setStep(determineStartingStep(session));
+      setStep(determineStartingStep(userData));
     };
 
     initializeUser();
@@ -172,6 +179,7 @@ export default function CompleteAccountPage() {
 
               {step === 4 && (
                 <PhotoUploadForm
+                  type="update"
                   onSubmit={(data) => updateFormData(4, data)}
                   onBack={() => setStep(3)}
                   initialData={formData.photo}

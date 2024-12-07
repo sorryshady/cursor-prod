@@ -37,12 +37,14 @@ interface PhotoUploadFormProps {
   onBack: () => void;
   initialData?: PhotoInput | null;
   allFormData: AllFormData;
+  type: "register" | "update";
 }
 
 export function PhotoUploadForm({
   onBack,
   initialData,
   allFormData,
+  type = "register",
 }: PhotoUploadFormProps) {
   const router = useRouter();
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -95,14 +97,16 @@ export function PhotoUploadForm({
         bloodGroup: allFormData?.personalInfo?.bloodGroup,
 
         userStatus: professionalInfo?.userStatus,
-        ...(professionalInfo?.userStatus === "WORKING" ? {
-          department: professionalInfo.department,
-          designation: professionalInfo.designation,
-          officeAddress: professionalInfo.officeAddress,
-          workDistrict: professionalInfo.workDistrict,
-        } : {
-          retiredDepartment: professionalInfo?.retiredDepartment,
-        }),
+        ...(professionalInfo?.userStatus === "WORKING"
+          ? {
+              department: professionalInfo.department,
+              designation: professionalInfo.designation,
+              officeAddress: professionalInfo.officeAddress,
+              workDistrict: professionalInfo.workDistrict,
+            }
+          : {
+              retiredDepartment: professionalInfo?.retiredDepartment,
+            }),
 
         personalAddress: allFormData?.contactInfo?.personalAddress,
         homeDistrict: allFormData?.contactInfo?.homeDistrict,
@@ -113,25 +117,42 @@ export function PhotoUploadForm({
         photoUrl: data.photoUrl || undefined,
         photoId: data.photoId || undefined,
       };
-      console.log(completeFormData);
-      const response = await fetch("/api/auth/register", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(completeFormData),
-      });
+      if (type === "register") {
+        const response = await fetch("/api/auth/register", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(completeFormData),
+        });
 
-      const result = await response.json();
+        const result = await response.json();
 
-      if (!response.ok) {
-        throw new Error(result.error || "Registration failed");
+        if (!response.ok) {
+          throw new Error(result.error || "Registration failed");
+        }
+
+        toast.success(
+          "Registration successful! You can login after admin verification.",
+        );
+        router.push("/login");
+      } else {
+        const response = await fetch("/api/user/complete-profile", {
+          method: "PATCH",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(completeFormData),
+        });
+
+        const result = await response.json();
+        if (!response.ok) {
+          throw new Error(result.error || "Profile update failed");
+        }
+
+        toast.success("Profile updated successfully");
+        router.push("/dashboard");
       }
-
-      toast.success(
-        "Registration successful! You can login after admin verification.",
-      );
-      router.push("/login");
     } catch (error) {
       toast.error(
         error instanceof Error ? error.message : "Something went wrong",

@@ -95,6 +95,7 @@ export default function RegisterPage() {
 
               {step === 4 && (
                 <PhotoUploadForm
+                  type="register"
                   onSubmit={(data) => updateFormData(4, data)}
                   onBack={() => setStep(3)}
                   initialData={formData.photo}
