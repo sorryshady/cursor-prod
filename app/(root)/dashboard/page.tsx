@@ -55,6 +55,16 @@ export default async function DashboardPage() {
   if (!user) {
     redirect("/login");
   }
+  if (
+    !user.dob ||
+    !user.email ||
+    !user.mobileNumber ||
+    !user.gender ||
+    !user.bloodGroup ||
+    !user.personalAddress
+  ) {
+    redirect("/complete-account");
+  }
   const data = await getData(user.membershipId!);
 
   return (
