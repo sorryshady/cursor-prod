@@ -45,11 +45,13 @@ export function ProfessionalInfoForm({
       designation: undefined,
       officeAddress: "",
       workDistrict: undefined,
+      retiredDepartment: undefined,
     },
   });
 
   const userStatus = form.watch("userStatus");
   const isWorking = userStatus === "WORKING";
+  const isRetired = userStatus === "RETIRED";
 
   return (
     <Form {...form}>
@@ -188,6 +190,35 @@ export function ProfessionalInfoForm({
                 )}
               />
             </>
+          )}
+          {isRetired && (
+            <FormField
+              control={form.control}
+              name="retiredDepartment"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Retired from?</FormLabel>
+                  <Select
+                    onValueChange={field.onChange}
+                    defaultValue={field.value}
+                  >
+                    <FormControl>
+                      <SelectTrigger>
+                        <SelectValue placeholder="Select the department you retired from" />
+                      </SelectTrigger>
+                    </FormControl>
+                    <SelectContent>
+                      {Object.entries(Department).map(([key, value]) => (
+                        <SelectItem key={key} value={value}>
+                          {key.replace(/_/g, " ")}
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
           )}
         </div>
 

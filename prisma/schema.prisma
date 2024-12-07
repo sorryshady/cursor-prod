@@ -105,22 +105,23 @@ model User {
     id                       String                     @id @default(cuid())
     // Personal Info
     name                     String
-    dob                      DateTime
-    gender                   Gender
-    bloodGroup               BloodGroup
+    dob                      DateTime?
+    gender                   Gender?
+    bloodGroup               BloodGroup?
     // Current employed Status and professional address
     userStatus               UserStatus                 @default(RETIRED)
     department               Department?
     designation              Designation?
     officeAddress            String?
     workDistrict             District?
+    retiredDepartment        Department?
     // Personal Contact Address
     personalAddress          String
     homeDistrict             District
     // Contact Information
-    email                    String                     @unique
+    email                    String?                    @unique
     phoneNumber              String?
-    mobileNumber             String
+    mobileNumber             String?
     // User photo
     photoUrl                 String?
     // Additional fields specific to User

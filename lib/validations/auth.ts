@@ -32,6 +32,7 @@ export const professionalInfoSchema = z.object({
   designation: z.nativeEnum(Designation).optional(),
   officeAddress: z.string().optional(),
   workDistrict: z.nativeEnum(District).optional(),
+  retiredDepartment: z.nativeEnum(Department).optional(),
 })
 
 export const contactInfoSchema = z.object({

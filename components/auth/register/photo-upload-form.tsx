@@ -98,6 +98,8 @@ export function PhotoUploadForm({
         designation: allFormData?.professionalInfo?.designation || undefined,
         officeAddress: allFormData?.professionalInfo?.officeAddress || "",
         workDistrict: allFormData?.professionalInfo?.workDistrict || undefined,
+        retiredDepartment:
+          allFormData?.professionalInfo?.retiredDepartment || undefined,
 
         personalAddress: allFormData?.contactInfo?.personalAddress,
         homeDistrict: allFormData?.contactInfo?.homeDistrict,

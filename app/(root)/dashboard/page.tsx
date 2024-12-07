@@ -89,19 +89,23 @@ export default async function DashboardPage() {
                 <div>{user.name}</div>
                 <div>Date of Birth</div>
                 <div>
-                  {new Date(user.dob).toLocaleDateString("en-IN", {
-                    year: "numeric",
-                    month: "long",
-                    day: "numeric",
-                  })}
+                  {user.dob
+                    ? new Date(user.dob).toLocaleDateString("en-IN", {
+                        year: "numeric",
+                        month: "long",
+                        day: "numeric",
+                      })
+                    : "N/A"}
                 </div>
                 <div>Gender</div>
-                <div>{changeTypeToText(user.gender)}</div>
+                <div>{user.gender ? changeTypeToText(user.gender) : "N/A"}</div>
                 <div>Blood Group</div>
                 <div>
                   {user.bloodGroup
-                    .replace("_POS", " +ve")
-                    .replace("_NEG", " -ve")}
+                    ? user.bloodGroup
+                        .replace("_POS", " +ve")
+                        .replace("_NEG", " -ve")
+                    : "N/A"}
                 </div>
                 <div>User Role</div>
                 <div className="capitalize">{user.userRole.toLowerCase()}</div>
@@ -128,6 +132,12 @@ export default async function DashboardPage() {
                     <div>{user.officeAddress!}</div>
                     <div>Work District</div>
                     <div>{changeTypeToText(user.workDistrict!)}</div>
+                  </>
+                )}
+                {user.userStatus === "RETIRED" && (
+                  <>
+                    <div>Retired from</div>
+                    <div>{user.retiredDepartment!}</div>
                   </>
                 )}
               </div>

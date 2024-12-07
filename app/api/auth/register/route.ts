@@ -6,7 +6,6 @@ export async function POST(req: NextRequest) {
   try {
     const body = await req.json();
     const data = registrationSchema.parse(body);
-    console.log(body);
     // Check if email already exists
     const existingUser = await prisma.user.findUnique({
       where: { email: data.email },
@@ -30,6 +29,7 @@ export async function POST(req: NextRequest) {
         designation: data?.designation,
         officeAddress: data?.officeAddress,
         workDistrict: data?.workDistrict,
+        retiredDepartment: data?.retiredDepartment,
         personalAddress: data.personalAddress,
         homeDistrict: data.homeDistrict,
         email: data.email,
