@@ -1,9 +1,9 @@
 import { prisma } from "@/lib/db";
-import { StatePositionTitle, CommitteeType, VerificationStatus, BloodGroup } from "@prisma/client";
+import { StatePositionTitle, CommitteeType, VerificationStatus, BloodGroup, DistrictPositionTitle } from "@prisma/client";
 
 // Helper function to get position order
 function getPositionOrder(position: StatePositionTitle): number {
-  const orderMap = {
+  const orderMap: Record<StatePositionTitle, number> = {
     PRESIDENT: 0,
     VICE_PRESIDENT: 1,
     GENERAL_SECRETARY: 2,
@@ -13,8 +13,9 @@ function getPositionOrder(position: StatePositionTitle): number {
     IMMEDIATE_PAST_PRESIDENT: 6,
     IMMEDIATE_PAST_SECRETARY: 7,
     EXECUTIVE_COMMITTEE_MEMBER: 8,
+    DISTRICT_NOMINEE: 9,
   };
-  return orderMap[position] ?? 9;
+  return orderMap[position] ?? 10;
 }
 
 interface CommitteeMember {
@@ -24,11 +25,12 @@ interface CommitteeMember {
   positionState: StatePositionTitle | null;
   designation: string | null;
   department: string | null;
-  bloodGroup: BloodGroup ;
-  mobileNumber: string;
+  bloodGroup: BloodGroup | null;
+  positionDistrict: DistrictPositionTitle | null;
+  mobileNumber: string | null;
   membershipId: number | null;
   personalAddress: string;
-  email: string;
+  email: string | null;
 }
 
 export async function getStateCommitteeMembers(excludeExecutive: boolean = false) {
@@ -37,7 +39,9 @@ export async function getStateCommitteeMembers(excludeExecutive: boolean = false
     verificationStatus: VerificationStatus.VERIFIED,
     ...(excludeExecutive && {
       NOT: {
-        positionState: StatePositionTitle.EXECUTIVE_COMMITTEE_MEMBER
+        positionState: {
+          in: [StatePositionTitle.EXECUTIVE_COMMITTEE_MEMBER, StatePositionTitle.DISTRICT_NOMINEE]
+        }
       }
     })
   };
@@ -49,6 +53,7 @@ export async function getStateCommitteeMembers(excludeExecutive: boolean = false
       name: true,
       photoUrl: true,
       positionState: true,
+      positionDistrict: true,
       designation: true,
       department: true,
       mobileNumber: true,
@@ -72,8 +77,19 @@ export async function getStateCommitteeMembers(excludeExecutive: boolean = false
 export async function getDistrictCommitteeMembers() {
   const members = await prisma.user.findMany({
     where: {
-      committeeType: "DISTRICT",
-      verificationStatus: "VERIFIED",
+      OR: [
+        {
+          committeeType: "DISTRICT",
+          verificationStatus: "VERIFIED",
+        },
+        {
+          committeeType: "STATE",
+          positionDistrict: {
+            not: null,
+          },
+          verificationStatus: "VERIFIED",
+        },
+      ],
     },
     select: {
       id: true,

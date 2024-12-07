@@ -6,6 +6,16 @@ import { DistrictMembers } from "./district-members";
 import { Card, CardContent, CardHeader } from "../ui/card";
 import { Button } from "../ui/button";
 
+type DistrictMemberType = {
+  positionDistrict: DistrictPositionTitle | null;
+  name: string;
+  id: string;
+  bloodGroup: BloodGroup | null;
+  department: Department | null;
+  // ... other fields
+  membershipId: number | null;
+};
+
 interface DistrictSelectorProps {
   members: DistrictMemberType[];
 }

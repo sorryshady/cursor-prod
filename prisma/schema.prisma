@@ -94,6 +94,7 @@ enum StatePositionTitle {
     EXECUTIVE_COMMITTEE_MEMBER
     IMMEDIATE_PAST_PRESIDENT
     IMMEDIATE_PAST_SECRETARY
+    DISTRICT_NOMINEE
 }
 
 enum DistrictPositionTitle {
