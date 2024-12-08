@@ -61,7 +61,9 @@ export default async function DashboardPage() {
     !user.mobileNumber ||
     !user.gender ||
     !user.bloodGroup ||
-    !user.personalAddress
+    !user.personalAddress ||
+    (user.userStatus === "WORKING" && !user.workDistrict) ||
+    (user.userStatus === "RETIRED" && !user.retiredDepartment)
   ) {
     redirect("/complete-account");
   }

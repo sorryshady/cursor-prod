@@ -17,7 +17,7 @@ import {
   Designation,
   BloodGroup,
 } from "@prisma/client";
-import { cn } from "@/lib/utils";
+import { changeTypeToText, cn } from "@/lib/utils";
 
 interface CommitteeMemberProps {
   member: {
@@ -28,11 +28,11 @@ interface CommitteeMemberProps {
     positionDistrict?: DistrictPositionTitle | null;
     designation: Designation | null;
     department: Department | null;
-    bloodGroup: BloodGroup;
-    mobileNumber: string;
+    bloodGroup: BloodGroup | null;
+    mobileNumber: string | null;
     membershipId: number | null;
-    personalAddress: string;
-    email: string;
+    personalAddress: string | null;
+    email: string | null;
   };
   className?: string;
 }
@@ -59,12 +59,12 @@ export function CommitteeMemberCard({
         </h3>
         {position && (
           <p className="text-[#35718E] font-medium mb-2 capitalize">
-            {position.replace(/_/g, " ").toLowerCase()}
+            {changeTypeToText(position)}
           </p>
         )}
         {member.designation && (
           <p className="text-gray-600 text-sm mb-4 capitalize">
-            {member.designation.replace(/_/g, " ").toLowerCase()}
+            {changeTypeToText(member.designation)}
           </p>
         )}
 
@@ -92,7 +92,7 @@ export function CommitteeMemberCard({
             <div className="space-y-4">
               {position && (
                 <p className="text-[#35718E] font-medium capitalize">
-                  {position.replace(/_/g, " ").toLowerCase()}
+                  {changeTypeToText(position)}
                 </p>
               )}
 
@@ -100,7 +100,7 @@ export function CommitteeMemberCard({
                 <div className="flex items-center gap-2 text-sm">
                   <Badge className="h-4 w-4 text-muted-foreground" />
                   <span className="capitalize">
-                    {member.designation.replace(/_/g, " ").toLowerCase()}
+                    {changeTypeToText(member.designation)}
                   </span>
                 </div>
               )}
@@ -115,21 +115,21 @@ export function CommitteeMemberCard({
               {member.mobileNumber && (
                 <div className="flex items-center gap-2 text-sm">
                   <Phone className="h-4 w-4 text-muted-foreground" />
-                  <span>Mobile: {member.mobileNumber}</span>
+                  <span>Mobile: {member.mobileNumber || "N/A"}</span>
                 </div>
               )}
 
               {member.personalAddress && (
                 <div className="flex items-center gap-2 text-sm">
                   <MapPin className="h-4 w-4 text-muted-foreground" />
-                  <span>Address: {member.personalAddress}</span>
+                  <span>Address: {member.personalAddress || "N/A"}</span>
                 </div>
               )}
 
               {member.email && (
                 <div className="flex items-center gap-2 text-sm">
                   <Mail className="h-4 w-4 text-muted-foreground" />
-                  <span>Email: {member.email}</span>
+                  <span>Email: {member.email || "N/A"}</span>
                 </div>
               )}
             </div>

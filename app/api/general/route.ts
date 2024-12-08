@@ -59,6 +59,7 @@ export async function GET() {
               name: true,
               photoUrl: true,
               department: true,
+              retiredDepartment: true,
             },
           },
         },

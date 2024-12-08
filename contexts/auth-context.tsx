@@ -1,12 +1,22 @@
 "use client";
 
 import { createContext, useContext, useEffect, useState } from "react";
-import { User } from "@prisma/client";
+import { User as CompleteUser } from "@prisma/client";
 import { useRouter } from "next/navigation";
 import { toast } from "sonner";
 
+interface User {
+  id: string;
+  name: string;
+  email: string;
+  membershipId: string;
+  photoUrl: string;
+  userRole: string;
+}
+
 interface AuthContextType {
   user: User | null;
+  completeUser: CompleteUser | null;
   isLoading: boolean;
   updateSession: () => Promise<void>;
   login: () => void;
@@ -18,6 +28,7 @@ const AuthContext = createContext<AuthContextType | undefined>(undefined);
 export function AuthProvider({ children }: { children: React.ReactNode }) {
   const router = useRouter();
   const [user, setUser] = useState<User | null>(null);
+  const [completeUser, setCompleteUser] = useState<CompleteUser | null>(null);
   const [loading, setLoading] = useState(true);
 
   const checkAuth = async () => {
@@ -26,6 +37,9 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       if (res.ok) {
         const userData = await res.json();
         setUser(userData);
+        const newRes = await fetch("/api/mobile");
+        const completeUserData = await newRes.json();
+        setCompleteUser(completeUserData);
       } else {
         setUser(null);
       }
@@ -55,7 +69,14 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 
   return (
     <AuthContext.Provider
-      value={{ user, isLoading: loading, updateSession, login, logout }}
+      value={{
+        user,
+        completeUser,
+        isLoading: loading,
+        updateSession,
+        login,
+        logout,
+      }}
     >
       {children}
     </AuthContext.Provider>

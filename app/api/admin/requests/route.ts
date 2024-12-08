@@ -113,6 +113,7 @@ export async function PATCH(request: NextRequest) {
               userStatus: true,
               designation: true,
               workDistrict: true,
+              department: true,
             }
           }
         }
@@ -124,6 +125,7 @@ export async function PATCH(request: NextRequest) {
           where: { id: existingRequest.user.id },
           data: {
             userStatus: request.retirementDate ? "RETIRED" : undefined,
+            retiredDepartment: request.retirementDate ? request.user.department : undefined,
             designation: request.newPosition || undefined,
             workDistrict: request.newWorkDistrict || undefined,
             officeAddress: request.newOfficeAddress || undefined,

@@ -19,11 +19,11 @@ interface DistrictMemberType {
   designation: Designation | null;
   department: Department | null;
   workDistrict: District | null;
-  bloodGroup: BloodGroup;
-  email: string;
-  mobileNumber: string;
+  bloodGroup: BloodGroup | null;
+  email: string | null;
+  mobileNumber: string | null;
   membershipId: number | null;
-  personalAddress: string;
+  personalAddress: string | null;
 }
 
 export function DistrictMembers({ members }: DistrictMembersProps) {

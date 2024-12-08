@@ -43,8 +43,10 @@ import { isValid, parse } from "date-fns";
 
 // Schema definitions
 const transferSchema = z.object({
-  newWorkDistrict: z.nativeEnum(District),
-  newOfficeAddress: z.string().min(1, "Office address is required"),
+  newWorkDistrict: z.nativeEnum(District, {
+    message: "Please select your new work district",
+  }),
+  newOfficeAddress: z.string().optional(),
 });
 
 const promotionSchema = z.object({

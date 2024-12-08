@@ -3,7 +3,7 @@ import { PageHeader } from "@/components/layout/page-header";
 import { Wrapper } from "@/components/layout/wrapper";
 import { UpdateSelector } from "@/components/updates/update-selector";
 
-import { Designation, District, User } from "@prisma/client";
+import { Department, Designation, District, User } from "@prisma/client";
 export type Promotions = {
   oldPosition: Designation;
   newPosition: Designation;

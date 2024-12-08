@@ -32,7 +32,7 @@ export function UpdateGrid({
     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
       {items.map((item) => (
         <div
-          key={item.user.id}
+          key={`${item.user.id}-${type}-${item.user.name}-${Math.random()}`}
           className="bg-white/10 backdrop-blur-sm rounded-lg overflow-hidden"
         >
           <div className="aspect-square relative">
@@ -60,10 +60,12 @@ export function UpdateGrid({
             )}
 
             {type === "promotions" && (
-              <p className="text-sm text-gray-200 capitalize">
-                {changeTypeToText(item?.oldPosition || "")} →{" "}
-                {changeTypeToText(item?.newPosition || "")}
-              </p>
+              <>
+                <p className="text-sm text-gray-200 capitalize">
+                  {changeTypeToText(item?.oldPosition || "")} →{" "}
+                  {changeTypeToText(item?.newPosition || "")}
+                </p>
+              </>
             )}
 
             {type === "retirements" && (

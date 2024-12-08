@@ -1,20 +1,10 @@
 "use client";
 
 import { useState } from "react";
-import { DistrictMemberType } from "@/types/committee";
 import { DistrictMembers } from "./district-members";
 import { Card, CardContent, CardHeader } from "../ui/card";
 import { Button } from "../ui/button";
-
-type DistrictMemberType = {
-  positionDistrict: DistrictPositionTitle | null;
-  name: string;
-  id: string;
-  bloodGroup: BloodGroup | null;
-  department: Department | null;
-  // ... other fields
-  membershipId: number | null;
-};
+import { DistrictMemberType } from "@/types/committee";
 
 interface DistrictSelectorProps {
   members: DistrictMemberType[];
@@ -51,7 +41,11 @@ export function DistrictSelector({ members }: DistrictSelectorProps) {
               <Button
                 variant={"link"}
                 key={district.name}
-                onClick={() => setSelectedDistrict(district.name as DistrictMemberType["workDistrict"])}
+                onClick={() =>
+                  setSelectedDistrict(
+                    district.name as DistrictMemberType["workDistrict"],
+                  )
+                }
                 className={`p-4 text-center text-white text-base rounded-md transition-all hover:no-underline w-fit hover:text-yellow-300 ${
                   selectedDistrict === district.name
                     ? "text-yellow-300 hover:text-yellow-200"

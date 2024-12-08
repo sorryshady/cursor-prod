@@ -107,7 +107,7 @@ export default function CompleteAccountPage() {
     };
 
     initializeUser();
-  }, []);
+  }, [session]);
 
   const updateFormData = (
     step: CompletionStep,
