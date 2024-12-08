@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
-import { UserStatus } from "@prisma/client";
+import { UserStatus, Prisma } from "@prisma/client";
 import { prisma } from "@/lib/db";
 import { auth } from "@/lib/auth/auth";
 import { parse } from "date-fns";
@@ -102,23 +102,15 @@ export async function GET(request: NextRequest) {
 
     const { searchParams } = new URL(request.url);
     const includeExpired = searchParams.get("includeExpired") === "true";
-    const page = parseInt(searchParams.get("page") || "1");
-    const limit = parseInt(searchParams.get("limit") || "10");
-    const skip = (page - 1) * limit;
+    const page = searchParams.get("page");
+    const limit = searchParams.get("limit");
 
     const whereCondition = includeExpired
       ? {}
       : { expiryDate: { gt: new Date() } };
 
-    // Get total count for pagination
-    const totalCount = await prisma.obituary.count({
-      where: whereCondition,
-    });
-
-    const totalPages = Math.ceil(totalCount / limit);
-
-    // Get paginated obituaries
-    const obituaries = await prisma.obituary.findMany({
+    // Base query options
+    const queryOptions = {
       where: whereCondition,
       include: {
         user: {
@@ -134,16 +126,39 @@ export async function GET(request: NextRequest) {
           }
         }
       },
-      orderBy: { dateRecorded: "desc" },
-      skip,
-      take: limit,
-    });
+      orderBy: { dateRecorded: Prisma.SortOrder.desc },
+    };
 
-    return NextResponse.json({
-      obituaries,
-      totalPages,
-      currentPage: page,
-    });
+    // If pagination parameters are provided
+    if (page && limit) {
+      const pageNum = parseInt(page);
+      const limitNum = parseInt(limit);
+      const skip = (pageNum - 1) * limitNum;
+
+      const totalCount = await prisma.obituary.count({
+        where: whereCondition,
+      });
+
+      const totalPages = Math.ceil(totalCount / limitNum);
+
+      const obituaries = await prisma.obituary.findMany({
+        ...queryOptions,
+        skip,
+        take: limitNum,
+        orderBy: { dateRecorded: 'desc' } // Fix by explicitly setting orderBy with string literal
+      });
+
+      return NextResponse.json({
+        obituaries,
+        totalPages,
+        currentPage: pageNum,
+      });
+    }
+
+    // If no pagination, return all obituaries
+    const obituaries = await prisma.obituary.findMany(queryOptions);
+
+    return NextResponse.json({ obituaries });
   } catch (error) {
     console.error("Fetching obituaries error:", error);
     return NextResponse.json(

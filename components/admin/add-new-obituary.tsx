@@ -72,6 +72,7 @@ const AddNewObituary = () => {
   });
   const handleSearch = async () => {
     try {
+      if (!value) return;
       setSearching(true);
       const response = await fetch(`/api/admin/search`, {
         method: "POST",
