@@ -56,7 +56,7 @@ const DataTable = ({ tab }: { tab: "general" | "pending" }) => {
         table={table}
         filters={filters}
         onFilterChange={updateFilter}
-        showRoleFilter={tab === "general"}
+        showDesignationFilter={tab === "general"}
         showCommitteeFilter={tab === "general"}
       />
       <div className="rounded-md border">

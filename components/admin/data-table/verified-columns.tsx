@@ -57,16 +57,6 @@ export const verifiedColumns: ColumnDef<TableData>[] = [
     },
   },
   {
-    accessorKey: "userRole",
-    header: "Role",
-    cell: ({ row }) => {
-      const role: string = row.getValue("userRole");
-      return (
-        <div className="capitalize">{role ? role.toLowerCase() : "-"}</div>
-      );
-    },
-  },
-  {
     accessorKey: "committeeType",
     header: "Committee",
     cell: ({ row }) => {

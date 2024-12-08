@@ -1,6 +1,6 @@
 
 import { prisma } from '@/lib/db'
-import { CommitteeType, Department, Prisma, UserRole } from "@prisma/client";
+import { CommitteeType, Department, Designation, District, Prisma, UserRole } from "@prisma/client";
 import { NextRequest, NextResponse } from "next/server";
 
 export async function POST(req: NextRequest) {
@@ -10,9 +10,10 @@ export async function POST(req: NextRequest) {
       page = 0,
       pageSize = 10,
       search = "",
-      userRole = [], // Now expects an array
-      committeeType = [], // Now expects an array
+      designation = [],
+      committeeType = [],
       department = [],
+      district = [],
       status = "VERIFIED",
     } = body;
 
@@ -24,12 +25,12 @@ export async function POST(req: NextRequest) {
             { email: { contains: search, mode: "insensitive" } },
           ]
         : undefined,
-      // Handle multiple roles
-      userRole:
-        userRole.length > 0
-          ? { in: userRole as UserRole[] } // Use 'in' operator for array of values
+      workDistrict:
+        district.length > 0 ? { in: district as District[] } : undefined,
+      designation:
+        designation.length > 0
+          ? { in: designation as Designation[] } // Use 'in' operator for array of values
           : undefined,
-      // Handle multiple statuses
       committeeType:
         committeeType.length > 0
           ? { in: committeeType as CommitteeType[] } // Use 'in' operator for array of values
@@ -52,7 +53,6 @@ export async function POST(req: NextRequest) {
           designation: true,
           department: true,
           workDistrict: true,
-          userRole: true,
           committeeType: true,
         },
         orderBy: {

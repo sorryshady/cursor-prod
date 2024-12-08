@@ -5,7 +5,12 @@ import { DataTableFacetedFilter } from "./data-table-faceted-filter";
 
 import { Button } from "@/components/ui/button";
 import { X } from "lucide-react";
-import { committeeType, departmentType, userRole } from "./data/data";
+import {
+  committeeType,
+  departmentType,
+  designationType,
+  districtType,
+} from "./data/data";
 import { FilterState } from "@/hooks/use-user-table";
 
 interface DataTableToolbarProps<TData> {
@@ -15,27 +20,28 @@ interface DataTableToolbarProps<TData> {
     key: K,
     value: FilterState[K],
   ) => void;
-  showRoleFilter?: boolean;
+  showDesignationFilter?: boolean;
   showCommitteeFilter?: boolean;
 }
 export function DataTableToolbar<TData>({
   table,
   filters,
   onFilterChange,
-  showRoleFilter = true,
   showCommitteeFilter = true,
+  showDesignationFilter = true,
 }: DataTableToolbarProps<TData>) {
   const isFiltered =
-    filters.role.length > 0 ||
     filters.committee.length > 0 ||
-    filters.department.length > 0;
-  // filters.search !== "";
+    filters.department.length > 0 ||
+    filters.designation.length > 0 ||
+    filters.district.length > 0;
 
   const handleReset = () => {
     onFilterChange("search", "");
-    onFilterChange("role", []);
+    onFilterChange("designation", []);
     onFilterChange("committee", []);
     onFilterChange("department", []);
+    onFilterChange("district", []);
     table.resetColumnFilters();
   };
 
@@ -49,12 +55,12 @@ export function DataTableToolbar<TData>({
           className="h-8 w-[150px] lg:w-[250px]"
         />
         <div className="flex flex-1 flex-wrap gap-2">
-          {showRoleFilter && table.getColumn("userRole") && (
+          {showDesignationFilter && table.getColumn("designation") && (
             <DataTableFacetedFilter
-              value={filters.role}
-              onValueChange={(value) => onFilterChange("role", value)}
-              title="Role"
-              options={userRole}
+              value={filters.designation}
+              onValueChange={(value) => onFilterChange("designation", value)}
+              title="Designation"
+              options={designationType}
             />
           )}
           {showCommitteeFilter && table.getColumn("committeeType") && (
@@ -70,6 +76,12 @@ export function DataTableToolbar<TData>({
             onValueChange={(value) => onFilterChange("department", value)}
             title="Department"
             options={departmentType}
+          />
+          <DataTableFacetedFilter
+            value={filters.district}
+            onValueChange={(value) => onFilterChange("district", value)}
+            title="District"
+            options={districtType}
           />
 
           {isFiltered && (

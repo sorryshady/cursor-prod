@@ -7,10 +7,11 @@ import { toast } from "sonner";
 
 export interface FilterState {
   search: string;
-  role: string[];
+  designation: string[];
   committee: string[];
   department: string[];
   status: "VERIFIED" | "PENDING";
+  district: string[];
   // Add future filters here
   // department?: string[];
   // district?: string[];
@@ -50,10 +51,11 @@ export function useUserTable(initialStatus: "VERIFIED" | "PENDING") {
   });
   const [filters, setFilters] = useState<FilterState>({
     search: "",
-    role: [],
+    designation: [],
     committee: [],
     department: [],
     status: initialStatus,
+    district: [],
   });
 
   const debouncedSearch = useDebounce(filters.search, 300);
@@ -61,10 +63,11 @@ export function useUserTable(initialStatus: "VERIFIED" | "PENDING") {
     setPagination((prev) => ({ ...prev, pageIndex: 0 }));
   }, [
     debouncedSearch,
-    filters.role,
+    filters.designation,
     filters.committee,
     filters.department,
     filters.status,
+    filters.district,
   ]);
 
   const fetchUsers = async () => {
@@ -72,10 +75,11 @@ export function useUserTable(initialStatus: "VERIFIED" | "PENDING") {
       page: pagination.pageIndex,
       pageSize: pagination.pageSize,
       search: debouncedSearch,
-      userRole: filters.role,
+      designation: filters.designation,
       committeeType: filters.committee,
       department: filters.department,
       status: filters.status,
+      district: filters.district,
     });
 
     return {
@@ -91,10 +95,11 @@ export function useUserTable(initialStatus: "VERIFIED" | "PENDING") {
       pagination.pageIndex,
       pagination.pageSize,
       debouncedSearch,
-      filters.role,
+      filters.designation,
       filters.committee,
       filters.department,
       filters.status,
+      filters.district,
     ],
     queryFn: fetchUsers,
     placeholderData: (previousData) => previousData,
