@@ -102,11 +102,22 @@ export async function GET(request: NextRequest) {
 
     const { searchParams } = new URL(request.url);
     const includeExpired = searchParams.get("includeExpired") === "true";
+    const page = parseInt(searchParams.get("page") || "1");
+    const limit = parseInt(searchParams.get("limit") || "10");
+    const skip = (page - 1) * limit;
 
     const whereCondition = includeExpired
       ? {}
       : { expiryDate: { gt: new Date() } };
 
+    // Get total count for pagination
+    const totalCount = await prisma.obituary.count({
+      where: whereCondition,
+    });
+
+    const totalPages = Math.ceil(totalCount / limit);
+
+    // Get paginated obituaries
     const obituaries = await prisma.obituary.findMany({
       where: whereCondition,
       include: {
@@ -123,10 +134,16 @@ export async function GET(request: NextRequest) {
           }
         }
       },
-      orderBy: { dateRecorded: "desc" }
+      orderBy: { dateRecorded: "desc" },
+      skip,
+      take: limit,
     });
 
-    return NextResponse.json(obituaries);
+    return NextResponse.json({
+      obituaries,
+      totalPages,
+      currentPage: page,
+    });
   } catch (error) {
     console.error("Fetching obituaries error:", error);
     return NextResponse.json(
