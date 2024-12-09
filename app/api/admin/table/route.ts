@@ -1,6 +1,6 @@
 
 import { prisma } from '@/lib/db'
-import { CommitteeType, Department, Designation, District, Prisma, UserRole } from "@prisma/client";
+import { CommitteeType, Department, Designation, District, Prisma } from "@prisma/client";
 import { NextRequest, NextResponse } from "next/server";
 
 export async function POST(req: NextRequest) {
