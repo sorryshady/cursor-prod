@@ -1,5 +1,6 @@
 import { createUploadthing, type FileRouter } from "uploadthing/next";
 import { auth } from "@/lib/auth/auth";
+import { UploadThingError } from 'uploadthing/server'
 
 const f = createUploadthing();
 
@@ -7,7 +8,7 @@ export const ourFileRouter = {
   imageUploader: f({ image: { maxFileSize: "4MB" } })
     .middleware(async () => {
       const user = await auth();
-      if (!user) throw new Error("Unauthorized");
+      if (!user) throw new UploadThingError("Unauthorized");
       return { userId: user.id };
     })
     .onUploadComplete(async ({ metadata, file }) => {
