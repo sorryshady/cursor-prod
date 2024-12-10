@@ -11,8 +11,26 @@ const protectedRoutes = [
 // Add auth routes that should redirect to dashboard if logged in
 const authRoutes = ["/login", "/register", "/forgot-password"];
 
+// Add paths that should bypass middleware
+const publicPaths = [
+  "/_next",
+  "/favicon.ico",
+  "/public",
+  "/api/uploadthing"
+];
+
 export async function middleware(request: NextRequest) {
   const { pathname } = request.nextUrl;
+
+  // Check if it's an uploadthing route (allow all uploadthing routes)
+  if (pathname.includes("/api/uploadthing")) {
+    return NextResponse.next();
+  }
+
+  // Check if the path should bypass middleware
+  if (publicPaths.some(path => pathname.startsWith(path))) {
+    return NextResponse.next();
+  }
 
   // Check if it's an auth route
   const isAuthRoute = authRoutes.some(route => pathname.startsWith(route));
@@ -92,6 +110,13 @@ export async function middleware(request: NextRequest) {
 
 export const config = {
   matcher: [
+    /*
+     * Match all paths except:
+     * - _next/static (static files)
+     * - _next/image (image optimization files)
+     * - favicon.ico (favicon file)
+     * - public (public files)
+     */
     "/((?!_next/static|_next/image|favicon.ico|public).*)",
   ],
 };

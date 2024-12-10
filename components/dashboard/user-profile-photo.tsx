@@ -3,29 +3,12 @@
 import Image from "next/image";
 import React, { useState } from "react";
 import { toast } from "sonner";
-import { z } from "zod";
 import { Loader2 } from "lucide-react";
 import { useUploadThing } from "@/lib/uploadthing";
 import { useAuth } from "@/contexts/auth-context";
 import { Input } from "../ui/input";
 import { Button } from "../ui/button";
-
-const MAX_FILE_SIZE = 4 * 1024 * 1024; // 5MB
-const ACCEPTED_IMAGE_TYPES = [
-  "image/jpeg",
-  "image/jpg",
-  "image/png",
-  "image/webp",
-];
-
-const photoSchema = z
-  .custom<File>()
-  .refine((file) => file.size <= MAX_FILE_SIZE, {
-    message: "File size must be less than 5MB",
-  })
-  .refine((file) => ACCEPTED_IMAGE_TYPES.includes(file.type), {
-    message: "Only .jpg, .jpeg, .png and .webp formats are supported",
-  });
+import { processImage } from "@/lib/utils/image-processing";
 
 interface UserProfilePhotoProps {
   photoUrl?: string | null;
@@ -48,19 +31,23 @@ export function UserProfilePhoto({ photoUrl, name }: UserProfilePhotoProps) {
       return;
     }
 
-    // Validate file using Zod
-    const validation = photoSchema.safeParse(file);
+    if (!file.type.includes("image")) {
+      toast.error("Please upload an image file");
+      return;
+    }
 
-    if (!validation.success) {
-      toast.error("Invalid file", {
-        description: validation.error.issues[0].message,
-      });
+    // Check file size (4MB = 4 * 1024 * 1024 bytes)
+    if (file.size > 4 * 1024 * 1024) {
+      toast.error("File size must be less than 4MB");
       return;
     }
 
     try {
       setIsSubmitting(true);
-      const res = await startUpload([file], {});
+
+      // Process the image
+      const processedFile = await processImage(file, name);
+      const res = await startUpload([processedFile]);
 
       if (!res?.[0]) {
         throw new Error("Upload failed");

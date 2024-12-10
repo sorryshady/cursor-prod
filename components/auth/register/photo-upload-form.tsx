@@ -25,6 +25,7 @@ import { toast } from "sonner";
 import { useUploadThing } from "@/lib/uploadthing";
 import { Input } from "@/components/ui/input";
 import { useRouter } from "next/navigation";
+import { processImage } from "@/lib/utils/image-processing";
 
 interface AllFormData {
   personalInfo: PersonalInfoInput | null;
@@ -82,8 +83,28 @@ export function PhotoUploadForm({
       return;
     }
 
-    setIsUploading(true);
-    await startUpload([file], {});
+    // Check file size (4MB = 4 * 1024 * 1024 bytes)
+    if (file.size > 4 * 1024 * 1024) {
+      toast.error("File size must be less than 4MB");
+      return;
+    }
+
+    try {
+      setIsUploading(true);
+
+      // Process the image using server-side sharp
+      const processedFile = await processImage(
+        file,
+        allFormData.personalInfo?.name,
+      );
+
+      // Upload the processed file
+      await startUpload([processedFile]);
+    } catch (error) {
+      console.error("Error processing image:", error);
+      toast.error("Failed to process image");
+      setIsUploading(false);
+    }
   };
 
   const handleSubmit = async (data: PhotoInput) => {
