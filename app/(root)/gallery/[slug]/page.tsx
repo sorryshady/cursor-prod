@@ -51,7 +51,7 @@ export default async function GallerySlugPage({
 
       <main className="relative z-10">
         <Wrapper className="py-20 relative">
-          <BackButton href="/gallery" label="Back to gallery" type="black" />
+          <BackButton label="Back to gallery" type="black" />
 
           <PageHeader
             title={gallery.title}

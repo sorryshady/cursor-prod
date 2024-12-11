@@ -21,7 +21,7 @@ export default async function StateCommitteePage() {
 
       <main className="relative z-10">
         <Wrapper className="py-20 relative">
-          <BackButton href="/committee" label="Back to committee" />
+          <BackButton label="Back to committee" />
 
           <PageHeader
             title="State Committee"

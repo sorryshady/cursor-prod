@@ -3,16 +3,31 @@ import Image from "next/image";
 import { FaFacebookSquare as Facebook } from "react-icons/fa";
 
 const parentLinks = [
-  { href: "#", label: "Kerala PWD" },
-  { href: "#", label: "Kerala LSGD" },
-  { href: "#", label: "Kerala Irrigation Dept" },
+  {
+    href: "https://www.pwd.kerala.gov.in/IMF_website/index/",
+    label: "Kerala PWD",
+  },
+  { href: "http://www.lsgkerala.gov.in", label: "Kerala LSGD" },
+  {
+    href: "https://www.irrigation.kerala.gov.in",
+    label: "Kerala Irrigation Dept",
+  },
 ];
 
 const usefulLinks = [
-  { href: "#", label: "Tenders Kerala" },
-  { href: "#", label: "Spark" },
-  { href: "#", label: "PRICE" },
-  { href: "#", label: "Kerala Highway Research Institute" },
+  {
+    href: "https://www.etenders.kerala.gov.in/nicgep/app",
+    label: "Tenders Kerala",
+  },
+  {
+    href: "https://www.spark.gov.in/webspark/(S(hzae3zw3gds1sbhw5rulsk2p))/sparklogin.aspx",
+    label: "Spark",
+  },
+  { href: "https://www.price.kerala.gov.in/price3_pmu/", label: "PRICE" },
+  {
+    href: "https://khri.kerala.gov.in/",
+    label: "Kerala Highway Research Institute",
+  },
 ];
 
 export function Footer() {
@@ -38,6 +53,7 @@ export function Footer() {
               <li key={link.label}>
                 <Link
                   href={link.href}
+                  target="_blank"
                   className="hover:text-[#FACE30] transition-colors"
                 >
                   {link.label}
@@ -55,6 +71,7 @@ export function Footer() {
               <li key={link.label}>
                 <Link
                   href={link.href}
+                  target="_blank"
                   className="hover:text-[#FACE30] transition-colors"
                 >
                   {link.label}

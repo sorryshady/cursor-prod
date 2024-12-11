@@ -138,6 +138,16 @@ export default function HomePage() {
             description="Meet our State Committee"
           />
           <StateCommitteeCarousel />
+          <div className="mt-8 text-center w-fit mx-auto">
+            <Link href="/committee/state-committee" className="mx-auto">
+              <Button
+                variant="secondary"
+                className="flex items-center gap-2 bg-slate-800 text-white hover:bg-slate-700"
+              >
+                View All Members
+              </Button>
+            </Link>
+          </div>
         </Wrapper>
       </section>
     </>

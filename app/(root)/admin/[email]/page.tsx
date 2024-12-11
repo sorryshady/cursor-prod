@@ -123,7 +123,7 @@ export default async function ProfilePage({
   const { user } = await getData(decodeURIComponent(email), status);
   return (
     <Wrapper className="my-[5rem] min-h-[70vh] flex justify-center items-center relative">
-      <BackButton href="/admin" label="Back to admin" type="black" />
+      <BackButton label="Back to admin" type="black" />
       <div className="max-w-4xl mx-auto pt-10">
         <div className="space-y-8">
           <div className="flex flex-col  md:flex-row items-center md:items-start mb-8">

@@ -74,7 +74,7 @@ export default async function NewsSlugPage({ params }: NewsSlugPageProps) {
 
       <Wrapper className="relative z-10 py-20">
         {/* Back Button */}
-        <BackButton href="/news" label="Back to news" type="black" />
+        <BackButton label="Back to news" type="black" />
 
         <div className="max-w-4xl mx-auto">
           <div className="mb-6">

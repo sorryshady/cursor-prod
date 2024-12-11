@@ -38,7 +38,7 @@ export default async function CategoryDownloads({ params }: Props) {
       <PageBackground imageType="body" withGradient />
       <main className="relative z-10">
         <Wrapper className="py-20 relative">
-          <BackButton href="/downloads" label="Back to categories" />
+          <BackButton label="Back to categories" />
 
           <PageHeader
             title={`${categoryName} Downloads`}
