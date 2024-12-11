@@ -12,19 +12,55 @@ import { urlFor } from "@/lib/sanity";
 import { formatDate } from "@/lib/utils";
 import { UpcomingEvent } from "@/types/sanity";
 import { Badge } from "@/components/ui/badge";
-import { Calendar, Info } from "lucide-react";
+import { Calendar, Info, MapPin } from "lucide-react";
 
 interface EventCardProps {
   event: UpcomingEvent;
 }
 
+function formatDateRange(startDate: string, endDate?: string) {
+  const start = formatDate(startDate);
+  if (!endDate || startDate === endDate) {
+    return start;
+  }
+  return `${start} - ${formatDate(endDate)}`;
+}
+
 export function EventCard({ event }: EventCardProps) {
-  const isUpcoming = new Date(event.date) >= new Date();
+  const currentDate = new Date();
+  const startDate = new Date(event.dateRange.startDate);
+  const endDate = event.dateRange.endDate
+    ? new Date(event.dateRange.endDate)
+    : startDate;
+
+  // Determine event status
+  const isUpcoming = startDate > currentDate;
+  const isOngoing = startDate <= currentDate && endDate >= currentDate;
+  const isPast = endDate < currentDate;
+
+  // Get status text and color
+  const getStatusDetails = () => {
+    if (isUpcoming)
+      return {
+        text: "Upcoming",
+        variant: "default" as const,
+        bgColor: "bg-[#17374A]",
+      };
+    if (isOngoing)
+      return {
+        text: "Ongoing",
+        variant: "default" as const,
+        bgColor: "bg-[#35718E]",
+      };
+    return { text: "Past Event", variant: "secondary" as const, bgColor: "" };
+  };
+
+  const status = getStatusDetails();
 
   return (
     <Card
       className={`overflow-hidden transition-all hover:shadow-lg flex h-[280px] ${
-        !isUpcoming ? "opacity-75 hover:opacity-100" : ""
+        isPast ? "opacity-75 hover:opacity-100" : ""
       }`}
     >
       {/* Image Section - Left Half */}
@@ -36,30 +72,40 @@ export function EventCard({ event }: EventCardProps) {
           alt={event.title}
           fill
           className={`object-cover transition-transform duration-300 ${
-            isUpcoming ? "hover:scale-105" : "grayscale hover:grayscale-0"
+            !isPast ? "hover:scale-105" : "grayscale hover:grayscale-0"
           }`}
           sizes="(max-width: 768px) 45vw, 25vw"
         />
         <div className="absolute top-3 left-3">
-          <Badge
-            variant={isUpcoming ? "default" : "secondary"}
-            className={`${isUpcoming ? "bg-[#17374A]" : ""}`}
-          >
-            {isUpcoming ? "Upcoming" : "Past Event"}
+          <Badge variant={status.variant} className={status.bgColor}>
+            {status.text}
           </Badge>
         </div>
       </div>
 
       {/* Content Section - Right Half */}
       <CardContent className="flex-1 p-6 flex flex-col justify-center">
-        <div className="flex items-center gap-2 text-sm text-muted-foreground mb-3">
-          <Calendar className="h-4 w-4" />
-          <time dateTime={event.date}>{formatDate(event.date)}</time>
+        <div className="space-y-2 mb-3">
+          <div className="flex items-center gap-2 text-sm text-muted-foreground">
+            <Calendar className="h-4 w-4" />
+            <time dateTime={event.dateRange.startDate}>
+              {formatDateRange(
+                event.dateRange.startDate,
+                event.dateRange.endDate,
+              )}
+            </time>
+          </div>
+          {event.location && (
+            <div className="flex items-center gap-2 text-sm text-muted-foreground">
+              <MapPin className="h-4 w-4" />
+              <span>{event.location}</span>
+            </div>
+          )}
         </div>
 
         <h3
           className={`text-2xl font-semibold mb-4 line-clamp-2 ${
-            isUpcoming ? "text-[#35718E]" : "text-gray-700"
+            !isPast ? "text-[#35718E]" : "text-gray-700"
           }`}
         >
           {event.title}
@@ -82,9 +128,22 @@ export function EventCard({ event }: EventCardProps) {
           <DialogContent className="max-w-[90vw] md:max-w-[500px] rounded-md">
             <DialogHeader>
               <DialogTitle className="mb-4">{event.title}</DialogTitle>
-              <div className="flex items-center gap-2 text-sm text-muted-foreground mb-4">
-                <Calendar className="h-4 w-4" />
-                <time dateTime={event.date}>{formatDate(event.date)}</time>
+              <div className="space-y-2 mb-4">
+                <div className="flex items-center gap-2 text-sm text-muted-foreground">
+                  <Calendar className="h-4 w-4" />
+                  <time dateTime={event.dateRange.startDate}>
+                    {formatDateRange(
+                      event.dateRange.startDate,
+                      event.dateRange.endDate,
+                    )}
+                  </time>
+                </div>
+                {event.location && (
+                  <div className="flex items-center gap-2 text-sm text-muted-foreground">
+                    <MapPin className="h-4 w-4" />
+                    <span>{event.location}</span>
+                  </div>
+                )}
               </div>
             </DialogHeader>
             <div className="relative w-full aspect-video mb-4 overflow-hidden rounded-lg">

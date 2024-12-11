@@ -15,7 +15,7 @@ export const metadata: Metadata = {
 export const revalidate = 86400;
 
 export default async function EventsPage() {
-  const { upcomingEvents, pastEvents } = await getEvents();
+  const { upcomingEvents, ongoingEvents, pastEvents } = await getEvents();
 
   return (
     <div className="relative min-h-screen">
@@ -25,13 +25,27 @@ export default async function EventsPage() {
         <Wrapper className="py-20">
           <PageHeader
             title="Events"
-            description="Join us in our upcoming events or explore our past events"
+            description="Join us in our ongoing events, upcoming events or explore our past events"
             className="mb-12"
             titleClassName="text-white"
             descriptionClassName="text-gray-200"
           />
 
-          {/* Upcoming Events Section - Always shown */}
+          {/* Ongoing Events Section - Show only if there are ongoing events */}
+          {ongoingEvents.length > 0 && (
+            <section className="mb-16">
+              <h2 className="text-2xl font-semibold text-white mb-8">
+                Ongoing Events
+              </h2>
+              <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                {ongoingEvents.map((event) => (
+                  <EventCard key={event._id} event={event} />
+                ))}
+              </div>
+            </section>
+          )}
+
+          {/* Upcoming Events Section */}
           <section className="mb-16">
             <h2 className="text-2xl font-semibold text-white mb-8">
               Upcoming Events
@@ -49,7 +63,7 @@ export default async function EventsPage() {
             )}
           </section>
 
-          {/* Past Events Section */}
+          {/* Past Events Section - Show only if there are past events */}
           {pastEvents.length > 0 && (
             <section>
               <h2 className="text-2xl font-semibold text-white mb-8">

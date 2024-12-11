@@ -17,6 +17,27 @@ export default function EventsLoading() {
             titleClassName="text-white"
             descriptionClassName="text-gray-200"
           />
+          {/* Ongoing Events Section */}
+          <section className="mb-16">
+            <h2 className="text-2xl font-semibold text-white mb-8">
+              Ongoing Events
+            </h2>
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+              {[1, 2].map((i) => (
+                <div
+                  key={i}
+                  className="flex h-[280px] bg-white/5 rounded-lg overflow-hidden"
+                >
+                  <Skeleton className="w-[45%] h-full" />
+                  <div className="flex-1 p-6">
+                    <Skeleton className="h-6 w-32 mb-3" />
+                    <Skeleton className="h-8 w-3/4 mb-4" />
+                    <Skeleton className="h-20 w-full" />
+                  </div>
+                </div>
+              ))}
+            </div>
+          </section>
 
           {/* Upcoming Events Section */}
           <section className="mb-16">
@@ -25,7 +46,10 @@ export default function EventsLoading() {
             </h2>
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
               {[1, 2].map((i) => (
-                <div key={i} className="flex h-[280px] bg-white/5 rounded-lg overflow-hidden">
+                <div
+                  key={i}
+                  className="flex h-[280px] bg-white/5 rounded-lg overflow-hidden"
+                >
                   <Skeleton className="w-[45%] h-full" />
                   <div className="flex-1 p-6">
                     <Skeleton className="h-6 w-32 mb-3" />
@@ -44,7 +68,10 @@ export default function EventsLoading() {
             </h2>
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
               {[1, 2].map((i) => (
-                <div key={i} className="flex h-[280px] bg-white/5 rounded-lg overflow-hidden">
+                <div
+                  key={i}
+                  className="flex h-[280px] bg-white/5 rounded-lg overflow-hidden"
+                >
                   <Skeleton className="w-[45%] h-full" />
                   <div className="flex-1 p-6">
                     <Skeleton className="h-6 w-32 mb-3" />
@@ -59,4 +86,4 @@ export default function EventsLoading() {
       </main>
     </div>
   );
-} 
+}

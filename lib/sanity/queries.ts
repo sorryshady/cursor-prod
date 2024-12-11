@@ -81,13 +81,13 @@ export async function getEvents() {
   const pastMonthDate = new Date(
     currentDate.setMonth(currentDate.getMonth() - 1),
   );
-
   // Fetch events from past month to future
   const events = await client.fetch(
-    `*[_type == "upcomingEvent" && date >= $pastMonthDate] | order(date asc) {
+    `*[_type == "upcomingEvent" && dateRange.startDate >= $pastMonthDate] | order(dateRange.startDate asc) {
       _id,
       title,
-      date,
+      dateRange,
+      location,
       description,
       image,
     }`,
@@ -100,17 +100,36 @@ export async function getEvents() {
 
 export function separateEvents(events: UpcomingEvent[]): {
   upcomingEvents: UpcomingEvent[];
+  ongoingEvents: UpcomingEvent[];
   pastEvents: UpcomingEvent[];
 } {
   const currentDate = new Date();
 
   return {
     upcomingEvents: events
-      .filter((event) => new Date(event.date) >= currentDate)
-      .sort((a, b) => new Date(a.date).getTime() - new Date(b.date).getTime()), // Ascending for upcoming
+      .filter((event) => {
+        return new Date(event.dateRange.startDate) > currentDate;
+      })
+      .sort((a, b) =>
+        new Date(a.dateRange.startDate).getTime() - new Date(b.dateRange.startDate).getTime()
+      ), // Ascending for upcoming
+    ongoingEvents: events
+      .filter((event) => {
+        const startDate = new Date(event.dateRange.startDate);
+        const endDate = new Date(event.dateRange.endDate || event.dateRange.startDate);
+        return startDate <= currentDate && endDate >= currentDate;
+      })
+      .sort((a, b) =>
+        new Date(a.dateRange.startDate).getTime() - new Date(b.dateRange.startDate).getTime()
+      ), // Ascending for ongoing
     pastEvents: events
-      .filter((event) => new Date(event.date) < currentDate)
-      .sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime()), // Descending for past
+      .filter((event) => {
+        const endDate = event.dateRange.endDate || event.dateRange.startDate;
+        return new Date(endDate) < currentDate;
+      })
+      .sort((a, b) =>
+        new Date(b.dateRange.startDate).getTime() - new Date(a.dateRange.startDate).getTime()
+      ), // Descending for past
   };
 }
 

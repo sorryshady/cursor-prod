@@ -64,8 +64,12 @@ export interface Newsletter {
 export interface UpcomingEvent {
   _id: string;
   title: string;
-  date: string;
+  dateRange: {
+    startDate: string;
+    endDate?: string;
+  };
   description: string;
+  location?: string;
   image?: {
     asset: {
       _ref: string;
