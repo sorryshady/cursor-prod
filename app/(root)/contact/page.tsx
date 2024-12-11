@@ -21,7 +21,7 @@ export default function Contact() {
             title="Contact Us"
             description="Get in touch with us"
             className="mb-12"
-            titleClassName="text-white text-4xl"
+            titleClassName="text-white"
             descriptionClassName="text-gray-200"
           />
           <div className="container mx-auto px-4 py-16 relative">

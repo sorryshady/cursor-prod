@@ -13,23 +13,27 @@ export function PageHeader({
   description,
   className,
   titleClassName,
-  descriptionClassName
+  descriptionClassName,
 }: PageHeaderProps) {
   return (
     <div className={cn("space-y-2 text-center", className)}>
-      <h1 className={cn(
-        "text-3xl font-bold tracking-tight",
-        "dark:text-white text-foreground",
-        titleClassName
-      )}>
+      <h1
+        className={cn(
+          "text-4xl font-bold tracking-tight",
+          "dark:text-white text-foreground",
+          titleClassName,
+        )}
+      >
         {title}
       </h1>
       {description && (
-        <p className={cn(
-          "text-muted-foreground",
-          "dark:text-gray-300",
-          descriptionClassName
-        )}>
+        <p
+          className={cn(
+            "text-muted-foreground",
+            "dark:text-gray-300",
+            descriptionClassName,
+          )}
+        >
           {description}
         </p>
       )}
