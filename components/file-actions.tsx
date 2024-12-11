@@ -14,15 +14,28 @@ interface FileActionsProps {
 const FileActions = ({ fileUrl, title }: FileActionsProps) => {
   const handleDownload = async () => {
     try {
-      const response = await fetch(`/api/download?url=${encodeURIComponent(fileUrl)}`);
+      const response = await fetch(
+        `/api/download?url=${encodeURIComponent(fileUrl)}&title=${encodeURIComponent(title)}`,
+      );
 
       if (!response.ok) throw new Error("Download failed");
+
+      // Get filename from Content-Disposition header
+      const contentDisposition = response.headers.get("content-disposition");
+      let filename = title;
+
+      if (contentDisposition) {
+        const filenameMatch = contentDisposition.match(/filename="(.+)"/);
+        if (filenameMatch) {
+          filename = decodeURIComponent(filenameMatch[1]);
+        }
+      }
 
       const blob = await response.blob();
       const url = window.URL.createObjectURL(blob);
       const link = document.createElement("a");
       link.href = url;
-      link.download = title || fileUrl.split("/").pop() || "download";
+      link.download = filename; // Use the filename from the header
       document.body.appendChild(link);
       link.click();
 
