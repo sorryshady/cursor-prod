@@ -29,7 +29,7 @@ const AdminTabs = () => {
           Transfer/Promotion/Retirement
         </TabsTrigger>
         <TabsTrigger value="obituaries">Obituaries</TabsTrigger>
-        <TabsTrigger value="cms">Others</TabsTrigger>
+        <TabsTrigger value="others">Others</TabsTrigger>
       </TabsList>
       <TabsContent value="general">
         <Card className="p-4 pt-8">
@@ -83,7 +83,7 @@ const AdminTabs = () => {
           </Table>
         </Card>
       </TabsContent>
-      <TabsContent value="cms">
+      <TabsContent value="others">
         <Card className="p-4 pt-8">UPDATE UNDERWAY</Card>
       </TabsContent>
     </Tabs>

@@ -59,20 +59,23 @@ export function PhotoUploadForm({
     },
   });
 
-  const { startUpload } = useUploadThing("imageUploader", {
-    onClientUploadComplete: (res) => {
-      if (res?.[0]) {
-        form.setValue("photoUrl", res[0].url);
-        form.setValue("photoId", res[0].key);
-        toast.success("Photo uploaded successfully");
-      }
-      setIsUploading(false);
+  const { startUpload } = useUploadThing(
+    type === "register" ? "registerImageUploader" : "imageUploader",
+    {
+      onClientUploadComplete: (res) => {
+        if (res?.[0]) {
+          form.setValue("photoUrl", res[0].url);
+          form.setValue("photoId", res[0].key);
+          toast.success("Photo uploaded successfully");
+        }
+        setIsUploading(false);
+      },
+      onUploadError: (error) => {
+        toast.error(error.message);
+        setIsUploading(false);
+      },
     },
-    onUploadError: (error) => {
-      toast.error(error.message);
-      setIsUploading(false);
-    },
-  });
+  );
 
   const handleFileChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
@@ -205,12 +208,26 @@ export function PhotoUploadForm({
                         />
                       </div>
                     ) : null}
-
+                    <Button
+                      type="button"
+                      variant="outline"
+                      onClick={() =>
+                        (
+                          document.querySelector(
+                            'input[type="file"]',
+                          ) as HTMLInputElement
+                        )?.click()
+                      }
+                      className="w-full"
+                    >
+                      Upload Photo
+                    </Button>
                     <Input
                       placeholder="Enter your photo"
                       type="file"
                       accept="image/*"
                       onChange={handleFileChange}
+                      className="hidden"
                     />
                   </div>
                 </FormControl>
@@ -221,7 +238,7 @@ export function PhotoUploadForm({
         </div>
 
         <div className="flex justify-between">
-          <Button type="button" variant="outline" onClick={onBack}>
+          <Button type="button" variant="secondary" onClick={onBack}>
             Previous Step
           </Button>
           <Button

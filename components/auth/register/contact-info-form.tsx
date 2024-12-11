@@ -155,7 +155,7 @@ export function ContactInfoForm({
         </div>
 
         <div className="flex justify-between">
-          <Button type="button" variant="outline" onClick={onBack}>
+          <Button type="button" variant="secondary" onClick={onBack}>
             Previous Step
           </Button>
           <Button type="submit" className="bg-[#20333C] hover:bg-[#20333C]/90">

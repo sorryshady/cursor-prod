@@ -48,19 +48,30 @@ export default async function CategoryDownloads({ params }: Props) {
             descriptionClassName="text-gray-200"
           />
 
-          <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3 relative z-10">
-            {downloads.map((download, index) => (
-              <Card key={index} className="overflow-hidden">
-                <CardContent className="text-center p-8">
-                  <h2 className="text-lg font-medium mb-2">{download.title}</h2>
-                  <FileActions
-                    fileUrl={download.fileUrl}
-                    title={download.title}
-                  />
-                </CardContent>
-              </Card>
-            ))}
-          </div>
+          {downloads.length > 0 ? (
+            <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3 relative z-10">
+              {downloads.map((download, index) => (
+                <Card key={index} className="overflow-hidden">
+                  <CardContent className="text-center p-8">
+                    <h2 className="text-lg font-medium mb-2">
+                      {download.title}
+                    </h2>
+                    <FileActions
+                      fileUrl={download.fileUrl}
+                      title={download.title}
+                    />
+                  </CardContent>
+                </Card>
+              ))}
+            </div>
+          ) : (
+            <div className="text-center p-8 bg-white/10 rounded-lg backdrop-blur-sm">
+              <p className="text-white text-lg">
+                No downloads available for {categoryName.toLowerCase()} at the
+                moment.
+              </p>
+            </div>
+          )}
         </Wrapper>
       </main>
     </div>

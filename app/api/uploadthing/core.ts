@@ -15,6 +15,15 @@ export const ourFileRouter = {
       // Return response immediately without waiting for additional processing
       return { uploadedBy: metadata.userId, url: file.url };
     }),
+
+  registerImageUploader: f({ image: { maxFileSize: "4MB" } })
+    .middleware(async () => {
+      // No auth check for registration
+      return { userId: null };
+    })
+    .onUploadComplete(async ({ file }) => {
+      return { url: file.url };
+    }),
 } satisfies FileRouter;
 
 export type OurFileRouter = typeof ourFileRouter;

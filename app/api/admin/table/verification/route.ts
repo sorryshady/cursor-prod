@@ -6,7 +6,7 @@ export async function POST(req: NextRequest) {
     const { email, status } = await req.json();
     const lastUser = await prisma.user.findFirst({
       where: { membershipId: { not: null } },
-      orderBy: { createdAt: 'desc' },
+      orderBy: { membershipId: 'desc' },
       select: { membershipId: true }
     });
     const existingUser = await prisma.user.findUnique({ where: { email } });
