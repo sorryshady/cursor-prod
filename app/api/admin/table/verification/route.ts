@@ -1,12 +1,13 @@
-
-import { prisma } from '@/lib/db'
+import { prisma } from "@/lib/db";
 import { NextRequest, NextResponse } from "next/server";
 
 export async function POST(req: NextRequest) {
   try {
     const { email, status } = await req.json();
-    const numberOfUsers = await prisma.user.count({
-      where: { verificationStatus: "VERIFIED" },
+    const lastUser = await prisma.user.findFirst({
+      where: { membershipId: { not: null } },
+      orderBy: { createdAt: 'desc' },
+      select: { membershipId: true }
     });
     const existingUser = await prisma.user.findUnique({ where: { email } });
     if (!existingUser) {
@@ -18,12 +19,12 @@ export async function POST(req: NextRequest) {
         { status: 400 },
       );
     }
-    const membershipId = numberOfUsers + 1;
+    const membershipId = lastUser?.membershipId! + 1;
     const updatedUser = await prisma.user.update({
       where: { email },
       data: {
         verificationStatus: status,
-        membershipId: status === "VERIFIED" ? membershipId : null,
+        membershipId: status === "VERIFIED" ? Number(membershipId) : null,
       },
     });
 
