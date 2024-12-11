@@ -74,7 +74,7 @@ export default function Contact() {
                     <div>
                       <p className="text-base text-gray-300">Find us</p>
                       <a
-                        href="https://maps.google.com"
+                        href="https://maps.app.goo.gl/DGo9YbajDhFFcUv19"
                         target="_blank"
                         rel="noopener noreferrer"
                         className="text-yellow-300 hover:text-yellow-200"

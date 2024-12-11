@@ -41,7 +41,10 @@ export function EventCard({ event }: EventCardProps) {
           sizes="(max-width: 768px) 45vw, 25vw"
         />
         <div className="absolute top-3 left-3">
-          <Badge variant={isUpcoming ? "default" : "secondary"}>
+          <Badge
+            variant={isUpcoming ? "default" : "secondary"}
+            className={`${isUpcoming ? "bg-[#17374A]" : ""}`}
+          >
             {isUpcoming ? "Upcoming" : "Past Event"}
           </Badge>
         </div>

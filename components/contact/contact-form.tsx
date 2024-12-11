@@ -25,14 +25,6 @@ const contactFormSchema = z.object({
   email: z.string({
     required_error: "Email is required",
   }),
-  mobileNumber: z
-    .string({
-      required_error: "Mobile number is required",
-    })
-    .regex(
-      /^(\+91)?\d{10}$/,
-      "Mobile number must be exactly 10 digits or start with +91 followed by 10 digits",
-    ),
   message: z
     .string()
     .min(10, { message: "Message must be atleast 10 characters long " }),
@@ -43,8 +35,8 @@ const ContactForm = () => {
   const form = useForm<z.infer<typeof contactFormSchema>>({
     resolver: zodResolver(contactFormSchema),
     defaultValues: {
-      name: "",
-      email: "",
+      name: undefined,
+      email: undefined,
       message: "",
     },
   });
@@ -72,13 +64,13 @@ const ContactForm = () => {
       >
         <FormField
           control={form.control}
-          name="email"
+          name="name"
           render={({ field }) => (
             <FormItem>
-              <FormLabel className="text-gray-600">Email</FormLabel>
+              <FormLabel className="text-gray-600">Name</FormLabel>
               <FormControl>
                 <Input
-                  placeholder="Enter your email"
+                  placeholder="Enter your name"
                   className="border-gray-200 focus:border-gray-300 h-12"
                   {...field}
                 />
@@ -90,13 +82,13 @@ const ContactForm = () => {
 
         <FormField
           control={form.control}
-          name="name"
+          name="email"
           render={({ field }) => (
             <FormItem>
-              <FormLabel className="text-gray-600">Name</FormLabel>
+              <FormLabel className="text-gray-600">Email</FormLabel>
               <FormControl>
                 <Input
-                  placeholder="Enter your name"
+                  placeholder="Enter your email"
                   className="border-gray-200 focus:border-gray-300 h-12"
                   {...field}
                 />
