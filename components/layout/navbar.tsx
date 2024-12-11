@@ -35,8 +35,8 @@ export function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
 
   return (
-    <nav className="sticky top-0 z-50 w-full bg-[#20333C] text-white p-4">
-      <div className="mx-auto max-w-7xl px-4 py-3">
+    <nav className="sticky top-0 z-50 w-full bg-[#20333C] text-white p-2 md:p-4 ">
+      <div className="mx-auto max-w-7xl px-4 py-1">
         <div className="flex items-center justify-between">
           <Link href="/" className="flex items-center space-x-2 flex-[0.5]">
             <Image

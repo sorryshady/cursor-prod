@@ -90,7 +90,7 @@ export function UserProfilePhoto({ photoUrl, name }: UserProfilePhotoProps) {
     <div className="h-fit flex flex-col">
       <div className="overflow-hidden rounded-lg w-full md:w-[50%] mx-auto lg:w-full max-h-72">
         <Image
-          src={photo || "/fall-back.webp"}
+          src={photo || "/member-placeholder.webp"}
           alt={name}
           width={500}
           height={500}

@@ -23,6 +23,14 @@ export const verifiedColumns: ColumnDef<TableData>[] = [
   {
     accessorKey: "email",
     header: "Email",
+    cell: ({ row }) => {
+      const email: string = row.getValue("email");
+      return (
+        <div className="text-ellipsis overflow-hidden w-40">
+          {email ? email : "-"}
+        </div>
+      );
+    },
   },
   {
     accessorKey: "designation",
@@ -41,7 +49,7 @@ export const verifiedColumns: ColumnDef<TableData>[] = [
     header: "Department",
     cell: ({ row }) => {
       const department: string = row.getValue("department");
-      return <div className="">{department ? department : "-"}</div>;
+      return <div>{department ? department : "-"}</div>;
     },
   },
   {
