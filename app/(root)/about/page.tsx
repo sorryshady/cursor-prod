@@ -14,7 +14,7 @@ export default function About() {
             title="About Us"
             description="Learn more about our organization"
             className="mb-12"
-            titleClassName="text-black"
+            titleClassName="text-black text-4xl"
             descriptionClassName="text-muted-foreground"
           />
 

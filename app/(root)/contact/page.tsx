@@ -21,15 +21,15 @@ export default function Contact() {
             title="Contact Us"
             description="Get in touch with us"
             className="mb-12"
-            titleClassName="text-white"
+            titleClassName="text-white text-4xl"
             descriptionClassName="text-gray-200"
           />
           <div className="container mx-auto px-4 py-16 relative">
             <div className="flex gap-10 lg:gap-20 lg:flex-row flex-col items-start">
               <div className="w-full lg:w-1/2 text-white space-y-8">
                 <div className="space-y-2">
-                  <h1 className="text-4xl font-bold">Let&apos;s talk</h1>
-                  <p className="text-gray-200 ">
+                  <h1 className="text-3xl font-bold">Let&apos;s talk</h1>
+                  <p className="text-gray-200 text-lg">
                     We collaborate with thousands of creators, entrepreneurs and
                     complete legends.
                   </p>
@@ -42,7 +42,7 @@ export default function Contact() {
                     </div>
 
                     <div>
-                      <p className="text-sm text-gray-300">Our email</p>
+                      <p className="text-base text-gray-300">Our email</p>
                       <a
                         href="mailto:aoekerala@gmail.com"
                         className="text-yellow-300 hover:text-yellow-200"
@@ -57,7 +57,7 @@ export default function Contact() {
                       <Phone size={24} />
                     </div>
                     <div>
-                      <p className="text-sm text-gray-300">Phone us</p>
+                      <p className="text-base text-gray-300">Phone us</p>
                       <a
                         href="tel:+919544339218"
                         className="text-yellow-300 hover:text-yellow-200"
@@ -72,7 +72,7 @@ export default function Contact() {
                       <MapPin size={24} />
                     </div>
                     <div>
-                      <p className="text-sm text-gray-300">Find us</p>
+                      <p className="text-base text-gray-300">Find us</p>
                       <a
                         href="https://maps.google.com"
                         target="_blank"
