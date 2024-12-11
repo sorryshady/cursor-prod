@@ -21,7 +21,7 @@ const BackButton = ({
         className={cn(
           "h-10 w-10",
           type === "black"
-            ? "bg-black text-white hover:bg-black/80"
+            ? "bg-[#17374A] text-white hover:bg-[#17374A]/80"
             : "bg-white text-black hover:bg-white/80 ",
         )}
         onClick={() => router.back()}

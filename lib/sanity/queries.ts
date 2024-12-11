@@ -88,6 +88,7 @@ export async function getEvents() {
       title,
       dateRange,
       location,
+      link,
       description,
       image,
     }`,

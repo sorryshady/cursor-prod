@@ -70,6 +70,7 @@ export interface UpcomingEvent {
   };
   description: string;
   location?: string;
+  link?: string;
   image?: {
     asset: {
       _ref: string;

@@ -12,7 +12,7 @@ import { urlFor } from "@/lib/sanity";
 import { formatDate } from "@/lib/utils";
 import { UpcomingEvent } from "@/types/sanity";
 import { Badge } from "@/components/ui/badge";
-import { Calendar, Info, MapPin } from "lucide-react";
+import { Calendar, Info, MapPin, Link as LinkIcon } from "lucide-react";
 
 interface EventCardProps {
   event: UpcomingEvent;
@@ -85,7 +85,7 @@ export function EventCard({ event }: EventCardProps) {
 
       {/* Content Section - Right Half */}
       <CardContent className="flex-1 p-6 flex flex-col justify-center">
-        <div className="space-y-2 mb-3">
+        <div className="space-y-1 mb-3">
           <div className="flex items-center gap-2 text-sm text-muted-foreground">
             <Calendar className="h-4 w-4" />
             <time dateTime={event.dateRange.startDate}>
@@ -99,6 +99,19 @@ export function EventCard({ event }: EventCardProps) {
             <div className="flex items-center gap-2 text-sm text-muted-foreground">
               <MapPin className="h-4 w-4" />
               <span>{event.location}</span>
+            </div>
+          )}
+          {event.link && (
+            <div className="flex items-center gap-2 text-sm text-muted-foreground">
+              <LinkIcon className="h-4 w-4" />
+              <a
+                href={event.link}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-blue-500 hover:underline"
+              >
+                {event.link}
+              </a>
             </div>
           )}
         </div>
@@ -142,6 +155,19 @@ export function EventCard({ event }: EventCardProps) {
                   <div className="flex items-center gap-2 text-sm text-muted-foreground">
                     <MapPin className="h-4 w-4" />
                     <span>{event.location}</span>
+                  </div>
+                )}
+                {event.link && (
+                  <div className="flex items-center gap-2 text-sm text-muted-foreground">
+                    <LinkIcon className="h-4 w-4" />
+                    <a
+                      href={event.link}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="text-blue-500 hover:underline"
+                    >
+                      {event.link}
+                    </a>
                   </div>
                 )}
               </div>
